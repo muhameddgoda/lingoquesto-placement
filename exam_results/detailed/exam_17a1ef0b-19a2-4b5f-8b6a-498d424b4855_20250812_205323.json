@@ -1,0 +1,79 @@
+{
+  "session_id": "17a1ef0b-19a2-4b5f-8b6a-498d424b4855",
+  "user_id": "user123",
+  "exam_date": "2025-08-12T20:52:19.223018",
+  "completion_date": "2025-08-12T20:53:23.812575",
+  "final_level": "Below A1",
+  "final_score": 68.53921300394734,
+  "completion_reason": "threshold_not_met",
+  "levels_attempted": 1,
+  "levels_passed": 0,
+  "level_details": [
+    {
+      "level": "A1",
+      "average_score": 68.53921300394734,
+      "passed": false,
+      "questions_completed": 1,
+      "questions": [
+        {
+          "q_id": "A1-OR-CHUNK-002",
+          "scores": {
+            "pronunciation": 17.890590148334404,
+            "fluency": 36.91323264258778,
+            "grammar": 7.522456697951947,
+            "vocabulary": 6.212933515073203
+          },
+          "weighted_score": 68.53921300394734,
+          "evaluation_details": {
+            "scores": {
+              "pronunciation": 17.890590148334404,
+              "fluency": 36.91323264258778,
+              "grammar": 7.522456697951947,
+              "vocabulary": 6.212933515073203
+            },
+            "overall_weighted": 68.53921300394734,
+            "is_mock_data": true,
+            "evaluation_note": "API Error: This event loop is already running"
+          },
+          "response_data": {
+            "q_id": "A1-OR-CHUNK-002",
+            "response_type": "audio",
+            "response_data": null,
+            "audio_file_path": "uploads\\audio\\17a1ef0b-19a2-4b5f-8b6a-498d424b4855_A1-OR-CHUNK-002_c6c6121c45b64f9294bb6749a0541dcc.webm",
+            "timestamp": "2025-08-12T20:53:23.716903",
+            "level": "A1"
+          },
+          "question_info": {
+            "q_id": "A1-OR-CHUNK-002",
+            "q_type": "open_response",
+            "level": "A1",
+            "prompt": "Describe your family members.",
+            "original_type": "open_response",
+            "metadata": {
+              "accent": "us",
+              "context": {
+                "question": "Speak for up to 2 minutes describing your family members, including their names, ages, and something special about each person."
+              },
+              "thinkTimeSec": 8,
+              "responseTimeSec": 120,
+              "chunking": {
+                "strategy": "fixed",
+                "maxSec": 115
+              }
+            }
+          }
+        }
+      ],
+      "skill_breakdown": {
+        "pronunciation": 17.890590148334404,
+        "fluency": 36.91323264258778,
+        "grammar": 7.522456697951947,
+        "vocabulary": 6.212933515073203
+      }
+    }
+  ],
+  "recommendations": [
+    "Good foundation! Continue practicing speaking and listening skills."
+  ],
+  "certificate_eligible": false
+}

@@ -1,0 +1,138 @@
+{
+  "session_id": "2ed67626-f93e-4aca-8011-984ed7eb0ad9",
+  "user_id": "user123",
+  "exam_date": "2025-08-12T22:08:15.316859",
+  "completion_date": "2025-08-12T22:08:53.730907",
+  "final_level": "A1",
+  "final_score": 83.629705901568,
+  "completion_reason": "threshold_not_met",
+  "levels_attempted": 2,
+  "levels_passed": 1,
+  "level_details": [
+    {
+      "level": "A1",
+      "average_score": 92.87211835546361,
+      "passed": true,
+      "questions_completed": 1,
+      "questions": [
+        {
+          "q_id": "A1-RS-001",
+          "scores": {
+            "pronunciation": 92.87211835546361,
+            "fluency": 0,
+            "grammar": 0,
+            "vocabulary": 0
+          },
+          "weighted_score": 92.87211835546361,
+          "evaluation_details": {
+            "scores": {
+              "pronunciation": 92.87211835546361,
+              "fluency": 0,
+              "grammar": 0,
+              "vocabulary": 0
+            },
+            "overall_weighted": 92.87211835546361,
+            "is_mock_data": true,
+            "evaluation_note": "API Error: This event loop is already running"
+          },
+          "response_data": {
+            "q_id": "A1-RS-001",
+            "response_type": "audio",
+            "response_data": null,
+            "audio_file_path": "uploads\\audio\\2ed67626-f93e-4aca-8011-984ed7eb0ad9_A1-RS-001_f8f7d4bac5a940e4bee9f6ae2868488e.webm",
+            "timestamp": "2025-08-12T22:08:36.959761",
+            "level": "A1"
+          },
+          "question_info": {
+            "q_id": "A1-RS-001",
+            "q_type": "open_response",
+            "level": "A1",
+            "prompt": "Repeat: I am from Germany.",
+            "original_type": "repeat_sentence",
+            "metadata": {
+              "accent": "us",
+              "expectedText": "I am from Germany.",
+              "thinkTimeSec": 4,
+              "responseTimeSec": 20,
+              "chunking": {
+                "strategy": "fixed",
+                "maxSec": 55
+              }
+            }
+          }
+        }
+      ],
+      "skill_breakdown": {
+        "pronunciation": 92.87211835546361,
+        "fluency": 0.0,
+        "grammar": 0.0,
+        "vocabulary": 0.0
+      }
+    },
+    {
+      "level": "A2",
+      "average_score": 74.38729344767239,
+      "passed": false,
+      "questions_completed": 1,
+      "questions": [
+        {
+          "q_id": "A2-RS-001",
+          "scores": {
+            "pronunciation": 74.38729344767239,
+            "fluency": 0,
+            "grammar": 0,
+            "vocabulary": 0
+          },
+          "weighted_score": 74.38729344767239,
+          "evaluation_details": {
+            "scores": {
+              "pronunciation": 74.38729344767239,
+              "fluency": 0,
+              "grammar": 0,
+              "vocabulary": 0
+            },
+            "overall_weighted": 74.38729344767239,
+            "is_mock_data": true,
+            "evaluation_note": "API Error: This event loop is already running"
+          },
+          "response_data": {
+            "q_id": "A2-RS-001",
+            "response_type": "audio",
+            "response_data": null,
+            "audio_file_path": "uploads\\audio\\2ed67626-f93e-4aca-8011-984ed7eb0ad9_A2-RS-001_8f773db7d54f4a2fa26c927949aca68c.webm",
+            "timestamp": "2025-08-12T22:08:53.730907",
+            "level": "A2"
+          },
+          "question_info": {
+            "q_id": "A2-RS-001",
+            "q_type": "open_response",
+            "level": "A2",
+            "prompt": "Repeat: Could you tell me where the nearest supermarket is?",
+            "original_type": "repeat_sentence",
+            "metadata": {
+              "accent": "us",
+              "expectedText": "Could you tell me where the nearest supermarket is?",
+              "thinkTimeSec": 4,
+              "responseTimeSec": 20,
+              "chunking": {
+                "strategy": "fixed",
+                "maxSec": 55
+              }
+            }
+          }
+        }
+      ],
+      "skill_breakdown": {
+        "pronunciation": 74.38729344767239,
+        "fluency": 0.0,
+        "grammar": 0.0,
+        "vocabulary": 0.0
+      }
+    }
+  ],
+  "recommendations": [
+    "Strong performance! Focus on advanced grammar and fluency.",
+    "Continue studying at A1 level to strengthen your skills."
+  ],
+  "certificate_eligible": true
+}

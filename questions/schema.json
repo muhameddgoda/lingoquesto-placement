@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LQ Question",
+  "type": "object",
+  "required": ["id", "level", "type"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "level": { "type": "string", "enum": ["A1","A2","B1","B2","C1","C2"] },
+    "type": { "type": "string", "enum": ["repeat_sentence","dictation","scripted","minimal_pair","pronunciation","unscripted"] },
+    "prompt": { "type": "string" },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "expectedText": { "type": "string" },
+        "accent": { "type": "string", "enum": ["us","uk"] },
+        "audioRef": { "type": "string" },
+        "imageRef": { "type": "string" },
+        "thinkSec": { "type": "number", "minimum": 0 },
+        "speakSec": { "type": "number", "minimum": 1 },
+        "context": {
+          "type": "object",
+          "properties": {
+            "question": { "type": "string" },
+            "context_description": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "enum": ["repeat_sentence","dictation","scripted"] } } },
+      "then": { "required": ["metadata"], "properties": { "metadata": { "required": ["expectedText"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "enum": ["minimal_pair","pronunciation"] } } },
+      "then": { "required": ["metadata"], "properties": { "metadata": { "required": ["expectedText"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "unscripted" } } },
+      "then": {
+        "required": ["metadata"],
+        "properties": {
+          "metadata": {
+            "required": ["context"],
+            "properties": {
+              "context": {
+                "oneOf": [
+                  { "required": ["question"] },
+                  { "required": ["context_description"] }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,559 @@
+[
+  {
+    "id": "A1-RS-001",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: I am from Germany.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I am from Germany."
+    }
+  },
+  {
+    "id": "A1-RS-002",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: I have a red book and a blue pen.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I have a red book and a blue pen."
+    }
+  },
+  {
+    "id": "A1-RS-003",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: Can I have a glass of water, please?",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Can I have a glass of water, please?"
+    }
+  },
+  {
+    "id": "A1-RS-004",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: I like ice cream and hamburgers.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I like ice cream and hamburgers."
+    }
+  },
+  {
+    "id": "A1-RS-005",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: She usually wakes up at seven o'clock in the morning.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "She usually wakes up at seven o'clock in the morning."
+    }
+  },
+  {
+    "id": "A1-RS-006",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: My name is John and I live in New York.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "My name is John and I live in New York."
+    }
+  },
+  {
+    "id": "A1-RS-007",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: This is my friend Anna.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "This is my friend Anna."
+    }
+  },
+  {
+    "id": "A1-RS-008",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: I have a small dog.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I have a small dog."
+    }
+  },
+  {
+    "id": "A1-RS-009",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: He is a teacher.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "He is a teacher."
+    }
+  },
+  {
+    "id": "A1-RS-010",
+    "type": "repeat_sentence",
+    "prompt": "Repeat: Good morning, how are you?",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Good morning, how are you?"
+    }
+  },
+  {
+    "id": "A1-MP-001",
+    "type": "minimal_pair",
+    "prompt": "Say the word: sheep",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "sheep",
+      "pair": ["ship", "sheep"],
+      "target": "sheep"
+    }
+  },
+  {
+    "id": "A1-MP-002",
+    "type": "minimal_pair",
+    "prompt": "Say the word: ship",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "ship",
+      "pair": ["ship", "sheep"],
+      "target": "ship"
+    }
+  },
+  {
+    "id": "A1-MP-003",
+    "type": "minimal_pair",
+    "prompt": "Say the word: cap",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "cap",
+      "pair": ["cap", "cup"],
+      "target": "cap"
+    }
+  },
+  {
+    "id": "A1-MP-004",
+    "type": "minimal_pair",
+    "prompt": "Say the word: cup",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "cup",
+      "pair": ["cap", "cup"],
+      "target": "cup"
+    }
+  },
+  {
+    "id": "A1-MP-005",
+    "type": "minimal_pair",
+    "prompt": "Say the word: bat",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "bat",
+      "pair": ["bat", "vat"],
+      "target": "bat"
+    }
+  },
+  {
+    "id": "A1-MP-006",
+    "type": "minimal_pair",
+    "prompt": "Say the word: vat",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "vat",
+      "pair": ["bat", "vat"],
+      "target": "vat"
+    }
+  },
+  {
+    "id": "A1-MP-007",
+    "type": "minimal_pair",
+    "prompt": "Say the word: sip",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "sip",
+      "pair": ["sip", "zip"],
+      "target": "sip"
+    }
+  },
+  {
+    "id": "A1-MP-008",
+    "type": "minimal_pair",
+    "prompt": "Say the word: zip",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "zip",
+      "pair": ["sip", "zip"],
+      "target": "zip"
+    }
+  },
+  {
+    "id": "A1-MP-009",
+    "type": "minimal_pair",
+    "prompt": "Say the word: think",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "think",
+      "pair": ["think", "sink"],
+      "target": "think"
+    }
+  },
+  {
+    "id": "A1-MP-010",
+    "type": "minimal_pair",
+    "prompt": "Say the word: sink",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "sink",
+      "pair": ["think", "sink"],
+      "target": "sink"
+    }
+  },
+  {
+    "id": "A1-DICT-001",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "The museum opens at ten o'clock.",
+      "audioRef": "audio/a1_dict_001.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-002",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "My name is Anna.",
+      "audioRef": "audio/a1_dict_002.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-003",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I live in New York.",
+      "audioRef": "audio/a1_dict_003.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-004",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "This is my friend.",
+      "audioRef": "audio/a1_dict_004.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-005",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I have a small dog.",
+      "audioRef": "audio/a1_dict_005.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-006",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "He is a teacher.",
+      "audioRef": "audio/a1_dict_006.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-007",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Where do you live?",
+      "audioRef": "audio/a1_dict_007.wav"
+    }
+  },
+  {
+    "id": "A1-DICT-008",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "How old are you?",
+      "audioRef": "audio/a1_dict_008.wav"
+    }
+  },
+  {
+    "id": "A1-LMQ-001",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_001.wav",
+      "audioText": "Good morning! How are you?",
+      "question": "What is the appropriate response?",
+      "options": [
+        "I am twenty.",
+        "Yes, I am.",
+        "I am fine, thank you.",
+        "No, I don't.",
+        "Green."
+      ],
+      "correctAnswer": "I am fine, thank you."
+    }
+  },
+  {
+    "id": "A1-LMQ-002",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_002.wav",
+      "audioText": "Where do you live?",
+      "question": "What is the appropriate response?",
+      "options": [
+        "I live in Mexico City.",
+        "I am ten.",
+        "I like pizza.",
+        "She is my friend.",
+        "My name is Carlos."
+      ],
+      "correctAnswer": "I live in Mexico City."
+    }
+  },
+  {
+    "id": "A1-LMQ-003",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_003.wav",
+      "audioText": "This is my brother.",
+      "question": "What is the appropriate response?",
+      "options": [
+        "Yes, I do.",
+        "Nice to meet you.",
+        "I'm from Brazil.",
+        "No, it isn't.",
+        "I like dogs."
+      ],
+      "correctAnswer": "Nice to meet you."
+    }
+  },
+  {
+    "id": "A1-LMQ-004",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_004.wav",
+      "audioText": "Do you have a pencil?",
+      "question": "What is the appropriate response?",
+      "options": [
+        "I like music.",
+        "Yes, I do.",
+        "It is blue.",
+        "I am happy.",
+        "No, he doesn't."
+      ],
+      "correctAnswer": "Yes, I do."
+    }
+  },
+  {
+    "id": "A1-LMQ-005",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_005.wav",
+      "audioText": "How old are you?",
+      "question": "What is the appropriate response?",
+      "options": [
+        "I'm 12 years old.",
+        "I live in a house.",
+        "I have a dog.",
+        "She is fine.",
+        "I am at school."
+      ],
+      "correctAnswer": "I'm 12 years old."
+    }
+  },
+  {
+    "id": "A1-LMQ-006",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_006.wav",
+      "audioText": "Hi, how are you?",
+      "question": "What is the best response to continue the conversation?",
+      "options": [
+        "Good, thank you. And you?",
+        "Good! My name is Tomas.",
+        "Tomas, what is your name?",
+        "I'm from Colombia, and you?"
+      ],
+      "correctAnswer": "Good, thank you. And you?"
+    }
+  },
+  {
+    "id": "A1-LMQ-007",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_007.wav",
+      "audioText": "I'm good, thank you. What is your name?",
+      "question": "What is the appropriate response?",
+      "options": [
+        "I like to hike, and you?",
+        "I am good, thank you.",
+        "Tomas, and you?",
+        "I'm from Colombia, and you?"
+      ],
+      "correctAnswer": "Tomas, and you?"
+    }
+  },
+  {
+    "id": "A1-LMQ-008",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_lmq_008.wav",
+      "audioText": "Nice to meet you, Tomas. Where are you from?",
+      "question": "What is the appropriate response?",
+      "options": [
+        "I'm from Colombia.",
+        "I'm a student.",
+        "I have one brother.",
+        "I'm fine, thank you."
+      ],
+      "correctAnswer": "I'm from Colombia."
+    }
+  },
+  {
+    "id": "A1-BMQ-001",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Hello! Can I help you?'",
+    "metadata": {
+      "context": "At a cafÃ©",
+      "situation": "Customer ordering",
+      "options": [
+        "Yes, I'd like a coffee, please.",
+        "Yes, I drink coffee now.",
+        "I want to go coffee.",
+        "Yes, I make coffee at home."
+      ],
+      "correctAnswer": "Yes, I'd like a coffee, please."
+    }
+  },
+  {
+    "id": "A1-BMQ-002",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Sure. Do you want milk with your coffee?'",
+    "metadata": {
+      "context": "At a cafÃ© - ordering coffee",
+      "situation": "Server asking about preferences",
+      "options": [
+        "Yes, with milk, please.",
+        "Yes, I take milk in my bag.",
+        "No, I want sugar with that.",
+        "Yes, I like coffee every day."
+      ],
+      "correctAnswer": "Yes, with milk, please."
+    }
+  },
+  {
+    "id": "A1-BMQ-003",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Do you have any brothers or sisters?'",
+    "metadata": {
+      "context": "Talking about family",
+      "situation": "Personal conversation",
+      "options": [
+        "Yes, I have one brother.",
+        "Yes, he is my friend.",
+        "Yes, I go to school.",
+        "No, I am an only child."
+      ],
+      "correctAnswer": "Yes, I have one brother."
+    }
+  },
+  {
+    "id": "A1-BMQ-004",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Excuse me, where is the train station?'",
+    "metadata": {
+      "context": "Giving directions",
+      "situation": "Someone asking for help",
+      "options": [
+        "It's next to the bank.",
+        "Yes, I like trains.",
+        "I go there tomorrow.",
+        "It goes very fast."
+      ],
+      "correctAnswer": "It's next to the bank."
+    }
+  },
+  {
+    "id": "A1-BMQ-005",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Is it far from here?'",
+    "metadata": {
+      "context": "Giving directions",
+      "situation": "Someone asking about distance",
+      "options": [
+        "No, it's about five minutes.",
+        "Yes, I walk every day.",
+        "No, I go to the school.",
+        "It is fast and loud."
+      ],
+      "correctAnswer": "No, it's about five minutes."
+    }
+  },
+  {
+    "id": "A1-BMQ-006",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'What time do you usually wake up?'",
+    "metadata": {
+      "context": "Talking about daily routine",
+      "situation": "Personal conversation about schedule",
+      "options": [
+        "I wake up at 7 o'clock.",
+        "I wake 7 good.",
+        "I sleep at school.",
+        "I go now to bed."
+      ],
+      "correctAnswer": "I wake up at 7 o'clock."
+    }
+  },
+  {
+    "id": "A1-BMQ-007",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Do you go to work or school?'",
+    "metadata": {
+      "context": "Talking about daily activities",
+      "situation": "Personal conversation about occupation",
+      "options": [
+        "I go to school every day.",
+        "I go car and walk.",
+        "Yes, I have my teacher.",
+        "I study with my breakfast."
+      ],
+      "correctAnswer": "I go to school every day."
+    }
+  },
+  {
+    "id": "A1-BMQ-008",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response to: 'Thanks for your help!'",
+    "metadata": {
+      "context": "End of conversation",
+      "situation": "Someone thanking you",
+      "options": [
+        "You're welcome!",
+        "I help train too.",
+        "I live far away.",
+        "Go now with bus."
+      ],
+      "correctAnswer": "You're welcome!"
+    }
+  }
+]

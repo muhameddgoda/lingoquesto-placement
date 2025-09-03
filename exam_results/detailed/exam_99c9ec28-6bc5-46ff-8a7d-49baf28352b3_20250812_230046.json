@@ -1,0 +1,204 @@
+{
+  "session_id": "99c9ec28-6bc5-46ff-8a7d-49baf28352b3",
+  "user_id": "user123",
+  "exam_date": "2025-08-12T22:59:44.168074",
+  "completion_date": "2025-08-12T23:00:46.000924",
+  "final_level": "A2",
+  "final_score": 78.65486389148445,
+  "completion_reason": "threshold_not_met",
+  "levels_attempted": 3,
+  "levels_passed": 2,
+  "level_details": [
+    {
+      "level": "A1",
+      "average_score": 78.18017158152084,
+      "passed": true,
+      "questions_completed": 1,
+      "questions": [
+        {
+          "q_id": "A1-RS-002",
+          "scores": {
+            "pronunciation": 78.18017158152084,
+            "fluency": 0,
+            "grammar": 0,
+            "vocabulary": 0
+          },
+          "weighted_score": 78.18017158152084,
+          "evaluation_details": {
+            "scores": {
+              "pronunciation": 78.18017158152084,
+              "fluency": 0,
+              "grammar": 0,
+              "vocabulary": 0
+            },
+            "overall_weighted": 78.18017158152084,
+            "is_mock_data": true,
+            "transcription": "",
+            "word_phoneme_data": [],
+            "evaluation_note": "API Error: This event loop is already running"
+          },
+          "response_data": {
+            "q_id": "A1-RS-002",
+            "response_type": "audio",
+            "response_data": null,
+            "audio_file_path": "uploads\\audio\\99c9ec28-6bc5-46ff-8a7d-49baf28352b3_A1-RS-002_50b46a977ab549e49d0e3c52e90f5d00.webm",
+            "timestamp": "2025-08-12T23:00:03.353805",
+            "level": "A1"
+          },
+          "question_info": {
+            "q_id": "A1-RS-002",
+            "q_type": "open_response",
+            "level": "A1",
+            "prompt": "Repeat: I have a red book and a blue pen.",
+            "original_type": "repeat_sentence",
+            "metadata": {
+              "accent": "us",
+              "expectedText": "I have a red book and a blue pen.",
+              "thinkTimeSec": 4,
+              "responseTimeSec": 20,
+              "chunking": {
+                "strategy": "fixed",
+                "maxSec": 55
+              }
+            }
+          }
+        }
+      ],
+      "skill_breakdown": {
+        "pronunciation": 78.18017158152084,
+        "fluency": 0.0,
+        "grammar": 0.0,
+        "vocabulary": 0.0
+      }
+    },
+    {
+      "level": "A2",
+      "average_score": 86.97800318911607,
+      "passed": true,
+      "questions_completed": 1,
+      "questions": [
+        {
+          "q_id": "A2-RS-002",
+          "scores": {
+            "pronunciation": 86.97800318911607,
+            "fluency": 0,
+            "grammar": 0,
+            "vocabulary": 0
+          },
+          "weighted_score": 86.97800318911607,
+          "evaluation_details": {
+            "scores": {
+              "pronunciation": 86.97800318911607,
+              "fluency": 0,
+              "grammar": 0,
+              "vocabulary": 0
+            },
+            "overall_weighted": 86.97800318911607,
+            "is_mock_data": true,
+            "transcription": "",
+            "word_phoneme_data": [],
+            "evaluation_note": "API Error: This event loop is already running"
+          },
+          "response_data": {
+            "q_id": "A2-RS-002",
+            "response_type": "audio",
+            "response_data": null,
+            "audio_file_path": "uploads\\audio\\99c9ec28-6bc5-46ff-8a7d-49baf28352b3_A2-RS-002_6a73945989c047b3b0f01082858cf13b.webm",
+            "timestamp": "2025-08-12T23:00:23.584608",
+            "level": "A2"
+          },
+          "question_info": {
+            "q_id": "A2-RS-002",
+            "q_type": "open_response",
+            "level": "A2",
+            "prompt": "Repeat: We usually go shopping every Saturday morning.",
+            "original_type": "repeat_sentence",
+            "metadata": {
+              "accent": "us",
+              "expectedText": "We usually go shopping every Saturday morning.",
+              "thinkTimeSec": 4,
+              "responseTimeSec": 20,
+              "chunking": {
+                "strategy": "fixed",
+                "maxSec": 55
+              }
+            }
+          }
+        }
+      ],
+      "skill_breakdown": {
+        "pronunciation": 86.97800318911607,
+        "fluency": 0.0,
+        "grammar": 0.0,
+        "vocabulary": 0.0
+      }
+    },
+    {
+      "level": "B1",
+      "average_score": 70.80641690381648,
+      "passed": false,
+      "questions_completed": 1,
+      "questions": [
+        {
+          "q_id": "B1-RS-002",
+          "scores": {
+            "pronunciation": 70.80641690381648,
+            "fluency": 0,
+            "grammar": 0,
+            "vocabulary": 0
+          },
+          "weighted_score": 70.80641690381648,
+          "evaluation_details": {
+            "scores": {
+              "pronunciation": 70.80641690381648,
+              "fluency": 0,
+              "grammar": 0,
+              "vocabulary": 0
+            },
+            "overall_weighted": 70.80641690381648,
+            "is_mock_data": true,
+            "transcription": "",
+            "word_phoneme_data": [],
+            "evaluation_note": "API Error: This event loop is already running"
+          },
+          "response_data": {
+            "q_id": "B1-RS-002",
+            "response_type": "audio",
+            "response_data": null,
+            "audio_file_path": "uploads\\audio\\99c9ec28-6bc5-46ff-8a7d-49baf28352b3_B1-RS-002_75a3d69444c4414f9a419489de1ec424.webm",
+            "timestamp": "2025-08-12T23:00:45.999150",
+            "level": "B1"
+          },
+          "question_info": {
+            "q_id": "B1-RS-002",
+            "q_type": "open_response",
+            "level": "B1",
+            "prompt": "Repeat: When I arrived at the hotel, I realized I had forgotten my passport in the taxi.",
+            "original_type": "repeat_sentence",
+            "metadata": {
+              "accent": "us",
+              "expectedText": "When I arrived at the hotel, I realized I had forgotten my passport in the taxi.",
+              "thinkTimeSec": 4,
+              "responseTimeSec": 20,
+              "chunking": {
+                "strategy": "fixed",
+                "maxSec": 55
+              }
+            }
+          }
+        }
+      ],
+      "skill_breakdown": {
+        "pronunciation": 70.80641690381648,
+        "fluency": 0.0,
+        "grammar": 0.0,
+        "vocabulary": 0.0
+      }
+    }
+  ],
+  "recommendations": [
+    "Strong performance! Focus on advanced grammar and fluency.",
+    "Continue studying at A2 level to strengthen your skills."
+  ],
+  "certificate_eligible": true
+}

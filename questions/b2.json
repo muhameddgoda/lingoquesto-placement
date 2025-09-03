@@ -1,0 +1,374 @@
+[
+  {
+    "id": "B2-OR-001",
+    "type": "open_response",
+    "prompt": "Discuss the pros and cons of working from home.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about the advantages and disadvantages of working from home, providing specific examples and your personal perspective on this modern work arrangement.",
+        "context_description": "Workplace trends and balanced argumentation assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-002",
+    "type": "open_response",
+    "prompt": "Talk about how social media affects personal relationships.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about how social media impacts personal relationships, including both positive and negative effects with concrete examples from your observations or experience.",
+        "context_description": "Social issues and critical analysis assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-003",
+    "type": "open_response",
+    "prompt": "Describe environmental problems in your country and suggest solutions.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about major environmental issues in your country and suggest realistic solutions, discussing who should be responsible for implementing them.",
+        "context_description": "Environmental awareness and problem-solving assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-004",
+    "type": "open_response",
+    "prompt": "Describe how globalization has changed your community.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about how globalization has influenced your community, including cultural, economic, or social changes, and whether you view these changes positively or negatively.",
+        "context_description": "Globalization effects and community analysis assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-005",
+    "type": "open_response",
+    "prompt": "Discuss the challenges of balancing work life and personal life.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about the difficulties of maintaining a healthy work-life balance and possible strategies to overcome them, including what role employers should play.",
+        "context_description": "Work-life balance and modern lifestyle assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-006",
+    "type": "open_response",
+    "prompt": "Can you describe a time when you had to learn something quickly under pressure?",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes describing a specific situation where you had to acquire new knowledge or skills quickly under pressure, explaining your approach and what you learned from the experience.",
+        "context_description": "Problem-solving and adaptability under stress assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-007",
+    "type": "open_response",
+    "prompt": "What factors should someone consider before making a major life decision?",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about the important factors people should consider when making significant life decisions, such as career changes, relationships, or major purchases.",
+        "context_description": "Decision-making processes and life planning assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-008",
+    "type": "open_response",
+    "prompt": "Tell me about a situation where you had to give someone constructive feedback.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes describing a specific situation where you needed to provide constructive feedback to someone, explaining your approach and the outcome.",
+        "context_description": "Interpersonal communication and leadership skills assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-009",
+    "type": "open_response",
+    "prompt": "In your opinion, how important is it to stay informed about global events?",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes about the importance of staying informed about global events, discussing the benefits and potential drawbacks, and sharing your personal approach to following news.",
+        "context_description": "Global awareness and media literacy assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-OR-010",
+    "type": "open_response",
+    "prompt": "How do you usually prepare for important presentations or meetings?",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 4 minutes describing your preparation process for important presentations or meetings, including specific strategies, tools you use, and how you handle pre-presentation anxiety.",
+        "context_description": "Professional preparation and presentation skills assessment"
+      }
+    }
+  },
+  {
+    "id": "B2-LA-001",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_001.wav",
+      "audioText": "The data seems inconsistent with our earlier findings. What do you think?",
+      "context": {
+        "question": "Listen to this workplace scenario and respond as you would in a professional meeting, addressing the concern about data inconsistency.",
+        "context_description": "Professional problem-solving and data analysis discussion"
+      },
+      "expectedResponseElements": [
+        "Acknowledge the inconsistency",
+        "Suggest investigating the cause",
+        "Propose next steps for resolution"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-002",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_002.wav",
+      "audioText": "Could you explain the main idea behind your proposal?",
+      "context": {
+        "question": "Listen to this request and respond as if you're presenting a business proposal, explaining your main concept clearly and persuasively.",
+        "context_description": "Business communication and proposal presentation"
+      },
+      "expectedResponseElements": [
+        "Clear explanation of main concept",
+        "Benefits or advantages",
+        "Implementation approach"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-003",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_003.wav",
+      "audioText": "Why do you think some teams collaborate more successfully than others?",
+      "context": {
+        "question": "Listen to this question about team dynamics and provide a thoughtful analysis based on your understanding of teamwork and collaboration.",
+        "context_description": "Team dynamics and organizational psychology discussion"
+      },
+      "expectedResponseElements": [
+        "Key factors for successful collaboration",
+        "Examples or experiences",
+        "Analysis of what prevents good teamwork"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-004",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_004.wav",
+      "audioText": "What are the main risks of adopting new technologies too quickly?",
+      "context": {
+        "question": "Listen to this question about technology adoption and provide a balanced analysis of potential risks and challenges.",
+        "context_description": "Technology management and risk assessment discussion"
+      },
+      "expectedResponseElements": [
+        "Identify specific risks",
+        "Explain consequences",
+        "Suggest mitigation strategies"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-005",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_005.wav",
+      "audioText": "How do you stay productive during busy weeks?",
+      "context": {
+        "question": "Listen to this question about productivity management and share your strategies for maintaining effectiveness during high-pressure periods.",
+        "context_description": "Personal productivity and time management discussion"
+      },
+      "expectedResponseElements": [
+        "Specific productivity strategies",
+        "Time management techniques",
+        "Stress management approaches"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-006",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_006.wav",
+      "audioText": "How do you feel about the rise of remote work in recent years?",
+      "context": {
+        "question": "Listen to this question about remote work trends and provide your perspective on this workplace evolution, including benefits and challenges.",
+        "context_description": "Modern workplace trends and professional opinion discussion"
+      },
+      "expectedResponseElements": [
+        "Personal opinion on remote work",
+        "Benefits and challenges",
+        "Impact on work culture"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-007",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_007.wav",
+      "audioText": "Do you think social media has a mostly positive or negative effect on society?",
+      "context": {
+        "question": "Listen to this question about social media's societal impact and provide a balanced analysis with specific examples and reasoning.",
+        "context_description": "Social media analysis and critical thinking discussion"
+      },
+      "expectedResponseElements": [
+        "Clear position statement",
+        "Supporting arguments",
+        "Acknowledgment of counterarguments"
+      ]
+    }
+  },
+  {
+    "id": "B2-LA-008",
+    "type": "listen_answer",
+    "prompt": "Listen to the question and provide a detailed response.",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b2_la_008.wav",
+      "audioText": "What do you think is one of the biggest environmental problems today?",
+      "context": {
+        "question": "Listen to this environmental question and provide your analysis of a major environmental issue, including causes and potential solutions.",
+        "context_description": "Environmental awareness and problem analysis discussion"
+      },
+      "expectedResponseElements": [
+        "Identify specific environmental problem",
+        "Explain its significance",
+        "Suggest potential solutions"
+      ]
+    }
+  },
+  {
+    "id": "B2-DICT-001",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "The report highlights a significant shift in consumer behavior over the past year.",
+      "audioRef": "audio/b2_dict_001.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-002",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Although the deadline is approaching, we still need to revise the main proposal.",
+      "audioRef": "audio/b2_dict_002.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-003",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "He argued that remote work can increase productivity, especially in creative fields.",
+      "audioRef": "audio/b2_dict_003.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-004",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Before launching the campaign, we need to clarify the target audience and goals.",
+      "audioRef": "audio/b2_dict_004.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-005",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Even though the experiment failed, the team learned valuable lessons from it.",
+      "audioRef": "audio/b2_dict_005.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-006",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Although renewable energy sources offer significant environmental benefits, they often require substantial initial investments and complex infrastructure planning.",
+      "audioRef": "audio/b2_dict_006.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-007",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "The study's findings suggest that implementing artificial intelligence in healthcare can improve diagnostic accuracy while raising ethical concerns about patient data privacy.",
+      "audioRef": "audio/b2_dict_007.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-008",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Despite the potential advantages of remote work, employees may experience feelings of isolation and struggle to maintain a healthy work-life balance.",
+      "audioRef": "audio/b2_dict_008.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-009",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "The government should invest more in public transportation, since it reduces traffic congestion, lowers carbon emissions, and promotes social equity.",
+      "audioRef": "audio/b2_dict_009.wav"
+    }
+  },
+  {
+    "id": "B2-DICT-010",
+    "type": "dictation",
+    "prompt": "Type what you hear, then read it aloud.",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Effective communication in multicultural teams requires cultural sensitivity, precise language use, and active listening skills.",
+      "audioRef": "audio/b2_dict_010.wav"
+    }
+  }
+]

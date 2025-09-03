@@ -1,0 +1,246 @@
+{
+  "accent": "us",
+  "exam": {
+    "order": ["A1", "A2", "B1", "B2", "C1", "C2"],
+    "gate_threshold": 75,
+    "per_level": {
+      "A1": {
+        "type_counts": {
+          "repeat_sentence": 0,
+          "minimal_pair": 0,
+          "dictation": 2,
+          "listen_mcq": 0,
+          "best_response_mcq": 0,
+          "open_response": 0,
+          "image_description": 0,
+          "listen_answer": 0,
+          "sequence": 0
+        },
+        "estimated_duration_seconds": 180,
+        "description": "A1 level assessment focusing on basic pronunciation, listening comprehension, and simple response selection"
+      },
+      "A2": {
+        "type_counts": {
+          "repeat_sentence": 2,
+          "dictation": 2,
+          "listen_mcq": 2,
+          "minimal_pair": 1,
+          "sequence": 1,
+          "best_response_mcq": 1,
+          "open_response": 0,
+          "image_description": 0,
+          "listen_answer": 0
+        },
+        "estimated_duration_seconds": 240,
+        "description": "A2 level assessment adding conversational sequences and expanded dictation tasks"
+      },
+      "B1": {
+        "type_counts": {
+          "open_response": 1,
+          "image_description": 1,
+          "best_response_mcq": 1,
+          "repeat_sentence": 0,
+          "minimal_pair": 0,
+          "dictation": 0,
+          "listen_mcq": 0,
+          "listen_answer": 0,
+          "sequence": 0
+        },
+        "estimated_duration_seconds": 210,
+        "description": "B1 level assessment emphasizing extended discourse and visual interpretation skills"
+      },
+      "B2": {
+        "type_counts": {
+          "open_response": 1,
+          "listen_answer": 1,
+          "dictation": 1,
+          "repeat_sentence": 0,
+          "minimal_pair": 0,
+          "listen_mcq": 0,
+          "best_response_mcq": 0,
+          "image_description": 0,
+          "sequence": 0
+        },
+        "estimated_duration_seconds": 195,
+        "description": "B2 level assessment focusing on complex discourse and analytical listening skills"
+      },
+      "C1": {
+        "type_counts": {
+          "open_response": 1,
+          "image_description": 1,
+          "best_response_mcq": 1,
+          "minimal_pair": 1,
+          "repeat_sentence": 0,
+          "dictation": 0,
+          "listen_mcq": 0,
+          "listen_answer": 0,
+          "sequence": 0
+        },
+        "estimated_duration_seconds": 255,
+        "description": "C1 level assessment requiring sophisticated analysis and advanced pronunciation skills"
+      },
+      "C2": {
+        "type_counts": {
+          "open_response": 1,
+          "listen_answer": 1,
+          "sequence": 1,
+          "best_response_mcq": 1,
+          "repeat_sentence": 0,
+          "minimal_pair": 0,
+          "dictation": 0,
+          "listen_mcq": 0,
+          "image_description": 0
+        },
+        "estimated_duration_seconds": 230,
+        "description": "C2 level assessment testing mastery-level discourse and complex reasoning abilities"
+      }
+    }
+  },
+  "type_to_profile": {
+    "repeat_sentence": "pron_only",
+    "minimal_pair": "pron_only",
+    "pronunciation": "pron_only",
+    "dictation": "dictation_vocab",
+    "listen_mcq": "comprehension_only",
+    "best_response_mcq": "comprehension_only",
+    "open_response": "unscripted_mixed",
+    "listen_answer": "unscripted_mixed",
+    "image_description": "unscripted_mixed",
+    "sequence": "scripted_mixed"
+  },
+  "scoring_profiles": {
+    "pron_only": {
+      "pronunciation": 1.0,
+      "fluency": 0.0,
+      "grammar": 0.0,
+      "vocabulary": 0.0
+    },
+    "scripted_mixed": {
+      "pronunciation": 0.3,
+      "fluency": 0.7,
+      "grammar": 0.0,
+      "vocabulary": 0.0
+    },
+    "unscripted_mixed": {
+      "pronunciation": 0.25,
+      "fluency": 0.55,
+      "grammar": 0.1,
+      "vocabulary": 0.1
+    },
+    "comprehension_only": {
+      "pronunciation": 0.0,
+      "fluency": 0.0,
+      "grammar": 0.5,
+      "vocabulary": 0.5
+    },
+    "dictation_vocab": {
+      "pronunciation": 0.0,
+      "fluency": 0.0,
+      "grammar": 0.0,
+      "vocabulary": 1.0
+    }
+  },
+  "question_timing": {
+    "repeat_sentence": {
+      "think_time_sec": 3,
+      "response_time_sec": 15,
+      "total_estimated_sec": 18
+    },
+    "minimal_pair": {
+      "think_time_sec": 2,
+      "response_time_sec": 10,
+      "total_estimated_sec": 12
+    },
+    "dictation": {
+      "think_time_sec": 3,
+      "response_time_sec": 12,
+      "total_estimated_sec": 15
+    },
+    "listen_mcq": {
+      "think_time_sec": 5,
+      "response_time_sec": 25,
+      "total_estimated_sec": 30
+    },
+    "image_description": {
+      "think_time_sec": 10,
+      "response_time_sec": 80,
+      "total_estimated_sec": 90
+    },
+    "open_response": {
+      "think_time_sec": 30,
+      "response_time_sec": 120,
+      "total_estimated_sec": 150
+    },
+    "best_response_mcq": {
+      "think_time_sec": 5,
+      "response_time_sec": 25,
+      "total_estimated_sec": 30
+    },
+    "sequence": {
+      "think_time_sec": 3,
+      "response_time_sec": 17,
+      "total_estimated_sec": 20
+    },
+    "listen_answer": {
+      "think_time_sec": 5,
+      "response_time_sec": 25,
+      "total_estimated_sec": 30
+    }
+  },
+  "level_progression": {
+    "A1": {
+      "skills_tested": [
+        "basic_pronunciation",
+        "simple_listening",
+        "basic_vocabulary"
+      ],
+      "complexity": "elementary",
+      "target_duration_range": "2m30s-3m"
+    },
+    "A2": {
+      "skills_tested": [
+        "expanded_pronunciation",
+        "conversational_listening",
+        "practical_communication"
+      ],
+      "complexity": "pre_intermediate",
+      "target_duration_range": "3m30s-4m"
+    },
+    "B1": {
+      "skills_tested": [
+        "extended_discourse",
+        "visual_interpretation",
+        "opinion_expression"
+      ],
+      "complexity": "intermediate",
+      "target_duration_range": "3m-3m30s"
+    },
+    "B2": {
+      "skills_tested": [
+        "complex_analysis",
+        "advanced_listening",
+        "detailed_explanation"
+      ],
+      "complexity": "upper_intermediate",
+      "target_duration_range": "3m-3m15s"
+    },
+    "C1": {
+      "skills_tested": [
+        "sophisticated_analysis",
+        "nuanced_communication",
+        "advanced_pronunciation"
+      ],
+      "complexity": "advanced",
+      "target_duration_range": "4m-4m15s"
+    },
+    "C2": {
+      "skills_tested": [
+        "mastery_discourse",
+        "philosophical_reasoning",
+        "native_like_fluency"
+      ],
+      "complexity": "mastery",
+      "target_duration_range": "3m30s-4m"
+    }
+  }
+}
