@@ -214,7 +214,7 @@ class ExamManager:
             raise
     
     def _generate_level_questions(self, session_id: str, level: str):
-        """Generate questions for a level - prioritize repeat_sentence for testing"""
+        """Generate questions for a level"""
         try:
             session = self.sessions[session_id]
             
@@ -227,12 +227,8 @@ class ExamManager:
             
             level_questions = []
             
-            # PRIORITIZE repeat_sentence questions to test Language Confidence API
-            question_types_priority = ["repeat_sentence", "open_response", "minimal_pair", "dictation", "listen_answer", "image_description"]
-            
-            # Generate questions for each type in priority order
-            for q_type in question_types_priority:
-                count = type_counts.get(q_type, 0)
+            # FIXED: Process ALL question types from the config, not just priority list
+            for q_type, count in type_counts.items():
                 if count > 0:
                     # Check if we have questions of this type
                     if (level in self.questions_db and 
@@ -246,17 +242,12 @@ class ExamManager:
                             formatted = self._format_question_for_frontend(question, level)
                             level_questions.append(formatted)
                             logger.info(f"Added {q_type} question: {question['id']}")
-            
-            # If no questions from config, add at least one repeat_sentence for testing
-            if not level_questions and level in self.questions_db and "repeat_sentence" in self.questions_db[level]:
-                available = self.questions_db[level]["repeat_sentence"]
-                if available:
-                    selected = random.choice(available)
-                    formatted = self._format_question_for_frontend(selected, level)
-                    level_questions.append(formatted)
-                    logger.info(f"Added fallback repeat_sentence question: {selected['id']}")
+                    else:
+                        logger.warning(f"No questions available for type {q_type} in level {level}")
             
             if not level_questions:
+                logger.error(f"No questions could be generated for {level}")
+                # Add fallback logic here if needed
                 raise ValueError(f"No questions could be generated for {level}")
             
             random.shuffle(level_questions)
@@ -344,7 +335,20 @@ class ExamManager:
                 formatted["q_type"] = "dictation"  # Keep as dictation type
             if expected_text:
                 formatted["expected_text"] = expected_text  # Keep for backend validation
-                
+        
+        elif q_type in ["listen_mcq", "best_response_mcq"]:
+            # Determine if it has audio
+            has_audio = bool(question.get("metadata", {}).get("audioRef"))
+            formatted["q_type"] = "listen_mcq" if has_audio else "mcq"
+            
+            # Add MCQ options
+            formatted["options"] = question.get("metadata", {}).get("options", [])
+            formatted["correct_answer"] = question.get("metadata", {}).get("correctAnswer")
+            
+            # Add audio reference if present
+            if has_audio:
+                formatted["audio_ref"] = question["metadata"]["audioRef"]
+        
         return formatted
     
     def _get_next_question(self, session_id: str) -> Optional[Dict]:
@@ -513,6 +517,24 @@ class ExamManager:
                 else:
                     logger.warning(f"Missing expected text or user input for dictation")
                     return self._get_mock_evaluation(scoring_profile, "Missing dictation data")
+                    
+            elif q_type in ["listen_mcq", "best_response_mcq"] or response_data.get("response_type") == "text":
+                        # MCQ evaluation (including listen_mcq)
+                        correct_answer = question_info.get("correct_answer", "")
+                        user_answer = response_data.get("response_data", "").strip()
+                        is_correct = user_answer == correct_answer
+                        
+                        score = 100 if is_correct else 0
+                        return {
+                            "scores": {skill: score * weight for skill, weight in scoring_profile.items()},
+                            "overall_weighted": score,
+                            "is_mock_data": False,
+                            "mcq_result": {
+                                "user_answer": user_answer,
+                                "correct_answer": correct_answer,
+                                "is_correct": is_correct
+                            }
+                        }
 
             if response_data.get("response_type") == "audio":
                 # Try Language Confidence API
@@ -566,6 +588,7 @@ class ExamManager:
                             accent=self.config["accent"]
                             # Note: user_metadata not supported for unscripted API
                         )
+
                     else:
                         # For other question types, use mock for now
                         logger.info(f"Question type {q_type} - using mock evaluation")

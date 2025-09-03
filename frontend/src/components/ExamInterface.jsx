@@ -13,11 +13,13 @@ import {
   Brain,
   Target,
   BookOpen,
+  Headphones,
 } from "lucide-react";
 import AudioRecorder from "./AudioRecorder";
 import MCQQuestion from "./MCQQuestion";
 import LingoQuestoFinalReport from "./LingoQuestoFinalReport";
 import DictationQuestion from "./DictationQuestion";
+import ListenMCQQuestion from "./ListenMCQQuestion";
 
 const ExamInterface = () => {
   const [examState, setExamState] = useState("not_started");
@@ -145,6 +147,8 @@ const ExamInterface = () => {
         return <MessageSquare className="w-5 h-5" />;
       case "mcq":
         return <List className="w-5 h-5" />;
+      case "listen_mcq":
+        return <Headphones className="w-5 h-5" />;
       case "dictation":
         return <Volume2 className="w-5 h-5" />;
       default:
@@ -158,6 +162,8 @@ const ExamInterface = () => {
         return "Speaking Question";
       case "mcq":
         return "Multiple Choice";
+      case "listen_mcq":
+        return "Listen & Choose";
       case "dictation":
         return "Dictation";
       default:
@@ -171,8 +177,10 @@ const ExamInterface = () => {
         return "bg-purple-100 text-purple-800 border-purple-200";
       case "mcq":
         return "bg-green-100 text-green-800 border-green-200";
+      case "listen_mcq":
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "dictation":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 border-red-200";
       default:
         return "bg-gray-100 text-gray-800 border-gray-200";
     }
@@ -229,7 +237,7 @@ const ExamInterface = () => {
                       <Brain className="w-6 h-6 text-green-600" />
                     </div>
                     <span className="font-semibold text-center">
-                      Speaking and multiple choice questions
+                      Speaking, listening, and multiple choice questions
                     </span>
                   </div>
                 </div>
@@ -318,31 +326,54 @@ const ExamInterface = () => {
                   </span>
                 </div>
 
-                {/* FIXED: Now correctly accessing timing data */}
-                {currentQuestion.q_type === "open_response" &&
-                  currentQuestion.timing && (
-                    <div className="flex items-center space-x-4 text-sm text-gray-600">
-                      {currentQuestion.timing.think_time_sec && (
-                        <div className="flex items-center space-x-1">
-                          <Clock className="w-4 h-4" />
-                          <span>
-                            Think: {currentQuestion.timing.think_time_sec}s
-                          </span>
-                        </div>
-                      )}
-                      {currentQuestion.timing.response_time_sec && (
-                        <div className="flex items-center space-x-1">
-                          <Mic className="w-4 h-4" />
-                          <span>
-                            Record: {currentQuestion.timing.response_time_sec}s
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                {/* Timing info for different question types */}
+                {currentQuestion.timing && (
+                  <div className="flex items-center space-x-4 text-sm text-gray-600">
+                    {currentQuestion.q_type === "open_response" && (
+                      <>
+                        {currentQuestion.timing.think_time_sec && (
+                          <div className="flex items-center space-x-1">
+                            <Clock className="w-4 h-4" />
+                            <span>
+                              Think: {currentQuestion.timing.think_time_sec}s
+                            </span>
+                          </div>
+                        )}
+                        {currentQuestion.timing.response_time_sec && (
+                          <div className="flex items-center space-x-1">
+                            <Mic className="w-4 h-4" />
+                            <span>
+                              Record: {currentQuestion.timing.response_time_sec}s
+                            </span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {(currentQuestion.q_type === "listen_mcq" || 
+                      currentQuestion.q_type === "dictation") && (
+                      <div className="flex items-center space-x-1">
+                        <Clock className="w-4 h-4" />
+                        <span>
+                          Time limit: {currentQuestion.timing.response_time_sec || 25}s
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* Question Prompt */}
+              {/* Question Prompt Display */}
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {currentQuestion.prompt}
+                </h3>
+                {currentQuestion.metadata?.question && (
+                  <p className="text-gray-600">
+                    {currentQuestion.metadata.question}
+                  </p>
+                )}
+              </div>
+
               {/* Question Interface */}
               {currentQuestion.q_type === "open_response" ? (
                 <AudioRecorder
@@ -356,6 +387,12 @@ const ExamInterface = () => {
                 />
               ) : currentQuestion.q_type === "dictation" ? (
                 <DictationQuestion
+                  question={currentQuestion}
+                  onSubmit={handleTextSubmit}
+                  disabled={isProcessing}
+                />
+              ) : currentQuestion.q_type === "listen_mcq" ? (
+                <ListenMCQQuestion
                   question={currentQuestion}
                   onSubmit={handleTextSubmit}
                   disabled={isProcessing}

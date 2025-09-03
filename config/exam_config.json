@@ -8,9 +8,9 @@
         "type_counts": {
           "repeat_sentence": 0,
           "minimal_pair": 0,
-          "dictation": 2,
-          "listen_mcq": 0,
-          "best_response_mcq": 0,
+          "dictation": 0,
+          "listen_mcq": 1,
+          "best_response_mcq": 2,
           "open_response": 0,
           "image_description": 0,
           "listen_answer": 0,
@@ -21,12 +21,12 @@
       },
       "A2": {
         "type_counts": {
-          "repeat_sentence": 2,
-          "dictation": 2,
-          "listen_mcq": 2,
-          "minimal_pair": 1,
-          "sequence": 1,
-          "best_response_mcq": 1,
+          "repeat_sentence": 0,
+          "dictation": 0,
+          "listen_mcq": 0,
+          "minimal_pair": 0,
+          "sequence": 0,
+          "best_response_mcq": 0,
           "open_response": 0,
           "image_description": 0,
           "listen_answer": 0
@@ -83,7 +83,7 @@
         "type_counts": {
           "open_response": 1,
           "listen_answer": 1,
-          "sequence": 1,
+          "sequence": 0,
           "best_response_mcq": 1,
           "repeat_sentence": 0,
           "minimal_pair": 0,
