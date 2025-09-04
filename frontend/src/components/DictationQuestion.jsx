@@ -1,7 +1,7 @@
 // frontend/src/components/DictationQuestion.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Volume2, Play, Pause, RotateCcw, Send, Clock } from "lucide-react";
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL } from "../config/api";
 
 const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [userInput, setUserInput] = useState("");
@@ -77,7 +77,13 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
   // Get audio reference and construct URL (fixed variable naming)
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
-  const audioUrl = audioFileName ? `${API_BASE_URL}/api/audio/${audioFileName}` : null;
+  // Remove 'audio/' prefix if it exists
+  const cleanAudioFileName = audioFileName?.startsWith("audio/")
+    ? audioFileName.substring(6)
+    : audioFileName;
+  const audioUrl = cleanAudioFileName
+    ? `${API_BASE_URL}/api/audio/${cleanAudioFileName}`
+    : null;
 
   return (
     <div className="space-y-8">
@@ -90,7 +96,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
           <p className="text-gray-600">{question.metadata.question}</p>
         )}
       </div>
-      
+
       {/* Audio Player Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 rounded-2xl border-2 border-purple-200 shadow-lg">
         {/* Background decoration */}
@@ -128,7 +134,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             onEnded={handleAudioEnded}
             preload="auto"
             onError={(e) => {
-              console.error('Audio failed to load:', audioUrl);
+              console.error("Audio failed to load:", audioUrl);
             }}
           >
             {audioUrl && (

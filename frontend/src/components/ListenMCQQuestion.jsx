@@ -1,16 +1,23 @@
 // frontend/src/components/ListenMCQQuestion.jsx
 import React, { useState, useRef, useEffect } from "react";
-import { Volume2, Play, Pause, RotateCcw, Clock, CheckCircle } from "lucide-react";
-import { API_BASE_URL } from '../config/api';
+import {
+  Volume2,
+  Play,
+  Pause,
+  RotateCcw,
+  Clock,
+  CheckCircle,
+} from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [showTimeWarning, setShowTimeWarning] = useState(false);
-  
+
   const audioRef = useRef(null);
   const timerRef = useRef(null);
   const MAX_PLAYS = 3;
@@ -20,7 +27,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
   useEffect(() => {
     // Reset state when question changes
-    setSelectedAnswer('');
+    setSelectedAnswer("");
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
@@ -51,23 +58,23 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     }
 
     timerRef.current = setInterval(() => {
-      setTimeRemaining(prev => {
+      setTimeRemaining((prev) => {
         if (prev <= 1) {
           // Time's up - auto-submit current answer or empty
           clearInterval(timerRef.current);
           if (selectedAnswer) {
             onSubmit(selectedAnswer);
           } else {
-            onSubmit(''); // Submit empty answer if no selection
+            onSubmit(""); // Submit empty answer if no selection
           }
           return 0;
         }
-        
+
         // Show warning when 10 seconds or less remain
         if (prev <= 10 && !showTimeWarning) {
           setShowTimeWarning(true);
         }
-        
+
         return prev - 1;
       });
     }, 1000);
@@ -82,7 +89,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       setIsLoading(true);
       try {
         await audioRef.current.play();
-        setPlayCount(prev => prev + 1);
+        setPlayCount((prev) => prev + 1);
       } catch (error) {
         console.error("Audio play error:", error);
       } finally {
@@ -117,12 +124,12 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
   const handleReplay = async () => {
     if (!audioRef.current || playCount >= MAX_PLAYS) return;
-    
+
     setIsLoading(true);
     try {
       audioRef.current.currentTime = 0;
       await audioRef.current.play();
-      setPlayCount(prev => prev + 1);
+      setPlayCount((prev) => prev + 1);
     } catch (error) {
       console.error("Audio replay error:", error);
     } finally {
@@ -136,23 +143,35 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
-  const audioUrl = audioFileName ? `${API_BASE_URL}/api/audio/${audioFileName}` : null;
+  // Remove 'audio/' prefix if it exists
+  const cleanAudioFileName = audioFileName?.startsWith("audio/")
+    ? audioFileName.substring(6)
+    : audioFileName;
+  const audioUrl = cleanAudioFileName
+    ? `${API_BASE_URL}/api/audio/${cleanAudioFileName}`
+    : null;
 
   return (
     <div className="space-y-8">
       {/* Timer Display */}
       {timeRemaining !== null && (
-        <div className={`flex justify-center ${showTimeWarning ? 'animate-pulse' : ''}`}>
-          <div className={`flex items-center space-x-2 px-4 py-2 rounded-full border-2 ${
-            showTimeWarning 
-              ? 'bg-red-50 border-red-300 text-red-700' 
-              : 'bg-blue-50 border-blue-300 text-blue-700'
-          }`}>
+        <div
+          className={`flex justify-center ${
+            showTimeWarning ? "animate-pulse" : ""
+          }`}
+        >
+          <div
+            className={`flex items-center space-x-2 px-4 py-2 rounded-full border-2 ${
+              showTimeWarning
+                ? "bg-red-50 border-red-300 text-red-700"
+                : "bg-blue-50 border-blue-300 text-blue-700"
+            }`}
+          >
             <Clock className="w-4 h-4" />
             <span className="font-medium">
               Time remaining: {formatTime(timeRemaining)}
@@ -167,9 +186,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           {question.prompt}
         </h3>
         {question.metadata?.question && (
-          <p className="text-gray-600">
-            {question.metadata.question}
-          </p>
+          <p className="text-gray-600">{question.metadata.question}</p>
         )}
       </div>
 
@@ -178,7 +195,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
         {/* Background decoration */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-200/30 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-200/30 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
-        
+
         <div className="relative z-10">
           <div className="flex items-center justify-center space-x-4 mb-6">
             <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -195,7 +212,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               <div className="flex items-center space-x-2 text-green-700">
                 <Volume2 className="w-4 h-4" />
                 <span className="text-sm font-medium">
-                  {remainingPlays} play{remainingPlays !== 1 ? 's' : ''} remaining
+                  {remainingPlays} play{remainingPlays !== 1 ? "s" : ""}{" "}
+                  remaining
                 </span>
               </div>
             </div>
@@ -209,7 +227,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
             onEnded={handleAudioEnded}
             preload="auto"
             onError={(e) => {
-              console.error('Audio failed to load:', audioUrl);
+              console.error("Audio failed to load:", audioUrl);
             }}
           >
             {audioUrl && (
@@ -227,9 +245,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               disabled={!canPlay || isLoading || !audioUrl}
               className={`
                 relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
-                ${canPlay && !isLoading && audioUrl
-                  ? 'bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white' 
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ${
+                  canPlay && !isLoading && audioUrl
+                    ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }
               `}
             >
@@ -247,9 +266,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               disabled={!canPlay || isLoading || !audioUrl}
               className={`
                 w-12 h-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md
-                ${canPlay && !isLoading && audioUrl
-                  ? 'bg-white/80 backdrop-blur-sm hover:bg-white text-green-600 border-2 border-green-300 hover:border-green-400' 
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed border-2 border-gray-300'
+                ${
+                  canPlay && !isLoading && audioUrl
+                    ? "bg-white/80 backdrop-blur-sm hover:bg-white text-green-600 border-2 border-green-300 hover:border-green-400"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed border-2 border-gray-300"
                 }
               `}
               title="Replay from beginning"
@@ -263,16 +283,16 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       {/* MCQ Options */}
       <div className="space-y-4">
         {question.options?.map((option, index) => (
-          <label 
-            key={index} 
+          <label
+            key={index}
             className={`flex items-center space-x-4 p-6 border-2 rounded-xl cursor-pointer transition-all transform hover:scale-[1.02] ${
-              selectedAnswer === option 
-                ? 'border-green-500 bg-gradient-to-r from-green-50 to-blue-50 shadow-lg' 
-                : 'border-gray-200 hover:border-green-300 hover:bg-gray-50'
-            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+              selectedAnswer === option
+                ? "border-green-500 bg-gradient-to-r from-green-50 to-blue-50 shadow-lg"
+                : "border-gray-200 hover:border-green-300 hover:bg-gray-50"
+            } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            <input 
-              type="radio" 
+            <input
+              type="radio"
               name={`listen-mcq-${question.q_id}`}
               value={option}
               checked={selectedAnswer === option}
@@ -292,8 +312,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           disabled={disabled || !selectedAnswer}
           className={`px-10 py-4 rounded-xl font-semibold text-lg transition-all transform flex items-center space-x-2 ${
             disabled || !selectedAnswer
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gradient-to-r from-green-600 to-blue-600 text-white hover:from-green-700 hover:to-blue-700 hover:scale-105 shadow-lg'
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-gradient-to-r from-green-600 to-blue-600 text-white hover:from-green-700 hover:to-blue-700 hover:scale-105 shadow-lg"
           }`}
         >
           <CheckCircle className="w-5 h-5" />
@@ -302,9 +322,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       </div>
 
       {/* Debug info in development */}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV === "development" && (
         <div className="text-xs text-gray-400 mt-4">
-          Question ID: {question.q_id} | Selected: {selectedAnswer || 'None'} | Time: {timeRemaining}s | Plays: {playCount}/{MAX_PLAYS}
+          Question ID: {question.q_id} | Selected: {selectedAnswer || "None"} |
+          Time: {timeRemaining}s | Plays: {playCount}/{MAX_PLAYS}
         </div>
       )}
     </div>
