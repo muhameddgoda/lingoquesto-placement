@@ -82,7 +82,6 @@ class ElevenLabsAudioGenerator:
                 data = json.load(f)
             
             processed_count = 0
-            skipped_count = 0
             
             for item in data:
                 metadata = item.get('metadata', {})
@@ -104,24 +103,16 @@ class ElevenLabsAudioGenerator:
                         # Extract filename from audioRef (e.g., "audio/a1_dict_001.wav" -> "a1_dict_001.wav")
                         filename = Path(audio_ref).name
                         
-                        # Check if file already exists before processing
-                        output_path = self.audio_dir / filename
-                        if output_path.exists():
-                            print(f"⏭ Skipped (exists): {filename}")
-                            skipped_count += 1
-                        else:
-                            # Generate audio
-                            if self.text_to_speech(text_to_convert, filename):
-                                processed_count += 1
-                            
-                            # Add a small delay to avoid rate limiting
-                            time.sleep(0.5)
+                        # Generate audio (replacing existing files)
+                        if self.text_to_speech(text_to_convert, filename):
+                            processed_count += 1
+                        
+                        # Add a small delay to avoid rate limiting
+                        time.sleep(0.5)
                     else:
                         print(f"⚠ Warning: {item.get('id', 'Unknown ID')} has audioRef but no expectedText or audioText")
             
-            print(f"Processed {processed_count} new audio files from {json_file_path.name}")
-            if skipped_count > 0:
-                print(f"Skipped {skipped_count} existing files from {json_file_path.name}")
+            print(f"Generated {processed_count} audio files from {json_file_path.name}")
             return processed_count
             
         except (json.JSONDecodeError, FileNotFoundError) as e:
@@ -143,7 +134,7 @@ class ElevenLabsAudioGenerator:
                 total_processed += count
             else:
                 print(f"Warning: {json_file} not found")
-            
+        
         print("-" * 50)
         print(f"Total audio files generated: {total_processed}")
     
