@@ -140,8 +140,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   };
 
   // Get audio reference and construct URL
-  const audioRef = question.metadata?.audioRef || question.audio_ref;
-  const audioUrl = audioRef ? `${API_BASE_URL}/api/audio/${audioRef}` : null;
+  const audioFileName = question.metadata?.audioRef || question.audio_ref;
+  const audioUrl = audioFileName ? `${API_BASE_URL}/api/audio/${audioFileName}` : null;
 
   return (
     <div className="space-y-8">
