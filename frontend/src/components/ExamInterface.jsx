@@ -22,6 +22,10 @@ import LingoQuestoFinalReport from "./LingoQuestoFinalReport";
 import DictationQuestion from "./DictationQuestion";
 import ListenMCQQuestion from "./ListenMCQQuestion";
 import ImageDescription from "./ImageDescription";
+import { API_BASE_URL } from '../config/api';
+
+
+
 
 const ExamInterface = () => {
   const [examState, setExamState] = useState("not_started");
@@ -48,7 +52,7 @@ const ExamInterface = () => {
 
   const startExam = async () => {
     try {
-      const response = await fetch("/api/exam/start", {
+      const response = await fetch(`${API_BASE_URL}/api/exam/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: "user123" }),
