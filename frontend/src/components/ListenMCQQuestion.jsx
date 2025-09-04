@@ -1,6 +1,7 @@
 // frontend/src/components/ListenMCQQuestion.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Volume2, Play, Pause, RotateCcw, Clock, CheckCircle } from "lucide-react";
+import { API_BASE_URL } from '../config/api';
 
 const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -138,6 +139,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Get audio reference and construct URL
+  const audioRef = question.metadata?.audioRef || question.audio_ref;
+  const audioUrl = audioRef ? `${API_BASE_URL}/api/audio/${audioRef}` : null;
+
   return (
     <div className="space-y-8">
       {/* Timer Display */}
@@ -203,25 +208,26 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
             onPause={() => setIsPlaying(false)}
             onEnded={handleAudioEnded}
             preload="auto"
+            onError={(e) => {
+              console.error('Audio failed to load:', audioUrl);
+            }}
           >
-            <source
-              src={`http://localhost:8000/${question.audio_ref}`}
-              type="audio/wav"
-            />
-            <source
-              src={`http://localhost:8000/${question.audio_ref}`}
-              type="audio/mp3"
-            />
+            {audioUrl && (
+              <>
+                <source src={audioUrl} type="audio/wav" />
+                <source src={audioUrl} type="audio/mp3" />
+              </>
+            )}
           </audio>
 
           {/* Audio Controls */}
           <div className="flex items-center justify-center space-x-4">
             <button
               onClick={handleAudioPlay}
-              disabled={!canPlay || isLoading}
+              disabled={!canPlay || isLoading || !audioUrl}
               className={`
                 relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
-                ${canPlay && !isLoading
+                ${canPlay && !isLoading && audioUrl
                   ? 'bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white' 
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }
@@ -238,10 +244,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
             <button
               onClick={handleReplay}
-              disabled={!canPlay || isLoading}
+              disabled={!canPlay || isLoading || !audioUrl}
               className={`
                 w-12 h-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md
-                ${canPlay && !isLoading
+                ${canPlay && !isLoading && audioUrl
                   ? 'bg-white/80 backdrop-blur-sm hover:bg-white text-green-600 border-2 border-green-300 hover:border-green-400' 
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed border-2 border-gray-300'
                 }

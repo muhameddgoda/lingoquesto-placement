@@ -1,6 +1,7 @@
 // frontend/src/components/DictationQuestion.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Volume2, Play, Pause, RotateCcw, Send, Clock } from "lucide-react";
+import { API_BASE_URL } from '../config/api';
 
 const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [userInput, setUserInput] = useState("");
@@ -74,6 +75,10 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const remainingPlays = MAX_PLAYS - playCount;
   const canPlay = remainingPlays > 0 && !disabled;
 
+  // Get audio reference and construct URL
+  const audioRef = question.metadata?.audioRef || question.audio_ref;
+  const audioUrl = audioRef ? `${API_BASE_URL}/api/audio/${audioRef}` : null;
+
   return (
     <div className="space-y-8">
       {/* Question Prompt Display */}
@@ -85,6 +90,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
           <p className="text-gray-600">{question.metadata.question}</p>
         )}
       </div>
+      
       {/* Audio Player Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 rounded-2xl border-2 border-purple-200 shadow-lg">
         {/* Background decoration */}
@@ -121,26 +127,27 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             onPause={() => setIsPlaying(false)}
             onEnded={handleAudioEnded}
             preload="auto"
+            onError={(e) => {
+              console.error('Audio failed to load:', audioUrl);
+            }}
           >
-            <source
-              src={`http://localhost:8000/${question.audio_ref}`}
-              type="audio/wav"
-            />
-            <source
-              src={`http://localhost:8000/${question.audio_ref}`}
-              type="audio/mp3"
-            />
+            {audioUrl && (
+              <>
+                <source src={audioUrl} type="audio/wav" />
+                <source src={audioUrl} type="audio/mp3" />
+              </>
+            )}
           </audio>
 
           {/* Audio Controls */}
           <div className="flex items-center justify-center space-x-4">
             <button
               onClick={handleAudioPlay}
-              disabled={!canPlay || isLoading}
+              disabled={!canPlay || isLoading || !audioUrl}
               className={`
                 relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
                 ${
-                  canPlay && !isLoading
+                  canPlay && !isLoading && audioUrl
                     ? "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }
@@ -157,11 +164,11 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
             <button
               onClick={handleReplay}
-              disabled={!canPlay || isLoading}
+              disabled={!canPlay || isLoading || !audioUrl}
               className={`
                 w-12 h-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md
                 ${
-                  canPlay && !isLoading
+                  canPlay && !isLoading && audioUrl
                     ? "bg-white/80 backdrop-blur-sm hover:bg-white text-purple-600 border-2 border-purple-300 hover:border-purple-400"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed border-2 border-gray-300"
                 }

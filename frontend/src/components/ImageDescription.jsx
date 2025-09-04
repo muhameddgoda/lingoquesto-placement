@@ -1,13 +1,16 @@
 // frontend/src/components/ImageDescription.jsx
 import React, { useState, useEffect } from "react";
 import AudioRecorder from "./AudioRecorder";
+import { API_BASE_URL } from '../config/api';
 
 const ImageDescription = ({ question, onSubmit, disabled }) => {
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(null);
-console.log('ImageDescription - Question:', question);
-console.log('ImageDescription - Image ref:', question.metadata?.imageRef || question.image_ref);
+
+  console.log('ImageDescription - Question:', question);
+  console.log('ImageDescription - Image ref:', question.metadata?.imageRef || question.image_ref);
+  
   useEffect(() => {
     const loadImage = async () => {
       setImageLoading(true);
@@ -24,7 +27,7 @@ console.log('ImageDescription - Image ref:', question.metadata?.imageRef || ques
         : imageRef;
       
       try {
-        const response = await fetch(`http://localhost:8000/api/image/${cleanImageRef}`);
+        const response = await fetch(`${API_BASE_URL}/api/image/${cleanImageRef}`);
         const result = await response.json();
         
         if (result.success) {
