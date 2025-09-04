@@ -28,6 +28,6 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: 8080,
-    allowedHosts: ['placement-test-frontend-f97a4.ondigitalocean.app']
+    allowedHosts: ['placement.lingoquesto.com']
   }
 });
