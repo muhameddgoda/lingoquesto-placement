@@ -12,6 +12,7 @@ import json
 from fastapi.responses import FileResponse
 
 
+
 app = FastAPI()
 logger = logging.getLogger(__name__)
 
@@ -31,6 +32,66 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
 )
+
+def setup_static_files():
+    """Setup static file serving with error handling"""
+    
+    # Mount questions/audio directory for dictation and listen_mcq questions
+    questions_audio_path = Path("questions/audio")
+    if questions_audio_path.exists():
+        app.mount("/audio", StaticFiles(directory=str(questions_audio_path)), name="audio")
+        print(f"✅ Mounted /audio from {questions_audio_path.absolute()}")
+    else:
+        print(f"⚠️  Audio directory not found: {questions_audio_path.absolute()}")
+    
+    # Mount questions/images directory for image description questions
+    questions_images_path = Path("questions/images") 
+    if questions_images_path.exists():
+        app.mount("/images", StaticFiles(directory=str(questions_images_path)), name="images")
+        print(f"✅ Mounted /images from {questions_images_path.absolute()}")
+    else:
+        print(f"⚠️  Images directory not found: {questions_images_path.absolute()}")
+    
+    # Mount uploads directory for user uploaded audio
+    uploads_dir = Path("uploads")
+    uploads_dir.mkdir(exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
+    print(f"✅ Mounted /uploads from {uploads_dir.absolute()}")
+
+# Call the setup function
+setup_static_files()
+
+@app.get("/api/debug/files")
+async def debug_files():
+    """Debug endpoint to check what files are available"""
+    file_info = {}
+    
+    # Check audio files
+    audio_dir = Path("questions/audio")
+    if audio_dir.exists():
+        audio_files = [f.name for f in audio_dir.glob("*.wav")]
+        file_info["audio_files"] = audio_files[:10]  # First 10 files
+        file_info["total_audio_files"] = len(audio_files)
+    else:
+        file_info["audio_files"] = []
+        file_info["audio_directory_exists"] = False
+    
+    # Check image files  
+    images_dir = Path("questions/images")
+    if images_dir.exists():
+        image_files = [f.name for f in images_dir.glob("*")]
+        file_info["image_files"] = image_files
+        file_info["total_image_files"] = len(image_files)
+    else:
+        file_info["image_files"] = []
+        file_info["images_directory_exists"] = False
+    
+    file_info["current_directory"] = str(Path.cwd().absolute())
+    
+    return {
+        "success": True,
+        "data": file_info
+    }
 
 # Serve uploaded files
 uploads_dir = Path("uploads")
