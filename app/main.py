@@ -11,8 +11,6 @@ from pathlib import Path
 import json
 from fastapi.responses import FileResponse
 
-
-
 app = FastAPI()
 logger = logging.getLogger(__name__)
 
@@ -33,6 +31,7 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
 )
 
+# Mount static directories
 def setup_static_files():
     """Setup static file serving with error handling"""
     
@@ -61,6 +60,7 @@ def setup_static_files():
 # Call the setup function
 setup_static_files()
 
+# Add a debug endpoint to list available files
 @app.get("/api/debug/files")
 async def debug_files():
     """Debug endpoint to check what files are available"""
@@ -506,4 +506,156 @@ async def debug_images():
         "images_directory": str(images_dir.absolute()),
         "files_found": [f.name for f in image_files],
         "total_files": len(image_files)
+    }
+
+@app.get("/api/audio/{filename}")
+async def get_audio_file_api(filename: str):
+    """API endpoint to serve audio files"""
+    try:
+        audio_path = Path("questions") / "audio" / filename
+        
+        logger.info(f"Looking for audio file: {audio_path}")
+        logger.info(f"Full path: {audio_path.absolute()}")
+        logger.info(f"File exists: {audio_path.exists()}")
+        
+        if not audio_path.exists():
+            # Try alternative paths
+            alt_paths = [
+                Path("questions/audio") / filename,
+                Path(f"./questions/audio/{filename}"),
+                Path.cwd() / "questions" / "audio" / filename
+            ]
+            
+            for alt_path in alt_paths:
+                logger.info(f"Trying alternative path: {alt_path.absolute()} - Exists: {alt_path.exists()}")
+                if alt_path.exists():
+                    audio_path = alt_path
+                    break
+            else:
+                # List what files are actually available
+                questions_dir = Path("questions")
+                if questions_dir.exists():
+                    audio_dir = questions_dir / "audio"
+                    if audio_dir.exists():
+                        available_files = [f.name for f in audio_dir.glob("*.wav")][:5]  # First 5 files
+                        logger.error(f"Audio file {filename} not found. Available files: {available_files}")
+                    else:
+                        logger.error(f"Audio directory doesn't exist: {audio_dir.absolute()}")
+                else:
+                    logger.error(f"Questions directory doesn't exist: {questions_dir.absolute()}")
+                
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"Audio file {filename} not found"
+                )
+        
+        return FileResponse(
+            str(audio_path),
+            media_type="audio/wav",
+            headers={
+                "Cache-Control": "public, max-age=3600",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET",
+                "Access-Control-Allow-Headers": "*"
+            }
+        )
+        
+    except Exception as e:
+        logger.error(f"Error serving audio file {filename}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error serving audio file: {str(e)}")
+
+@app.get("/api/image/{filename}")  
+async def get_image_file_api(filename: str):
+    """API endpoint to serve image files"""
+    try:
+        image_path = Path("questions") / "images" / filename
+        
+        logger.info(f"Looking for image file: {image_path}")
+        logger.info(f"File exists: {image_path.exists()}")
+        
+        if not image_path.exists():
+            # List available images
+            images_dir = Path("questions") / "images" 
+            if images_dir.exists():
+                available_images = [f.name for f in images_dir.glob("*")]
+                logger.error(f"Image {filename} not found. Available: {available_images}")
+            
+            raise HTTPException(
+                status_code=404, 
+                detail=f"Image file {filename} not found"
+            )
+        
+        # Determine MIME type
+        ext = filename.lower().split('.')[-1]
+        mime_types = {
+            'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+            'png': 'image/png', 'gif': 'image/gif', 'webp': 'image/webp'
+        }
+        mime_type = mime_types.get(ext, 'image/jpeg')
+        
+        return FileResponse(
+            str(image_path),
+            media_type=mime_type,
+            headers={
+                "Cache-Control": "public, max-age=3600",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET", 
+                "Access-Control-Allow-Headers": "*"
+            }
+        )
+        
+    except Exception as e:
+        logger.error(f"Error serving image file {filename}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error serving image file: {str(e)}")
+
+# Enhanced debug endpoint
+@app.get("/api/debug/files")
+async def debug_files():
+    """Debug endpoint to check what files are available"""
+    file_info = {
+        "current_directory": str(Path.cwd().absolute()),
+        "questions_directory_exists": False,
+        "audio_directory_exists": False,
+        "images_directory_exists": False,
+        "audio_files": [],
+        "image_files": [],
+        "directory_contents": []
+    }
+    
+    try:
+        # Check current directory contents
+        current_dir = Path.cwd()
+        file_info["directory_contents"] = [item.name for item in current_dir.iterdir()][:10]
+        
+        # Check questions directory
+        questions_dir = Path("questions")
+        file_info["questions_directory_exists"] = questions_dir.exists()
+        
+        if questions_dir.exists():
+            file_info["questions_contents"] = [item.name for item in questions_dir.iterdir()]
+            
+            # Check audio files
+            audio_dir = questions_dir / "audio"
+            file_info["audio_directory_exists"] = audio_dir.exists()
+            
+            if audio_dir.exists():
+                audio_files = [f.name for f in audio_dir.glob("*.wav")]
+                file_info["audio_files"] = audio_files[:10]  # First 10
+                file_info["total_audio_files"] = len(audio_files)
+            
+            # Check image files
+            images_dir = questions_dir / "images"
+            file_info["images_directory_exists"] = images_dir.exists()
+            
+            if images_dir.exists():
+                image_files = [f.name for f in images_dir.glob("*")]
+                file_info["image_files"] = image_files[:10]  # First 10
+                file_info["total_image_files"] = len(image_files)
+    
+    except Exception as e:
+        file_info["error"] = str(e)
+    
+    return {
+        "success": True,
+        "data": file_info
     }
