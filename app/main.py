@@ -22,14 +22,14 @@ logging.basicConfig(level=logging.INFO)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",  # React dev server
-        "http://localhost:5173",  # Vite dev server
-        "https://placement.lingoquesto.com/",  # Replace with your actual frontend URL
-        "*"  # Remove this in production for security
+        "http://localhost:3000",   # Local development
+        "http://localhost:5173",   # Vite dev server
+        "https://placement.lingoquesto.com",  # Replace with your actual frontend URL
+        # Remove "*" for security in production
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
 )
 
 # Serve uploaded files

@@ -22,10 +22,7 @@ import LingoQuestoFinalReport from "./LingoQuestoFinalReport";
 import DictationQuestion from "./DictationQuestion";
 import ListenMCQQuestion from "./ListenMCQQuestion";
 import ImageDescription from "./ImageDescription";
-import { API_BASE_URL } from '../config/api';
-
-
-
+import { API_BASE_URL } from "../config/api";
 
 const ExamInterface = () => {
   const [examState, setExamState] = useState("not_started");
@@ -73,11 +70,14 @@ const ExamInterface = () => {
     }
   };
 
+  // In your ExamInterface.jsx, replace the submitResponse function with this:
+
   const submitResponse = async (responseData) => {
     setIsProcessing(true);
 
     try {
-      const response = await fetch("/api/exam/submit-response", {
+      const response = await fetch(`${API_BASE_URL}/api/exam/submit-response`, {
+        // Added API_BASE_URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -111,6 +111,7 @@ const ExamInterface = () => {
     }
   };
 
+  // Also fix the handleAudioSubmit function:
   const handleAudioSubmit = async (audioBlob) => {
     const formData = new FormData();
     formData.append("audio", audioBlob, "recording.webm");
@@ -118,7 +119,8 @@ const ExamInterface = () => {
     formData.append("q_id", currentQuestion.q_id);
 
     try {
-      const uploadResponse = await fetch("/api/upload-audio", {
+      const uploadResponse = await fetch(`${API_BASE_URL}/api/upload-audio`, {
+        // Added API_BASE_URL
         method: "POST",
         body: formData,
       });
@@ -356,7 +358,8 @@ const ExamInterface = () => {
                           <div className="flex items-center space-x-1">
                             <Mic className="w-4 h-4" />
                             <span>
-                              Record: {currentQuestion.timing.response_time_sec}s
+                              Record: {currentQuestion.timing.response_time_sec}
+                              s
                             </span>
                           </div>
                         )}
@@ -390,10 +393,11 @@ const ExamInterface = () => {
                     <div className="text-xl font-medium text-gray-800 mb-4">
                       {currentQuestion.prompt}
                     </div>
-                    
+
                     {/* Additional Context */}
                     {currentQuestion.metadata?.context?.question &&
-                      currentQuestion.metadata.context.question !== currentQuestion.prompt && (
+                      currentQuestion.metadata.context.question !==
+                        currentQuestion.prompt && (
                         <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                           <p className="text-blue-800 text-sm">
                             <strong>Additional context:</strong>{" "}
@@ -407,7 +411,9 @@ const ExamInterface = () => {
                     onSubmit={handleAudioSubmit}
                     disabled={isProcessing}
                     thinkTime={currentQuestion.timing?.think_time_sec || 30}
-                    responseTime={currentQuestion.timing?.response_time_sec || 120}
+                    responseTime={
+                      currentQuestion.timing?.response_time_sec || 120
+                    }
                     questionId={currentQuestion.q_id}
                   />
                 </>
