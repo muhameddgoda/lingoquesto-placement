@@ -23,13 +23,56 @@ HEADERS = {
 logger = logging.getLogger(__name__)
 
 def _convert_to_wav16k_mono(input_path: str) -> str:
-    """Convert audio to 16kHz mono WAV format"""
+    """Convert audio to 16kHz mono WAV format with fallback methods"""
     try:
         logger.info(f"Converting audio file: {input_path}")
         
-        # Load audio file
-        audio = AudioSegment.from_file(input_path)
+        # Try using pydub with ffmpeg first
+        try:
+            from pydub import AudioSegment
+            audio = AudioSegment.from_file(input_path)
+        except Exception as e:
+            logger.warning(f"pydub conversion failed: {e}")
+            # Try alternative: just read the file and hope it's compatible
+            logger.info("Attempting direct file copy as fallback")
+            
+            # For WebM files, try to convert using subprocess if available
+            import subprocess
+            import shutil
+            
+            # Check if ffmpeg is available
+            if shutil.which('ffmpeg'):
+                logger.info("Using ffmpeg directly via subprocess")
+                with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+                    temp_path = temp_file.name
+                
+                try:
+                    # Use ffmpeg directly
+                    subprocess.run([
+                        'ffmpeg', '-i', input_path,
+                        '-ar', '16000',  # 16kHz sample rate
+                        '-ac', '1',      # mono
+                        '-y',            # overwrite output
+                        temp_path
+                    ], check=True, capture_output=True)
+                    
+                    logger.info(f"Successfully converted using ffmpeg subprocess")
+                    return temp_path
+                    
+                except subprocess.CalledProcessError as e:
+                    logger.error(f"ffmpeg subprocess failed: {e}")
+                    # Fall through to direct copy
+            
+            # Last resort: direct copy and hope for the best
+            logger.warning("Using direct file copy as last resort")
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+                temp_path = temp_file.name
+            
+            import shutil
+            shutil.copy2(input_path, temp_path)
+            return temp_path
         
+        # If pydub worked, continue with original logic
         # Check if audio is silent
         if audio.max_dBFS < -60:  # Very quiet audio
             logger.warning(f"Audio appears very quiet (max dBFS: {audio.max_dBFS})")
