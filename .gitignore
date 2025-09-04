@@ -135,8 +135,6 @@ public/audio-recordings/
 
 # Audio files (temporary recordings)
 *.webm
-*.wav
-*.mp3
 *.m4a
 *.ogg
 *.flac
@@ -386,3 +384,4 @@ __pycache__/
 __pycache__/
 *.pyc
 *.patch
+questions\generate_audio.py
