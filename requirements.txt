@@ -5,3 +5,30 @@ python-dotenv
 pydub
 httpx
 pathlib
+# FastAPI and server dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+python-dotenv==1.0.0
+
+# CORS and HTTP
+requests==2.31.0
+
+# Data processing and validation
+pydantic==2.5.0
+
+# Audio processing
+pydub==0.25.1
+
+# File handling
+pathlib2==2.3.7
+
+# Date and time utilities
+python-dateutil==2.8.2
+
+# Standard library backports (if needed)
+typing-extensions==4.8.0
+
+# Optional: For development and debugging
+pytest==7.4.3
+pytest-asyncio==0.21.1
