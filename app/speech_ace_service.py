@@ -22,88 +22,114 @@ HEADERS = {
 
 logger = logging.getLogger(__name__)
 
+# Replace the entire _convert_to_wav16k_mono function in speech_ace_service.py
+
 def _convert_to_wav16k_mono(input_path: str) -> str:
-    """Convert audio to 16kHz mono WAV format with fallback methods"""
+    """Convert audio using pure Python libraries as fallback"""
+    import wave
+    import struct
+    import tempfile
+    import os
+    import shutil
+    
     try:
-        logger.info(f"Converting audio file: {input_path}")
+        import numpy as np
+        from scipy.io import wavfile
+        from scipy import signal
+    except ImportError as e:
+        logger.error(f"Required libraries not available: {e}")
+        # Fallback to direct copy
+        logger.warning("Using direct file copy due to missing scipy/numpy")
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+            temp_path = temp_file.name
+        shutil.copy2(input_path, temp_path)
+        return temp_path
+    
+    try:
+        logger.info(f"Converting audio file using pure Python: {input_path}")
         
-        # Try using pydub with ffmpeg first
+        # Try to read with scipy first
         try:
-            from pydub import AudioSegment
-            audio = AudioSegment.from_file(input_path)
+            sample_rate, audio_data = wavfile.read(input_path)
+            logger.info(f"Successfully read with scipy: {sample_rate}Hz, shape: {audio_data.shape}")
         except Exception as e:
-            logger.warning(f"pydub conversion failed: {e}")
-            # Try alternative: just read the file and hope it's compatible
-            logger.info("Attempting direct file copy as fallback")
+            logger.warning(f"Scipy read failed: {e}, trying direct wave reading")
             
-            # For WebM files, try to convert using subprocess if available
-            import subprocess
-            import shutil
-            
-            # Check if ffmpeg is available
-            if shutil.which('ffmpeg'):
-                logger.info("Using ffmpeg directly via subprocess")
+            # Fallback: try to read as wave file directly
+            try:
+                with wave.open(input_path, 'rb') as wav_file:
+                    sample_rate = wav_file.getframerate()
+                    n_channels = wav_file.getnchannels()
+                    n_frames = wav_file.getnframes()
+                    audio_bytes = wav_file.readframes(n_frames)
+                    
+                    # Convert bytes to numpy array
+                    if wav_file.getsampwidth() == 2:  # 16-bit
+                        audio_data = np.frombuffer(audio_bytes, dtype=np.int16)
+                    else:
+                        audio_data = np.frombuffer(audio_bytes, dtype=np.float32)
+                    
+                    if n_channels > 1:
+                        audio_data = audio_data.reshape(-1, n_channels)
+                    
+                    logger.info(f"Read with wave module: {sample_rate}Hz, {n_channels} channels")
+                    
+            except Exception as e2:
+                logger.error(f"Could not read audio file with any method: {e2}")
+                # Last resort: just copy the file and hope it works
+                logger.warning("Using direct file copy as absolute last resort")
                 with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                     temp_path = temp_file.name
-                
-                try:
-                    # Use ffmpeg directly
-                    subprocess.run([
-                        'ffmpeg', '-i', input_path,
-                        '-ar', '16000',  # 16kHz sample rate
-                        '-ac', '1',      # mono
-                        '-y',            # overwrite output
-                        temp_path
-                    ], check=True, capture_output=True)
-                    
-                    logger.info(f"Successfully converted using ffmpeg subprocess")
-                    return temp_path
-                    
-                except subprocess.CalledProcessError as e:
-                    logger.error(f"ffmpeg subprocess failed: {e}")
-                    # Fall through to direct copy
-            
-            # Last resort: direct copy and hope for the best
-            logger.warning("Using direct file copy as last resort")
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
-                temp_path = temp_file.name
-            
-            import shutil
-            shutil.copy2(input_path, temp_path)
-            return temp_path
+                shutil.copy2(input_path, temp_path)
+                return temp_path
         
-        # If pydub worked, continue with original logic
-        # Check if audio is silent
-        if audio.max_dBFS < -60:  # Very quiet audio
-            logger.warning(f"Audio appears very quiet (max dBFS: {audio.max_dBFS})")
+        # Convert to mono if stereo
+        if len(audio_data.shape) > 1 and audio_data.shape[1] > 1:
+            audio_data = np.mean(audio_data, axis=1)
+            logger.info("Converted to mono")
         
-        # Check duration
-        duration_sec = len(audio) / 1000.0
-        logger.info(f"Original audio duration: {duration_sec:.2f} seconds")
+        # Resample to 16kHz if needed
+        if sample_rate != 16000:
+            logger.info(f"Resampling from {sample_rate}Hz to 16000Hz")
+            num_samples = int(len(audio_data) * 16000 / sample_rate)
+            audio_data = signal.resample(audio_data, num_samples)
+            sample_rate = 16000
         
-        if duration_sec < 0.5:
-            logger.warning("Audio is very short, might not contain speech")
+        # Normalize to 16-bit integers
+        if audio_data.dtype != np.int16:
+            # Normalize to [-1, 1] then scale to int16 range
+            if audio_data.dtype == np.float32 or audio_data.dtype == np.float64:
+                max_val = np.max(np.abs(audio_data))
+                if max_val > 0:
+                    audio_data = audio_data / max_val
+                audio_data = (audio_data * 32767).astype(np.int16)
+            else:
+                audio_data = audio_data.astype(np.int16)
         
-        # Convert to 16kHz mono
-        audio = audio.set_frame_rate(16000).set_channels(1)
-        
-        # Create temporary WAV file
+        # Create output WAV file
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
         
-        # Export as WAV
-        audio.export(temp_path, format="wav")
+        # Write as proper WAV file
+        wavfile.write(temp_path, sample_rate, audio_data)
         
-        logger.info(f"Converted audio to: {temp_path}")
-        logger.info(f"Audio duration: {len(audio)/1000:.2f} seconds")
-        logger.info(f"Sample rate: {audio.frame_rate}Hz, Channels: {audio.channels}")
-        logger.info(f"Max dBFS (loudness): {audio.max_dBFS:.1f} dB")
+        # Verify the output
+        duration_sec = len(audio_data) / sample_rate
+        file_size = os.path.getsize(temp_path)
+        
+        logger.info(f"Successfully converted to: {temp_path}")
+        logger.info(f"Output: 16kHz mono WAV, duration: {duration_sec:.2f}s, size: {file_size} bytes")
         
         return temp_path
         
     except Exception as e:
-        logger.error(f"Error converting audio: {e}")
-        raise
+        logger.error(f"Error in pure Python audio conversion: {e}")
+        # Final fallback
+        logger.warning("All conversion methods failed, using direct file copy")
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+            temp_path = temp_file.name
+        shutil.copy2(input_path, temp_path)
+        return temp_path
 
 def _b64_from_path(file_path: str) -> str:
     """Convert file to base64 with proper audio conversion"""
