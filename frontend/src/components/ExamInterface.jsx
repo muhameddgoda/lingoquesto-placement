@@ -14,12 +14,14 @@ import {
   Target,
   BookOpen,
   Headphones,
+  Image,
 } from "lucide-react";
 import AudioRecorder from "./AudioRecorder";
 import MCQQuestion from "./MCQQuestion";
 import LingoQuestoFinalReport from "./LingoQuestoFinalReport";
 import DictationQuestion from "./DictationQuestion";
 import ListenMCQQuestion from "./ListenMCQQuestion";
+import ImageDescription from "./ImageDescription";
 
 const ExamInterface = () => {
   const [examState, setExamState] = useState("not_started");
@@ -145,6 +147,8 @@ const ExamInterface = () => {
     switch (type) {
       case "open_response":
         return <MessageSquare className="w-5 h-5" />;
+      case "image_description":
+        return <Image className="w-5 h-5" />;
       case "mcq":
         return <List className="w-5 h-5" />;
       case "listen_mcq":
@@ -160,6 +164,8 @@ const ExamInterface = () => {
     switch (type) {
       case "open_response":
         return "Speaking Question";
+      case "image_description":
+        return "Image Description";
       case "mcq":
         return "Multiple Choice";
       case "listen_mcq":
@@ -175,6 +181,8 @@ const ExamInterface = () => {
     switch (type) {
       case "open_response":
         return "bg-purple-100 text-purple-800 border-purple-200";
+      case "image_description":
+        return "bg-indigo-100 text-indigo-800 border-indigo-200";
       case "mcq":
         return "bg-green-100 text-green-800 border-green-200";
       case "listen_mcq":
@@ -329,7 +337,8 @@ const ExamInterface = () => {
                 {/* Timing info for different question types */}
                 {currentQuestion.timing && (
                   <div className="flex items-center space-x-4 text-sm text-gray-600">
-                    {currentQuestion.q_type === "open_response" && (
+                    {(currentQuestion.q_type === "open_response" ||
+                      currentQuestion.q_type === "image_description") && (
                       <>
                         {currentQuestion.timing.think_time_sec && (
                           <div className="flex items-center space-x-1">
@@ -349,12 +358,13 @@ const ExamInterface = () => {
                         )}
                       </>
                     )}
-                    {(currentQuestion.q_type === "listen_mcq" || 
+                    {(currentQuestion.q_type === "listen_mcq" ||
                       currentQuestion.q_type === "dictation") && (
                       <div className="flex items-center space-x-1">
                         <Clock className="w-4 h-4" />
                         <span>
-                          Time limit: {currentQuestion.timing.response_time_sec || 25}s
+                          Time limit:{" "}
+                          {currentQuestion.timing.response_time_sec || 25}s
                         </span>
                       </div>
                     )}
@@ -362,29 +372,41 @@ const ExamInterface = () => {
                 )}
               </div>
 
-              {/* Question Prompt Display */}
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  {currentQuestion.prompt}
-                </h3>
-                {currentQuestion.metadata?.question && (
-                  <p className="text-gray-600">
-                    {currentQuestion.metadata.question}
-                  </p>
-                )}
-              </div>
-
-              {/* Question Interface */}
-              {currentQuestion.q_type === "open_response" ? (
-                <AudioRecorder
+              {/* Question Interface - Clean routing */}
+              {currentQuestion.q_type === "image_description" ? (
+                <ImageDescription
+                  question={currentQuestion}
                   onSubmit={handleAudioSubmit}
                   disabled={isProcessing}
-                  thinkTime={currentQuestion.timing?.think_time_sec || 8}
-                  responseTime={
-                    currentQuestion.timing?.response_time_sec || 120
-                  }
-                  questionId={currentQuestion.q_id}
                 />
+              ) : currentQuestion.q_type === "open_response" ? (
+                <>
+                  {/* Simple open response - just prompt and audio recorder */}
+                  <div className="mb-6">
+                    <div className="text-xl font-medium text-gray-800 mb-4">
+                      {currentQuestion.prompt}
+                    </div>
+                    
+                    {/* Additional Context */}
+                    {currentQuestion.metadata?.context?.question &&
+                      currentQuestion.metadata.context.question !== currentQuestion.prompt && (
+                        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                          <p className="text-blue-800 text-sm">
+                            <strong>Additional context:</strong>{" "}
+                            {currentQuestion.metadata.context.question}
+                          </p>
+                        </div>
+                      )}
+                  </div>
+
+                  <AudioRecorder
+                    onSubmit={handleAudioSubmit}
+                    disabled={isProcessing}
+                    thinkTime={currentQuestion.timing?.think_time_sec || 30}
+                    responseTime={currentQuestion.timing?.response_time_sec || 120}
+                    questionId={currentQuestion.q_id}
+                  />
+                </>
               ) : currentQuestion.q_type === "dictation" ? (
                 <DictationQuestion
                   question={currentQuestion}

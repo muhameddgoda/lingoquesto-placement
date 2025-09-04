@@ -1,12 +1,12 @@
 // frontend/src/components/MCQQuestion.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const MCQQuestion = ({ question, onSubmit, disabled }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState("");
 
   // Reset selection when question changes
   useEffect(() => {
-    setSelectedAnswer('');
+    setSelectedAnswer("");
   }, [question.q_id]);
 
   const handleOptionChange = (value) => {
@@ -24,19 +24,28 @@ const MCQQuestion = ({ question, onSubmit, disabled }) => {
   return (
     <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-100">
       <div className="space-y-6">
+        {/* Question Prompt Display */}
+        <div className="text-center mb-6">
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            {question.prompt}
+          </h3>
+          {question.metadata?.question && (
+            <p className="text-gray-600">{question.metadata.question}</p>
+          )}
+        </div>
         {/* Options */}
         <div className="space-y-4">
           {question.options?.map((option, index) => (
-            <label 
-              key={index} 
+            <label
+              key={index}
               className={`flex items-center space-x-4 p-6 border-2 rounded-xl cursor-pointer transition-all transform hover:scale-[1.02] ${
-                selectedAnswer === option 
-                  ? 'border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 shadow-lg' 
-                  : 'border-gray-200 hover:border-purple-300 hover:bg-gray-50'
-              } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                selectedAnswer === option
+                  ? "border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 shadow-lg"
+                  : "border-gray-200 hover:border-purple-300 hover:bg-gray-50"
+              } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              <input 
-                type="radio" 
+              <input
+                type="radio"
                 name={`mcq-${question.q_id}`}
                 value={option}
                 checked={selectedAnswer === option}
@@ -56,8 +65,8 @@ const MCQQuestion = ({ question, onSubmit, disabled }) => {
             disabled={disabled || !selectedAnswer}
             className={`px-10 py-4 rounded-xl font-semibold text-lg transition-all transform ${
               disabled || !selectedAnswer
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 hover:scale-105 shadow-lg'
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 hover:scale-105 shadow-lg"
             }`}
           >
             Submit Answer
@@ -65,9 +74,9 @@ const MCQQuestion = ({ question, onSubmit, disabled }) => {
         </div>
 
         {/* Debug info in development */}
-        {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV === "development" && (
           <div className="text-xs text-gray-400 mt-4">
-            Question ID: {question.q_id} | Selected: {selectedAnswer || 'None'}
+            Question ID: {question.q_id} | Selected: {selectedAnswer || "None"}
           </div>
         )}
       </div>

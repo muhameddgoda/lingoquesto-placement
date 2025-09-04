@@ -387,3 +387,57 @@ async def debug_audio_file(filename: str):
         "file_size": audio_path.stat().st_size if audio_path.exists() else None
     }
 
+import base64
+
+@app.get("/api/image/{filename}")
+async def get_image_base64(filename: str):
+    """Return image as base64 data URL"""
+    image_path = Path("questions") / "images" / filename
+    
+    if image_path.exists():
+        try:
+            with open(image_path, "rb") as f:
+                image_data = f.read()
+            
+            # Determine MIME type
+            ext = filename.lower().split('.')[-1]
+            mime_types = {
+                'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+                'png': 'image/png', 'gif': 'image/gif', 'webp': 'image/webp'
+            }
+            mime_type = mime_types.get(ext, 'image/jpeg')
+            
+            # Convert to base64
+            base64_data = base64.b64encode(image_data).decode('utf-8')
+            
+            return {
+                "success": True,
+                "data_url": f"data:{mime_type};base64,{base64_data}"
+            }
+        except Exception as e:
+            logger.error(f"Error reading image {filename}: {e}")
+            raise HTTPException(status_code=500, detail="Error reading image")
+    else:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+
+@app.get("/api/debug/images")
+async def debug_images():
+    """Debug endpoint to check available images"""
+    images_dir = Path("questions") / "images"
+    
+    if not images_dir.exists():
+        return {
+            "success": False,
+            "error": "Images directory doesn't exist",
+            "expected_path": str(images_dir.absolute())
+        }
+    
+    image_files = list(images_dir.glob("*"))
+    
+    return {
+        "success": True,
+        "images_directory": str(images_dir.absolute()),
+        "files_found": [f.name for f in image_files],
+        "total_files": len(image_files)
+    }

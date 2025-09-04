@@ -125,7 +125,7 @@
     "prompt": "Describe what you see in this image and what you think is happening.",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_001.jpg",
+      "imageRef": "b1_img_001.png",
       "imageDescription": "A traveler lifting a suitcase onto a hotel check-in desk",
       "context": {
         "question": "Look at this image and describe what you see. Talk about what the person is doing, the setting, and what you think might happen next. Speak for up to 2 minutes.",
@@ -139,7 +139,7 @@
     "prompt": "Describe what you see in this image and what you think is happening.",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_002.jpg",
+      "imageRef": "images/b1_img_002.png",
       "imageDescription": "A group of people having a picnic by a lake",
       "context": {
         "question": "Look at this image and describe the scene. Talk about the people, the activities, the location, and the atmosphere. Speak for up to 2 minutes.",
@@ -153,7 +153,7 @@
     "prompt": "Describe what you see in this image and what you think is happening.",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_003.jpg",
+      "imageRef": "images/b1_img_003.png",
       "imageDescription": "A doctor speaking to a patient in an examination room",
       "context": {
         "question": "Look at this image and describe the medical consultation scene. Talk about what you observe about the interaction, the setting, and what might be discussed. Speak for up to 2 minutes.",
@@ -167,7 +167,7 @@
     "prompt": "Describe what you see in this image and what you think is happening.",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_004.jpg",
+      "imageRef": "images/b1_img_004.png",
       "imageDescription": "A student presenting a project to classmates",
       "context": {
         "question": "Look at this image of a classroom presentation. Describe what you see happening, the people involved, and what you think the presentation might be about. Speak for up to 2 minutes.",
@@ -181,7 +181,7 @@
     "prompt": "Describe what you see in this image and what you think is happening.",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_005.jpg",
+      "imageRef": "images/b1_img_005.png",
       "imageDescription": "A worker assembling furniture in an apartment",
       "context": {
         "question": "Look at this image and describe the scene. Talk about what the person is doing, the environment, and what you think about this activity. Speak for up to 2 minutes.",

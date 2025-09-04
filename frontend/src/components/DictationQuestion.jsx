@@ -76,6 +76,15 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
   return (
     <div className="space-y-8">
+      {/* Question Prompt Display */}
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">
+          {question.prompt}
+        </h3>
+        {question.metadata?.question && (
+          <p className="text-gray-600">{question.metadata.question}</p>
+        )}
+      </div>
       {/* Audio Player Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 rounded-2xl border-2 border-purple-200 shadow-lg">
         {/* Background decoration */}

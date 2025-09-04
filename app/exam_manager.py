@@ -324,6 +324,9 @@ class ExamManager:
         elif q_type == "image_description":
             image_ref = question.get("metadata", {}).get("imageRef")
             if image_ref:
+                # FIXED: Strip 'images/' prefix if present
+                if image_ref.startswith("images/"):
+                    image_ref = image_ref[7:]  # Remove 'images/' prefix
                 formatted["image_ref"] = image_ref
                 formatted["image_description"] = question.get("metadata", {}).get("imageDescription", "")
         
@@ -348,7 +351,7 @@ class ExamManager:
             # Add audio reference if present
             if has_audio:
                 formatted["audio_ref"] = question["metadata"]["audioRef"]
-        
+            
         return formatted
     
     def _get_next_question(self, session_id: str) -> Optional[Dict]:
