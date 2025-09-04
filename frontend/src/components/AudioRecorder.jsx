@@ -115,8 +115,18 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
       });
 
       chunksRef.current = [];
+      
+      // Try different formats for better compatibility
+      let mimeType = 'audio/webm;codecs=opus';
+      if (MediaRecorder.isTypeSupported('audio/webm;codecs=pcm')) {
+        mimeType = 'audio/webm;codecs=pcm';
+        console.log('Using WebM with PCM codec for better quality');
+      } else {
+        console.log('Using WebM with Opus codec');
+      }
+      
       mediaRecorderRef.current = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus'
+        mimeType: mimeType
       });
 
       mediaRecorderRef.current.ondataavailable = (event) => {
@@ -128,7 +138,7 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
 
       mediaRecorderRef.current.onstop = () => {
         console.log('Recording stopped, creating blob');
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        const blob = new Blob(chunksRef.current, { type: mimeType });
         setAudioBlob(blob);
         
         // Clean up previous URL
@@ -141,7 +151,7 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
         
         // Stop all tracks to release microphone
         stream.getTracks().forEach(track => track.stop());
-        console.log('Recording blob created, size:', blob.size, 'bytes');
+        console.log('Recording blob created, size:', blob.size, 'bytes, format:', mimeType);
       };
 
       mediaRecorderRef.current.onerror = (event) => {
@@ -151,7 +161,7 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
       };
 
       mediaRecorderRef.current.onstart = () => {
-        console.log('MediaRecorder started successfully');
+        console.log('MediaRecorder started successfully with format:', mimeType);
       };
 
       console.log('Starting MediaRecorder...');
@@ -360,4 +370,4 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
   );
 };
 
-export default AudioRecorder;
+export default AudioRecorder; 

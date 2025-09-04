@@ -47,3 +47,16 @@ soundfile==0.12.1
 librosa==0.10.1
 scipy==1.11.4
 numpy==1.24.3
+
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+python-dotenv==1.0.0
+requests==2.31.0
+pydantic==2.5.0
+pydub==0.25.1
+pathlib2==2.3.7
+
+# Essential for audio processing without ffmpeg
+librosa==0.10.1
+soundfile==0.12.1

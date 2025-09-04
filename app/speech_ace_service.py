@@ -25,93 +25,32 @@ logger = logging.getLogger(__name__)
 # Replace the entire _convert_to_wav16k_mono function in speech_ace_service.py
 
 def _convert_to_wav16k_mono(input_path: str) -> str:
-    """Convert audio using pure Python libraries as fallback"""
-    import wave
-    import struct
+    """Convert audio using librosa which handles WebM files"""
     import tempfile
     import os
-    import shutil
     
     try:
-        import numpy as np
-        from scipy.io import wavfile
-        from scipy import signal
-    except ImportError as e:
-        logger.error(f"Required libraries not available: {e}")
-        # Fallback to direct copy
-        logger.warning("Using direct file copy due to missing scipy/numpy")
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
-            temp_path = temp_file.name
-        shutil.copy2(input_path, temp_path)
-        return temp_path
-    
-    try:
-        logger.info(f"Converting audio file using pure Python: {input_path}")
+        # Try using librosa which can handle WebM files
+        import librosa
+        import soundfile as sf
         
-        # Try to read with scipy first
-        try:
-            sample_rate, audio_data = wavfile.read(input_path)
-            logger.info(f"Successfully read with scipy: {sample_rate}Hz, shape: {audio_data.shape}")
-        except Exception as e:
-            logger.warning(f"Scipy read failed: {e}, trying direct wave reading")
-            
-            # Fallback: try to read as wave file directly
-            try:
-                with wave.open(input_path, 'rb') as wav_file:
-                    sample_rate = wav_file.getframerate()
-                    n_channels = wav_file.getnchannels()
-                    n_frames = wav_file.getnframes()
-                    audio_bytes = wav_file.readframes(n_frames)
-                    
-                    # Convert bytes to numpy array
-                    if wav_file.getsampwidth() == 2:  # 16-bit
-                        audio_data = np.frombuffer(audio_bytes, dtype=np.int16)
-                    else:
-                        audio_data = np.frombuffer(audio_bytes, dtype=np.float32)
-                    
-                    if n_channels > 1:
-                        audio_data = audio_data.reshape(-1, n_channels)
-                    
-                    logger.info(f"Read with wave module: {sample_rate}Hz, {n_channels} channels")
-                    
-            except Exception as e2:
-                logger.error(f"Could not read audio file with any method: {e2}")
-                # Last resort: just copy the file and hope it works
-                logger.warning("Using direct file copy as absolute last resort")
-                with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
-                    temp_path = temp_file.name
-                shutil.copy2(input_path, temp_path)
-                return temp_path
+        logger.info(f"Loading audio file with librosa: {input_path}")
         
-        # Convert to mono if stereo
-        if len(audio_data.shape) > 1 and audio_data.shape[1] > 1:
-            audio_data = np.mean(audio_data, axis=1)
-            logger.info("Converted to mono")
+        # Load audio with librosa (handles many formats including WebM)
+        audio_data, sample_rate = librosa.load(
+            input_path, 
+            sr=16000,  # Resample to 16kHz
+            mono=True  # Convert to mono
+        )
         
-        # Resample to 16kHz if needed
-        if sample_rate != 16000:
-            logger.info(f"Resampling from {sample_rate}Hz to 16000Hz")
-            num_samples = int(len(audio_data) * 16000 / sample_rate)
-            audio_data = signal.resample(audio_data, num_samples)
-            sample_rate = 16000
+        logger.info(f"Loaded audio: {len(audio_data)} samples at {sample_rate}Hz")
         
-        # Normalize to 16-bit integers
-        if audio_data.dtype != np.int16:
-            # Normalize to [-1, 1] then scale to int16 range
-            if audio_data.dtype == np.float32 or audio_data.dtype == np.float64:
-                max_val = np.max(np.abs(audio_data))
-                if max_val > 0:
-                    audio_data = audio_data / max_val
-                audio_data = (audio_data * 32767).astype(np.int16)
-            else:
-                audio_data = audio_data.astype(np.int16)
-        
-        # Create output WAV file
+        # Create temporary WAV file
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
         
-        # Write as proper WAV file
-        wavfile.write(temp_path, sample_rate, audio_data)
+        # Write as WAV using soundfile
+        sf.write(temp_path, audio_data, sample_rate, format='WAV', subtype='PCM_16')
         
         # Verify the output
         duration_sec = len(audio_data) / sample_rate
@@ -122,14 +61,24 @@ def _convert_to_wav16k_mono(input_path: str) -> str:
         
         return temp_path
         
+    except ImportError as e:
+        logger.error(f"librosa/soundfile not available: {e}")
+        return _fallback_copy(input_path)
     except Exception as e:
-        logger.error(f"Error in pure Python audio conversion: {e}")
-        # Final fallback
-        logger.warning("All conversion methods failed, using direct file copy")
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
-            temp_path = temp_file.name
-        shutil.copy2(input_path, temp_path)
-        return temp_path
+        logger.error(f"Error with librosa conversion: {e}")
+        return _fallback_copy(input_path)
+
+def _fallback_copy(input_path: str) -> str:
+    """Fallback: just copy the file"""
+    import tempfile
+    import shutil
+    
+    logger.warning("Using direct file copy as fallback")
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+        temp_path = temp_file.name
+    
+    shutil.copy2(input_path, temp_path)
+    return temp_path
 
 def _b64_from_path(file_path: str) -> str:
     """Convert file to base64 with proper audio conversion"""
