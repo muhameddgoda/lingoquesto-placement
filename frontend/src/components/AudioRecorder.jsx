@@ -238,12 +238,12 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
         {/* Timer - Always visible */}
         <div className="flex items-center justify-center space-x-3">
           <Clock className={`w-6 h-6 ${
-            phase === 'thinking' ? 'text-orange-500' : 
-            timeLeft <= 10 ? 'text-red-500' : 'text-blue-500'
+            phase === 'thinking' ? 'text-yellow-600' : 
+            timeLeft <= 10 ? 'text-red-600' : 'text-blue-600'
           }`} />
           <span className={`text-3xl font-mono font-bold ${
-            phase === 'thinking' ? 'text-orange-500' : 
-            timeLeft <= 10 ? 'text-red-500' : 'text-blue-500'
+            phase === 'thinking' ? 'text-yellow-600' : 
+            timeLeft <= 10 ? 'text-red-600' : 'text-blue-600'
           }`}>
             {formatTime(timeLeft)}
           </span>
@@ -251,20 +251,20 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
 
         {/* Phase Display */}
         <div className={`text-xl font-semibold ${
-          phase === 'thinking' ? 'text-orange-600' : 'text-blue-700'
+          phase === 'thinking' ? 'text-yellow-600' : 'text-gray-700'
         }`}>
-          {phase === 'thinking' ? 'Think About Your Answer...' : 'Recording Available'}
+          {phase === 'thinking' ? 'Think About Your Answer...' : 'Recording Your Response'}
         </div>
 
         {/* Recording Status */}
         {isRecording && (
-          <div className="flex items-center justify-center space-x-3">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-red-600 font-medium">Recording in progress</span>
+          <div className="flex items-center justify-center space-x-3 text-red-600">
+            <div className="w-4 h-4 bg-red-600 rounded-full animate-pulse"></div>
+            <span className="font-semibold">Recording in progress...</span>
           </div>
         )}
 
-        {/* Control Buttons - Modern Design */}
+        {/* Control Buttons - Enhanced Design */}
         <div className="flex flex-wrap items-center justify-center gap-4">
           
           {/* Record/Stop Button */}
@@ -273,24 +273,24 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
               onClick={isRecording ? stopRecording : startNewRecording}
               disabled={disabled}
               className={`
-                group relative flex items-center space-x-3 px-6 py-4 rounded-2xl font-semibold text-lg
-                transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl
+                flex items-center space-x-3 px-8 py-4 rounded-xl font-semibold text-lg
+                transition-all duration-300 transform hover:scale-105 shadow-lg
                 ${isRecording 
-                  ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white'
-                  : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white'
+                  ? 'bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white'
+                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white'
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
               `}
             >
               {isRecording ? (
                 <>
-                  <Square className="w-5 h-5" />
-                  <span>Stop</span>
+                  <Square className="w-6 h-6" />
+                  <span>Stop Recording</span>
                 </>
               ) : (
                 <>
-                  <Mic className="w-5 h-5" />
-                  <span>Record{audioBlob ? ' Again' : ''}</span>
+                  <Mic className="w-6 h-6" />
+                  <span>{audioBlob ? 'Record Again' : 'Start Recording'}</span>
                 </>
               )}
             </button>
@@ -301,9 +301,9 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
             <button
               onClick={playAudio}
               className="
-                group relative flex items-center space-x-3 px-6 py-4 rounded-2xl font-semibold text-lg
-                bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 
-                text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl
+                flex items-center space-x-3 px-6 py-4 rounded-xl font-semibold text-lg
+                border-2 border-purple-300 text-purple-700 hover:bg-purple-50 
+                transition-all duration-300 transform hover:scale-105
               "
             >
               {isPlaying ? (
@@ -314,7 +314,7 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
               ) : (
                 <>
                   <Play className="w-5 h-5" />
-                  <span>Play</span>
+                  <span>Play Recording</span>
                 </>
               )}
             </button>
@@ -326,32 +326,40 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
               onClick={handleSubmit}
               disabled={disabled}
               className="
-                group relative flex items-center space-x-3 px-8 py-4 rounded-2xl font-semibold text-lg
-                bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 
-                text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl
+                flex items-center space-x-3 px-8 py-4 rounded-xl font-semibold text-lg
+                bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 
+                text-white transition-all duration-300 transform hover:scale-105 shadow-lg
                 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
               "
             >
               <Send className="w-5 h-5" />
-              <span>Submit</span>
+              <span>Submit Response</span>
             </button>
           )}
         </div>
 
         {/* Instructions */}
-        <div className={`p-4 rounded-xl border-2 ${
+        <div className={`p-6 rounded-xl border-2 ${
           phase === 'thinking' 
-            ? 'bg-orange-50 border-orange-200 text-orange-800'
-            : 'bg-blue-50 border-blue-200 text-blue-800'
+            ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200'
+            : isRecording 
+              ? 'bg-gradient-to-r from-red-50 to-pink-50 border-red-200'
+              : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200'
         }`}>
-          <p className="font-medium text-sm">
-            {phase === 'thinking' 
-              ? 'Prepare your answer. Recording will start automatically.'
+          <p className={`font-medium ${
+            phase === 'thinking' 
+              ? 'text-yellow-800'
               : isRecording 
-                ? 'Speak clearly. You can stop anytime or submit directly.'
+                ? 'text-red-800'
+                : 'text-blue-800'
+          }`}>
+            {phase === 'thinking' 
+              ? '🤔 Thinking time: Prepare your answer. Recording will start automatically.'
+              : isRecording 
+                ? '🎙️ Recording now: Speak clearly into your microphone. You can stop early or submit directly.'
                 : audioBlob 
-                  ? 'You can play your recording, record again, or submit.'
-                  : 'Ready to record your response.'
+                  ? '✅ Recording complete: You can play your recording, record again, or submit.'
+                  : '🎯 Ready to record your response.'
             }
           </p>
         </div>
