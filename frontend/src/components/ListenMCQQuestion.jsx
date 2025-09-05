@@ -1,5 +1,5 @@
 // Enhanced ListenMCQQuestion.jsx that works with external timer
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Volume2,
   Play,
@@ -54,13 +54,36 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
         clearInterval(timerRef.current);
       }
     };
-  }, [question.q_id, selectedAnswer, onSubmit]);
+  }, [question.q_id]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
+
+  // Add this after your useState declarations:
+  const handleAutoSubmit = useCallback(() => {
+    console.log("Auto-submitting ListenMCQ:", selectedAnswer);
+    if (selectedAnswer) {
+      onSubmit(selectedAnswer);
+    } else {
+      onSubmit(""); // Submit empty if no selection
+    }
+  }, [selectedAnswer, onSubmit]);
+
+  // Then update your timer logic in useEffect:
+  timerRef.current = setInterval(() => {
+    setTimeLeft((prevTime) => {
+      const newTime = prevTime - 1;
+      if (newTime <= 0) {
+        clearInterval(timerRef.current);
+        handleAutoSubmit(); // Use the callback function
+        return 0;
+      }
+      return newTime;
+    });
+  }, 1000);
 
   useEffect(() => {
     // Reset state when question changes
