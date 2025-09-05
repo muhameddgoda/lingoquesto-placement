@@ -1,5 +1,5 @@
 // Enhanced DictationQuestion.jsx with TextInput component and single play button
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Volume2, Play, Send, Clock } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
@@ -9,16 +9,26 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(15); // Default, will be updated
+  const [timeLeft, setTimeLeft] = useState(15);
+  
   const timerRef = useRef(null);
-
   const audioRef = useRef(null);
   const textInputRef = useRef(null);
   const MAX_PLAYS = 3;
 
+  // Auto-submit function using useCallback
+  const handleAutoSubmit = useCallback(() => {
+    console.log('Auto-submitting Dictation:', userInput);
+    if (userInput.trim()) {
+      onSubmit(userInput.trim());
+    } else {
+      onSubmit(""); // Submit empty if no input
+    }
+  }, [userInput, onSubmit]);
+
   useEffect(() => {
     // Get timing from exam config
-    const totalTime = question.timing?.total_estimated_sec || 15; // Default 15 seconds
+    const totalTime = question.timing?.total_estimated_sec || 15;
     setTimeLeft(totalTime);
 
     // Start countdown timer
@@ -31,12 +41,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         const newTime = prevTime - 1;
         if (newTime <= 0) {
           clearInterval(timerRef.current);
-          // Auto-submit when time expires
-          if (userInput.trim()) {
-            onSubmit(userInput.trim());
-          } else {
-            onSubmit(""); // Submit empty if no input
-          }
+          handleAutoSubmit();
           return 0;
         }
         return newTime;
@@ -49,14 +54,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         clearInterval(timerRef.current);
       }
     };
-  }, [question.audio_ref, userInput, onSubmit]);
-
-  // Add formatTime function:
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
+  }, [question.audio_ref]); // ONLY question.audio_ref in dependency array
 
   useEffect(() => {
     // Reset state when question changes
@@ -71,14 +69,18 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
       audioRef.current.load();
     }
 
-    // Focus on textarea when question loads
     if (textInputRef.current) {
       textInputRef.current.focus();
     }
   }, [question.audio_ref]);
 
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
   const handleAudioPlay = async () => {
-    // Add check to prevent playing when no plays remaining
     if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
       return;
 
@@ -96,7 +98,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
   const handleAudioEnded = () => {
     setIsPlaying(false);
-    // Allow playing again after it ends (if plays remaining)
   };
 
   const handleAudioPlayStart = () => {
@@ -111,7 +112,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   };
 
   const handleKeyPress = (e) => {
-    // Submit on Enter (but not Shift+Enter for line breaks)
     if (e.key === "Enter" && !e.shiftKey && !disabled) {
       e.preventDefault();
       handleSubmit();
@@ -121,7 +121,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const remainingPlays = MAX_PLAYS - playCount;
   const canPlay = remainingPlays > 0 && !disabled && !isPlaying;
 
-  // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
   const cleanAudioFileName = audioFileName?.startsWith("audio/")
     ? audioFileName.substring(6)
@@ -180,7 +179,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
       {/* Audio Player Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 rounded-2xl border-2 border-purple-200 shadow-lg">
-        {/* Background decoration */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-200/30 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-200/30 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
 
@@ -194,20 +192,17 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             </h3>
           </div>
 
-          {/* Play Counter */}
           <div className="flex items-center justify-center mb-6">
             <div className="bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 border border-purple-200">
               <div className="flex items-center space-x-2 text-purple-700">
                 <Clock className="w-4 h-4" />
                 <span className="text-sm font-medium">
-                  {remainingPlays} play{remainingPlays !== 1 ? "s" : ""}{" "}
-                  remaining
+                  {remainingPlays} play{remainingPlays !== 1 ? "s" : ""} remaining
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Hidden Audio Element */}
           <audio
             ref={audioRef}
             onPlay={handleAudioPlayStart}
@@ -226,13 +221,10 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             )}
           </audio>
 
-          {/* Audio Controls - Single Play Button */}
           <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={
-                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
-              }
+              disabled={!canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS}
               className={`
                 relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
                 ${
@@ -252,7 +244,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         </div>
       </div>
 
-      {/* Text Input Section - Using TextInput Component */}
+      {/* Text Input Section */}
       <div className="space-y-6">
         <TextInput
           ref={textInputRef}
@@ -266,11 +258,9 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
           showCharCount={true}
         />
 
-        {/* Helpful instruction */}
         <div className="text-center">
           <p className="text-sm text-gray-600">
-            Type exactly what you hear. Press Enter to submit, or use the button
-            below.
+            Type exactly what you hear. Press Enter to submit, or use the button below.
           </p>
         </div>
       </div>
@@ -287,11 +277,10 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         </button>
       </div>
 
-      {/* Debug info in development */}
       {process.env.NODE_ENV === "development" && (
         <div className="text-xs text-gray-400 mt-4">
-          Audio: {audioUrl ? "Loaded" : "Not loaded"} | Plays: {playCount}/
-          {MAX_PLAYS} | Input: {userInput.length} chars | Spell check: disabled
+          Audio: {audioUrl ? "Loaded" : "Not loaded"} | Plays: {playCount}/{MAX_PLAYS} | 
+          Input: {userInput.length} chars | Spell check: disabled
         </div>
       )}
     </div>

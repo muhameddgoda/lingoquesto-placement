@@ -1,10 +1,8 @@
 // Enhanced ListenMCQQuestion.jsx that works with external timer
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Volume2,
   Play,
-  Pause,
-  RotateCcw,
   CheckCircle,
   Clock,
 } from "lucide-react";
@@ -15,15 +13,25 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30); // Default, will be updated
+  const [timeLeft, setTimeLeft] = useState(30);
 
   const timerRef = useRef(null);
   const audioRef = useRef(null);
   const MAX_PLAYS = 3;
 
+  // Auto-submit function using useCallback
+  const handleAutoSubmit = useCallback(() => {
+    console.log('Auto-submitting ListenMCQ:', selectedAnswer);
+    if (selectedAnswer) {
+      onSubmit(selectedAnswer);
+    } else {
+      onSubmit(""); // Submit empty if no selection
+    }
+  }, [selectedAnswer, onSubmit]);
+
   useEffect(() => {
-    // Get timing from exam config based on question type
-    const totalTime = question.timing?.total_estimated_sec || 30; // Default 30 seconds
+    // Get timing from exam config
+    const totalTime = question.timing?.total_estimated_sec || 30;
     setTimeLeft(totalTime);
 
     // Start countdown timer
@@ -36,12 +44,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
         const newTime = prevTime - 1;
         if (newTime <= 0) {
           clearInterval(timerRef.current);
-          // Auto-submit when time expires
-          if (selectedAnswer) {
-            onSubmit(selectedAnswer);
-          } else {
-            onSubmit(""); // Submit empty if no selection
-          }
+          handleAutoSubmit();
           return 0;
         }
         return newTime;
@@ -54,13 +57,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
         clearInterval(timerRef.current);
       }
     };
-  }, [question.q_id, selectedAnswer, onSubmit]);
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
+  }, [question.q_id]); // ONLY question.q_id in dependency array
 
   useEffect(() => {
     // Reset state when question changes
@@ -76,8 +73,13 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     }
   }, [question.q_id]);
 
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
   const handleAudioPlay = async () => {
-    // Add check to prevent playing when no plays remaining
     if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
       return;
 
@@ -117,7 +119,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const remainingPlays = MAX_PLAYS - playCount;
   const canPlay = remainingPlays > 0 && !disabled && !isPlaying;
 
-  // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
   const cleanAudioFileName = audioFileName?.startsWith("audio/")
     ? audioFileName.substring(6)
@@ -176,7 +177,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
       {/* Audio Player Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-green-50 via-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-green-200 shadow-lg">
-        {/* Background decoration */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-200/30 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-200/30 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
 
@@ -189,19 +189,18 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               Listen Carefully
             </h3>
           </div>
-          {/* Play Counter */}
+
           <div className="flex items-center justify-center mb-6">
             <div className="bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 border border-green-200">
               <div className="flex items-center space-x-2 text-green-700">
                 <Volume2 className="w-4 h-4" />
                 <span className="text-sm font-medium">
-                  {remainingPlays} play{remainingPlays !== 1 ? "s" : ""}{" "}
-                  remaining
+                  {remainingPlays} play{remainingPlays !== 1 ? "s" : ""} remaining
                 </span>
               </div>
             </div>
           </div>
-          {/* Hidden Audio Element */}
+
           <audio
             ref={audioRef}
             onPlay={handleAudioPlayStart}
@@ -219,20 +218,19 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               </>
             )}
           </audio>
+
           <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={
-                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
-              }
+              disabled={!canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS}
               className={`
-      relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
-      ${
-        !isLoading && audioUrl && !isPlaying
-          ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
-          : "bg-gray-300 text-gray-500 cursor-not-allowed"
-      }
-    `}
+                relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
+                ${
+                  !isLoading && audioUrl && !isPlaying
+                    ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }
+              `}
             >
               {isLoading ? (
                 <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -285,12 +283,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
         </button>
       </div>
 
-      {/* Debug info in development */}
       {process.env.NODE_ENV === "development" && (
         <div className="text-xs text-gray-400 mt-4">
           Question ID: {question.q_id} | Selected: {selectedAnswer || "None"} |
-          Plays: {playCount}/{MAX_PLAYS} | Audio:{" "}
-          {audioUrl ? "Loaded" : "Not loaded"}
+          Plays: {playCount}/{MAX_PLAYS} | Audio: {audioUrl ? "Loaded" : "Not loaded"}
         </div>
       )}
     </div>
