@@ -209,19 +209,65 @@ const AudioRecorder = ({
     setAudioBlob(null);
     setIsPlaying(false);
 
-    // Start fresh recording
-    await startRecording();
-  };
-
-  const playAudio = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.play();
-        setIsPlaying(true);
+    // DON'T restart timer - keep existing timer running
+    // Just start fresh recording without timer changes
+    try {
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== "inactive"
+      ) {
+        try {
+          mediaRecorderRef.current.stop();
+        } catch (e) {
+          console.log("Previous recorder already stopped");
+        }
       }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: getAudioConstraints(),
+      });
+
+      chunksRef.current = [];
+      const mimeType = getBestAudioFormat();
+      const recorderOptions = mimeType ? { mimeType } : {};
+
+      mediaRecorderRef.current = new MediaRecorder(stream, recorderOptions);
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorderRef.current.onstop = () => {
+        const totalSize = chunksRef.current.reduce(
+          (total, chunk) => total + chunk.size,
+          0
+        );
+
+        if (totalSize > 0) {
+          const blob = new Blob(chunksRef.current, {
+            type: mimeType || "audio/webm",
+          });
+
+          if (audioUrl) {
+            URL.revokeObjectURL(audioUrl);
+          }
+
+          setAudioBlob(blob);
+          const url = URL.createObjectURL(blob);
+          setAudioUrl(url);
+        }
+
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      mediaRecorderRef.current.start(1000);
+      setIsRecording(true);
+      // NOTE: NO timer restart here - timer continues from where it was
+    } catch (error) {
+      console.error("Error starting new recording:", error);
+      alert("Unable to access microphone.");
     }
   };
 

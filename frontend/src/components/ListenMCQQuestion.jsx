@@ -27,11 +27,13 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   }, [question.q_id]);
 
   const handleAudioPlay = async () => {
-    if (!audioRef.current || isLoading || isPlaying) return;
+    // Add check to prevent playing when no plays remaining
+    if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
+      return;
 
     setIsLoading(true);
     try {
-      audioRef.current.currentTime = 0; // Always start from beginning
+      audioRef.current.currentTime = 0;
       await audioRef.current.play();
       setPlayCount((prev) => prev + 1);
     } catch (error) {
@@ -86,6 +88,16 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
         )}
       </div>
 
+      {/* Timer Display */}
+      <div className="flex justify-center mb-6">
+        <div className="flex items-center space-x-2 px-4 py-2 bg-blue-50 border border-blue-300 rounded-full">
+          <Clock className="w-4 h-4 text-blue-600" />
+          <span className="text-sm font-medium text-blue-600">
+            30 seconds remaining
+          </span>
+        </div>
+      </div>
+
       {/* Audio Player Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-green-50 via-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-green-200 shadow-lg">
         {/* Background decoration */}
@@ -134,7 +146,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={isLoading || !audioUrl || isPlaying}
+              disabled={!canPlay || isLoading || !audioUrl || isPlaying || playCount >= MAX_PLAYS}
               className={`
       relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
       ${

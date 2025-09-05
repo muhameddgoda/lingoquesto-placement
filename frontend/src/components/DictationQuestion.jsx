@@ -9,7 +9,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const audioRef = useRef(null);
   const textInputRef = useRef(null);
   const MAX_PLAYS = 3;
@@ -20,7 +20,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
-    
+
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -34,11 +34,13 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   }, [question.audio_ref]);
 
   const handleAudioPlay = async () => {
-    if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS) return;
+    // Add check to prevent playing when no plays remaining
+    if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
+      return;
 
     setIsLoading(true);
     try {
-      audioRef.current.currentTime = 0; // Always start from beginning
+      audioRef.current.currentTime = 0;
       await audioRef.current.play();
       setPlayCount((prev) => prev + 1);
     } catch (error) {
@@ -66,7 +68,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
   const handleKeyPress = (e) => {
     // Submit on Enter (but not Shift+Enter for line breaks)
-    if (e.key === 'Enter' && !e.shiftKey && !disabled) {
+    if (e.key === "Enter" && !e.shiftKey && !disabled) {
       e.preventDefault();
       handleSubmit();
     }
@@ -94,6 +96,16 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         {question.metadata?.question && (
           <p className="text-gray-600">{question.metadata.question}</p>
         )}
+      </div>
+
+      {/* Timer Display */}
+      <div className="flex justify-center mb-6">
+        <div className="flex items-center space-x-2 px-4 py-2 bg-purple-50 border border-purple-300 rounded-full">
+          <Clock className="w-4 h-4 text-purple-600" />
+          <span className="text-sm font-medium text-purple-600">
+            15 seconds remaining
+          </span>
+        </div>
       </div>
 
       {/* Audio Player Section */}
@@ -148,7 +160,9 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
           <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={!canPlay || isLoading || !audioUrl}
+              disabled={
+                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
+              }
               className={`
                 relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
                 ${
@@ -185,7 +199,8 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         {/* Helpful instruction */}
         <div className="text-center">
           <p className="text-sm text-gray-600">
-            Type exactly what you hear. Press Enter to submit, or use the button below.
+            Type exactly what you hear. Press Enter to submit, or use the button
+            below.
           </p>
         </div>
       </div>
@@ -205,8 +220,8 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
       {/* Debug info in development */}
       {process.env.NODE_ENV === "development" && (
         <div className="text-xs text-gray-400 mt-4">
-          Audio: {audioUrl ? "Loaded" : "Not loaded"} | Plays: {playCount}/{MAX_PLAYS} | 
-          Input: {userInput.length} chars | Spell check: disabled
+          Audio: {audioUrl ? "Loaded" : "Not loaded"} | Plays: {playCount}/
+          {MAX_PLAYS} | Input: {userInput.length} chars | Spell check: disabled
         </div>
       )}
     </div>
