@@ -659,3 +659,505 @@ async def debug_files():
         "success": True,
         "data": file_info
     }
+
+# Add this enhanced upload-audio endpoint to your main.py
+
+@app.post("/api/upload-audio")
+async def upload_audio(
+    audio: UploadFile = File(...),
+    session_id: str = Form(...),
+    q_id: str = Form(...)
+):
+    """Upload audio file with enhanced validation and format handling"""
+    try:
+        logger.info(f"Uploading audio for session {session_id}, question {q_id}")
+        logger.info(f"Original filename: {audio.filename}")
+        logger.info(f"Content type: {audio.content_type}")
+        
+        # Read the audio data
+        audio_data = await audio.read()
+        logger.info(f"Audio data size: {len(audio_data)} bytes")
+        
+        # Validate minimum file size (at least 1KB)
+        if len(audio_data) < 1000:
+            logger.error(f"Audio file too small: {len(audio_data)} bytes")
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Audio file too small ({len(audio_data)} bytes). Please record for longer."
+            )
+        
+        # Detect and validate audio format
+        detected_format = detect_audio_format(audio_data, audio.filename, audio.content_type)
+        logger.info(f"Detected audio format: {detected_format}")
+        
+        # Create unique filename with detected extension
+        unique_filename = f"{session_id}_{q_id}_{uuid.uuid4().hex}.{detected_format['extension']}"
+        
+        # Ensure upload directory exists
+        audio_dir = uploads_dir / "audio"
+        audio_dir.mkdir(exist_ok=True)
+        
+        file_path = audio_dir / unique_filename
+        
+        # Save the file
+        with open(file_path, "wb") as buffer:
+            buffer.write(audio_data)
+        
+        logger.info(f"Audio file saved: {file_path}")
+        logger.info(f"File size on disk: {file_path.stat().st_size} bytes")
+        
+        # Additional validation: try to read the file back
+        if not file_path.exists() or file_path.stat().st_size != len(audio_data):
+            raise HTTPException(status_code=500, detail="File save verification failed")
+        
+        return {
+            "success": True,
+            "file_path": str(file_path),
+            "file_size": len(audio_data),
+            "detected_format": detected_format,
+            "message": f"Audio uploaded successfully ({len(audio_data)} bytes)"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error uploading audio: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
+
+def detect_audio_format(audio_data: bytes, filename: str = None, content_type: str = None):
+    """
+    Detect audio format from file data, filename, and content type
+    Returns dict with format info
+    """
+    
+    # Check magic bytes (file signatures)
+    if len(audio_data) < 12:
+        return {"format": "unknown", "extension": "bin"}
+    
+    header = audio_data[:12]
+    
+    # WebM format
+    if header.startswith(b'\x1a\x45\xdf\xa3'):
+        return {"format": "webm", "extension": "webm", "mime": "audio/webm"}
+    
+    # WAV format
+    if header.startswith(b'RIFF') and audio_data[8:12] == b'WAVE':
+        return {"format": "wav", "extension": "wav", "mime": "audio/wav"}
+    
+    # MP3 format
+    if header.startswith(b'ID3') or header[:2] in [b'\xff\xfb', b'\xff\xfa']:
+        return {"format": "mp3", "extension": "mp3", "mime": "audio/mpeg"}
+    
+    # MP4/M4A format
+    if header[4:8] == b'ftyp':
+        return {"format": "mp4", "extension": "mp4", "mime": "audio/mp4"}
+    
+    # OGG format
+    if header.startswith(b'OggS'):
+        return {"format": "ogg", "extension": "ogg", "mime": "audio/ogg"}
+    
+    # Fallback to filename extension
+    if filename:
+        ext = filename.lower().split('.')[-1] if '.' in filename else None
+        if ext in ['webm', 'wav', 'mp3', 'mp4', 'm4a', 'ogg']:
+            return {
+                "format": ext,
+                "extension": ext,
+                "mime": f"audio/{ext}"
+            }
+    
+    # Fallback to content type
+    if content_type and content_type.startswith('audio/'):
+        format_name = content_type.split('/')[-1].split(';')[0]
+        return {
+            "format": format_name,
+            "extension": format_name,
+            "mime": content_type
+        }
+    
+    # Default fallback - assume WebM since that's what most browsers produce
+    logger.warning(f"Could not detect audio format, using webm fallback. Header: {header.hex()}")
+    return {"format": "webm", "extension": "webm", "mime": "audio/webm"}
+
+
+@app.get("/api/debug/test-audio-upload")
+async def debug_audio_upload():
+    """Debug endpoint to test audio upload functionality"""
+    return {
+        "upload_directory": str(uploads_dir.absolute()),
+        "upload_dir_exists": uploads_dir.exists(),
+        "audio_subdir_exists": (uploads_dir / "audio").exists(),
+        "permissions": {
+            "upload_dir_writable": os.access(uploads_dir, os.W_OK),
+            "upload_dir_readable": os.access(uploads_dir, os.R_OK)
+        }
+    }
+
+# Add these debug endpoints to your main.py for comprehensive audio debugging
+
+@app.post("/api/debug/upload-and-analyze")
+async def debug_upload_and_analyze(
+    audio: UploadFile = File(...),
+    user_agent: str = Form(""),
+    platform: str = Form(""),
+    browser: str = Form("")
+):
+    """Debug endpoint to analyze uploaded audio files in detail"""
+    try:
+        # Read audio data
+        audio_data = await audio.read()
+        
+        analysis = {
+            "client_info": {
+                "user_agent": user_agent,
+                "platform": platform,
+                "browser": browser,
+                "filename": audio.filename,
+                "content_type": audio.content_type
+            },
+            "file_analysis": {
+                "size_bytes": len(audio_data),
+                "size_kb": round(len(audio_data) / 1024, 2),
+                "header_hex": audio_data[:16].hex() if len(audio_data) >= 16 else audio_data.hex(),
+                "is_empty": len(audio_data) == 0,
+                "too_small": len(audio_data) < 1000
+            }
+        }
+        
+        # Detect format
+        detected_format = detect_audio_format(audio_data, audio.filename, audio.content_type)
+        analysis["format_detection"] = detected_format
+        
+        # Save file temporarily for further analysis
+        temp_dir = uploads_dir / "debug"
+        temp_dir.mkdir(exist_ok=True)
+        
+        debug_filename = f"debug_{uuid.uuid4().hex}_{detected_format['extension']}"
+        debug_path = temp_dir / debug_filename
+        
+        with open(debug_path, "wb") as f:
+            f.write(audio_data)
+        
+        analysis["file_saved"] = str(debug_path)
+        
+        # Try to analyze with speech service
+        try:
+            from .speech_ace_service import _validate_audio_file, _detect_audio_format_enhanced
+            
+            validation = _validate_audio_file(str(debug_path))
+            enhanced_detection = _detect_audio_format_enhanced(str(debug_path))
+            
+            analysis["speech_service_validation"] = validation
+            analysis["enhanced_format_detection"] = enhanced_detection
+            
+            # Try to process with Speech Ace API
+            if validation["valid"]:
+                try:
+                    from .speech_ace_service import lc_unscripted_sync
+                    
+                    speech_result = lc_unscripted_sync(
+                        str(debug_path),
+                        question="This is a test audio file",
+                        context_description="Debug test"
+                    )
+                    
+                    analysis["speech_api_result"] = {
+                        "success": "error" not in speech_result,
+                        "word_count": len(speech_result.get("words", [])),
+                        "has_error": "error" in speech_result,
+                        "error_type": speech_result.get("error"),
+                        "error_message": speech_result.get("message", ""),
+                        "processing_info": speech_result.get("audio_processing_info", {})
+                    }
+                    
+                except Exception as e:
+                    analysis["speech_api_result"] = {
+                        "success": False,
+                        "error": f"Exception: {str(e)}"
+                    }
+            else:
+                analysis["speech_api_result"] = {
+                    "success": False,
+                    "error": "File validation failed",
+                    "validation_error": validation["error"]
+                }
+                
+        except Exception as e:
+            analysis["speech_service_error"] = str(e)
+        
+        # Determine likely issues
+        issues = []
+        if analysis["file_analysis"]["too_small"]:
+            issues.append("File too small - likely recording didn't capture audio")
+        if analysis["file_analysis"]["is_empty"]:
+            issues.append("File is completely empty")
+        if detected_format["format"] == "unknown":
+            issues.append("Unknown audio format - may not be supported")
+        
+        analysis["likely_issues"] = issues
+        
+        # OS-specific recommendations
+        recommendations = []
+        if "android" in user_agent.lower():
+            recommendations.extend([
+                "Try using audio/mp4 format instead of WebM",
+                "Check if MediaRecorder.start() is actually starting",
+                "Verify microphone permissions are granted"
+            ])
+        elif "windows" in platform.lower() or "win" in user_agent.lower():
+            recommendations.extend([
+                "Try audio/wav format for better Windows compatibility",
+                "Check for Windows audio driver issues",
+                "Verify microphone is not being used by other apps"
+            ])
+        elif "mac" in platform.lower() or "darwin" in user_agent.lower():
+            recommendations.extend([
+                "Check Safari audio recording permissions",
+                "Try audio/mp4 format for better macOS compatibility",
+                "Verify System Preferences > Security > Microphone permissions"
+            ])
+        
+        analysis["recommendations"] = recommendations
+        
+        return {
+            "success": True,
+            "analysis": analysis
+        }
+        
+    except Exception as e:
+        logger.error(f"Debug analysis error: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+@app.get("/api/debug/browser-capabilities")
+async def debug_browser_capabilities():
+    """Return JavaScript code to test browser audio capabilities"""
+    
+    js_test_code = """
+// Paste this code into your browser console to test audio capabilities
+
+console.log('=== BROWSER AUDIO CAPABILITIES TEST ===');
+
+// 1. Basic browser info
+console.log('User Agent:', navigator.userAgent);
+console.log('Platform:', navigator.platform);
+
+// 2. MediaDevices support
+console.log('MediaDevices supported:', !!navigator.mediaDevices);
+console.log('getUserMedia supported:', !!navigator.mediaDevices?.getUserMedia);
+
+// 3. MediaRecorder support
+console.log('MediaRecorder supported:', !!window.MediaRecorder);
+
+// 4. Test supported MIME types
+if (window.MediaRecorder) {
+    const formats = [
+        'audio/webm;codecs=opus',
+        'audio/webm;codecs=pcm', 
+        'audio/webm',
+        'audio/mp4',
+        'audio/mp4;codecs=mp4a.40.2',
+        'audio/mpeg',
+        'audio/wav',
+        'audio/ogg;codecs=opus'
+    ];
+    
+    console.log('Supported audio formats:');
+    formats.forEach(format => {
+        const supported = MediaRecorder.isTypeSupported(format);
+        console.log(`  ${format}: ${supported}`);
+    });
+}
+
+// 5. Test microphone access
+async function testMicrophone() {
+    try {
+        console.log('Testing microphone access...');
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const tracks = stream.getAudioTracks();
+        
+        console.log('Microphone access: SUCCESS');
+        console.log('Audio tracks:', tracks.length);
+        
+        if (tracks.length > 0) {
+            const settings = tracks[0].getSettings();
+            console.log('Track settings:', settings);
+        }
+        
+        // Clean up
+        stream.getTracks().forEach(track => track.stop());
+        
+        return true;
+    } catch (error) {
+        console.error('Microphone access failed:', error);
+        return false;
+    }
+}
+
+// 6. Test recording
+async function testRecording() {
+    try {
+        console.log('Testing audio recording...');
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Try the best format
+        let mimeType = '';
+        const formats = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'];
+        for (const format of formats) {
+            if (MediaRecorder.isTypeSupported(format)) {
+                mimeType = format;
+                break;
+            }
+        }
+        
+        console.log('Using format:', mimeType);
+        
+        const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+        const chunks = [];
+        
+        recorder.ondataavailable = (event) => {
+            console.log('Data received:', event.data.size, 'bytes');
+            chunks.push(event.data);
+        };
+        
+        recorder.onstop = () => {
+            const blob = new Blob(chunks, { type: mimeType });
+            console.log('Recording complete. Blob size:', blob.size, 'bytes');
+            console.log('Blob type:', blob.type);
+            
+            if (blob.size === 0) {
+                console.error('❌ Recording produced empty blob!');
+            } else if (blob.size < 1000) {
+                console.warn('⚠️  Recording is very small, might be problematic');
+            } else {
+                console.log('✅ Recording seems successful');
+            }
+        };
+        
+        recorder.start();
+        console.log('Recording started for 3 seconds...');
+        
+        setTimeout(() => {
+            recorder.stop();
+            stream.getTracks().forEach(track => track.stop());
+        }, 3000);
+        
+    } catch (error) {
+        console.error('Recording test failed:', error);
+    }
+}
+
+// Run tests
+testMicrophone().then(success => {
+    if (success) {
+        console.log('\\n=== Running recording test ===');
+        testRecording();
+    }
+});
+"""
+    
+    return {
+        "success": True,
+        "message": "Copy the JavaScript code below and paste it into your browser's developer console",
+        "test_code": js_test_code
+    }
+
+@app.get("/api/debug/platform-specific-issues")
+async def debug_platform_issues():
+    """Get known issues and solutions for different platforms"""
+    
+    platform_issues = {
+        "ios_safari": {
+            "common_issues": [
+                "WebM format not supported",
+                "Requires user gesture to start recording",
+                "Sample rate limitations"
+            ],
+            "solutions": [
+                "Use audio/mp4 format",
+                "Ensure recording starts after user interaction",
+                "Use 44.1kHz sample rate or let browser choose"
+            ],
+            "recommended_settings": {
+                "format": "audio/mp4",
+                "constraints": {
+                    "sampleRate": 44100,
+                    "channelCount": 1,
+                    "echoCancellation": True
+                }
+            }
+        },
+        "android_chrome": {
+            "common_issues": [
+                "WebM encoding problems",
+                "Microphone permission delays",
+                "MediaRecorder timing issues"
+            ],
+            "solutions": [
+                "Use audio/mp4 or audio/webm;codecs=opus",
+                "Add delay after getUserMedia before starting recorder",
+                "Use timeslice parameter in start()"
+            ],
+            "recommended_settings": {
+                "format": "audio/mp4",
+                "constraints": {
+                    "channelCount": 1,
+                    "echoCancellation": True,
+                    "noiseSuppression": True
+                }
+            }
+        },
+        "windows_chrome": {
+            "common_issues": [
+                "Audio driver conflicts",
+                "Format encoding issues",
+                "Timing problems with short recordings"
+            ],
+            "solutions": [
+                "Use audio/wav for compatibility",
+                "Add minimum recording duration",
+                "Check for exclusive audio device access"
+            ],
+            "recommended_settings": {
+                "format": "audio/wav",
+                "constraints": {
+                    "sampleRate": 16000,
+                    "channelCount": 1
+                }
+            }
+        },
+        "macos_safari": {
+            "common_issues": [
+                "Strict permission requirements",
+                "Format limitations",
+                "Recording quality variations"
+            ],
+            "solutions": [
+                "Use audio/mp4 format",
+                "Ensure clear permission prompts",
+                "Test with different sample rates"
+            ],
+            "recommended_settings": {
+                "format": "audio/mp4",
+                "constraints": {
+                    "sampleRate": 44100,
+                    "channelCount": 1
+                }
+            }
+        }
+    }
+    
+    return {
+        "success": True,
+        "platform_issues": platform_issues,
+        "general_recommendations": [
+            "Always validate audio blob size before uploading",
+            "Implement format fallbacks",
+            "Add proper error handling for getUserMedia",
+            "Use timeslice parameter for more reliable data collection",
+            "Test with actual devices, not just browser dev tools"
+        ]
+    }

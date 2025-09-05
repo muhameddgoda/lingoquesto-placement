@@ -1,4 +1,5 @@
-# app/speech_ace_service.py - Updated to handle WebM directly
+# Enhanced speech_ace_service.py with better audio handling
+
 import base64
 import requests
 import os
@@ -6,6 +7,8 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 import tempfile
+import subprocess
+import shutil
 
 # Load environment variables
 load_dotenv()
@@ -21,81 +24,188 @@ HEADERS = {
 
 logger = logging.getLogger(__name__)
 
-def _detect_audio_format(file_path: str) -> str:
-    """Detect audio format from file extension and content"""
+def _detect_audio_format_enhanced(file_path: str) -> dict:
+    """Enhanced audio format detection with more details"""
     try:
-        # Get file extension
-        file_ext = Path(file_path).suffix.lower()
+        file_path = Path(file_path)
         
-        # Map extensions to format names that Language Confidence accepts
-        format_mapping = {
-            '.wav': 'wav',
-            '.mp3': 'mp3', 
-            '.m4a': 'm4a',
-            '.ogg': 'ogg',
-            '.webm': 'webm',
-            '.mp4': 'mp4',
-            '.aac': 'aac'
+        # Get file extension
+        file_ext = file_path.suffix.lower()
+        
+        # Read file header for magic bytes detection
+        with open(file_path, 'rb') as f:
+            header = f.read(16)  # Read more bytes for better detection
+        
+        format_info = {
+            "extension": file_ext,
+            "detected_format": None,
+            "magic_bytes": header[:8].hex(),
+            "file_size": file_path.stat().st_size,
+            "confidence": "low"
         }
         
-        if file_ext in format_mapping:
-            detected_format = format_mapping[file_ext]
-            logger.info(f"Detected audio format: {detected_format} from extension {file_ext}")
-            return detected_format
-        
-        # If extension not recognized, check file header
-        with open(file_path, 'rb') as f:
-            header = f.read(12)
-        
-        # Check magic bytes for common formats
+        # Check magic bytes for accurate detection
         if header.startswith(b'RIFF') and b'WAVE' in header:
-            logger.info("Detected WAV format from file header")
-            return 'wav'
-        elif header.startswith(b'ID3') or header[0:2] == b'\xff\xfb':
-            logger.info("Detected MP3 format from file header")
-            return 'mp3'
+            format_info.update({
+                "detected_format": "wav",
+                "mime_type": "audio/wav",
+                "confidence": "high"
+            })
         elif header.startswith(b'\x1a\x45\xdf\xa3'):
-            logger.info("Detected WebM format from file header")
-            return 'webm'
+            format_info.update({
+                "detected_format": "webm", 
+                "mime_type": "audio/webm",
+                "confidence": "high"
+            })
+        elif header.startswith(b'ID3') or header[:2] in [b'\xff\xfb', b'\xff\xfa']:
+            format_info.update({
+                "detected_format": "mp3",
+                "mime_type": "audio/mpeg", 
+                "confidence": "high"
+            })
         elif header[4:8] == b'ftyp':
-            logger.info("Detected MP4/M4A format from file header")
-            return 'mp4'
+            format_info.update({
+                "detected_format": "mp4",
+                "mime_type": "audio/mp4",
+                "confidence": "high"
+            })
         elif header.startswith(b'OggS'):
-            logger.info("Detected OGG format from file header")
-            return 'ogg'
+            format_info.update({
+                "detected_format": "ogg",
+                "mime_type": "audio/ogg",
+                "confidence": "high"
+            })
+        else:
+            # Fallback to extension
+            extension_mapping = {
+                '.wav': ('wav', 'audio/wav'),
+                '.mp3': ('mp3', 'audio/mpeg'),
+                '.m4a': ('mp4', 'audio/mp4'),
+                '.mp4': ('mp4', 'audio/mp4'),
+                '.ogg': ('ogg', 'audio/ogg'),
+                '.webm': ('webm', 'audio/webm')
+            }
+            
+            if file_ext in extension_mapping:
+                fmt, mime = extension_mapping[file_ext]
+                format_info.update({
+                    "detected_format": fmt,
+                    "mime_type": mime,
+                    "confidence": "medium"
+                })
+            else:
+                # Final fallback
+                format_info.update({
+                    "detected_format": "webm",
+                    "mime_type": "audio/webm", 
+                    "confidence": "low"
+                })
         
-        # Default fallback - assume it's WebM since that's what our frontend produces
-        logger.warning(f"Could not detect format, defaulting to webm for file: {file_path}")
-        return 'webm'
+        logger.info(f"Audio format detection: {format_info}")
+        return format_info
         
     except Exception as e:
         logger.error(f"Error detecting audio format: {e}")
-        return 'webm'  # Safe default
+        return {
+            "extension": ".unknown",
+            "detected_format": "webm",
+            "mime_type": "audio/webm",
+            "confidence": "fallback",
+            "error": str(e)
+        }
 
-def _b64_from_path(file_path: str) -> tuple[str, str]:
-    """Convert file to base64 and return (base64_data, format)"""
+def _validate_audio_file(file_path: str) -> dict:
+    """Validate audio file before processing"""
     try:
-        # Detect the audio format
-        audio_format = _detect_audio_format(file_path)
+        file_path = Path(file_path)
         
-        # Read the file directly - no conversion needed!
+        if not file_path.exists():
+            return {"valid": False, "error": "File does not exist"}
+        
+        file_size = file_path.stat().st_size
+        
+        # Check minimum size (1KB)
+        if file_size < 1000:
+            return {
+                "valid": False, 
+                "error": f"File too small: {file_size} bytes. Minimum 1KB required.",
+                "file_size": file_size
+            }
+        
+        # Check maximum size (50MB)
+        if file_size > 50 * 1024 * 1024:
+            return {
+                "valid": False,
+                "error": f"File too large: {file_size} bytes. Maximum 50MB allowed.",
+                "file_size": file_size
+            }
+        
+        # Try to read file
+        try:
+            with open(file_path, 'rb') as f:
+                header = f.read(16)
+            
+            if len(header) == 0:
+                return {"valid": False, "error": "File is empty"}
+                
+        except Exception as e:
+            return {"valid": False, "error": f"Cannot read file: {e}"}
+        
+        return {
+            "valid": True,
+            "file_size": file_size,
+            "readable": True
+        }
+        
+    except Exception as e:
+        return {"valid": False, "error": f"Validation error: {e}"}
+
+def _b64_from_path_enhanced(file_path: str) -> tuple[str, str, dict]:
+    """Enhanced conversion with validation and detailed logging"""
+    try:
+        # Validate file first
+        validation = _validate_audio_file(file_path)
+        if not validation["valid"]:
+            raise ValueError(f"Audio validation failed: {validation['error']}")
+        
+        # Detect format
+        format_info = _detect_audio_format_enhanced(file_path)
+        audio_format = format_info["detected_format"]
+        
+        logger.info(f"Processing audio file: {file_path}")
+        logger.info(f"File size: {validation['file_size']} bytes")
+        logger.info(f"Detected format: {audio_format} (confidence: {format_info['confidence']})")
+        
+        # Read the file
         with open(file_path, "rb") as f:
             audio_data = f.read()
         
-        logger.info(f"Audio file size: {len(audio_data)} bytes, format: {audio_format}")
+        if len(audio_data) == 0:
+            raise ValueError("Audio file is empty")
+        
+        if len(audio_data) != validation["file_size"]:
+            logger.warning(f"File size mismatch: expected {validation['file_size']}, got {len(audio_data)}")
         
         # Convert to base64
         base64_data = base64.b64encode(audio_data).decode("utf-8")
-        logger.info(f"Base64 length: {len(base64_data)} characters")
         
-        return base64_data, audio_format
+        processing_info = {
+            "original_size": len(audio_data),
+            "base64_length": len(base64_data),
+            "format_info": format_info,
+            "validation": validation
+        }
+        
+        logger.info(f"Base64 conversion complete: {len(base64_data)} characters")
+        
+        return base64_data, audio_format, processing_info
         
     except Exception as e:
         logger.error(f"Error processing audio file {file_path}: {e}")
         raise
 
 def lc_unscripted_sync(audio_input, question: str = None, context_description: str = None, accent: str = "us", user_metadata: dict = None):
-    """Call Language Confidence unscripted speech assessment API synchronously"""
+    """Enhanced unscripted speech assessment with better error handling"""
     
     if not LC_KEY:
         logger.error("LC_API_KEY not found in environment variables")
@@ -104,14 +214,17 @@ def lc_unscripted_sync(audio_input, question: str = None, context_description: s
     url = f"{LC_BASE}/speech-assessment/unscripted/{accent}"
     
     try:
-        # Handle file path input
+        # Handle file path input with enhanced processing
         if isinstance(audio_input, str):
-            if not os.path.exists(audio_input):
-                logger.error(f"Audio file does not exist: {audio_input}")
-                return {"error": "file_not_found", "message": f"Audio file not found: {audio_input}"}
-            
             logger.info(f"Processing audio file for unscripted assessment: {audio_input}")
-            audio_base64, audio_format = _b64_from_path(audio_input)
+            audio_base64, audio_format, processing_info = _b64_from_path_enhanced(audio_input)
+            
+            # Log processing details
+            logger.info(f"Audio processing completed:")
+            logger.info(f"  - Original size: {processing_info['original_size']} bytes")
+            logger.info(f"  - Format: {audio_format}")
+            logger.info(f"  - Detection confidence: {processing_info['format_info']['confidence']}")
+            
         else:
             logger.error(f"Unsupported audio input type: {type(audio_input)}")
             return {"error": "unsupported_input", "message": "Only file paths supported currently"}
@@ -124,78 +237,98 @@ def lc_unscripted_sync(audio_input, question: str = None, context_description: s
             context["context_description"] = context_description
         
         if not context:
-            # Default context for open response
             context = {
                 "question": "Please speak about the given topic",
                 "context_description": "Free speech assessment"
             }
         
-        # Note: user_metadata is NOT included for unscripted API
         payload = {
             "audio_base64": audio_base64,
-            "audio_format": audio_format,  # Use detected format
+            "audio_format": audio_format,
             "context": context
         }
         
         logger.info(f"Calling Language Confidence unscripted API: {url}")
         logger.info(f"Context: {context}")
         logger.info(f"Audio format: {audio_format}")
-        logger.info(f"Payload keys: {list(payload.keys())}")
+        logger.info(f"Payload size: {len(str(payload))} characters")
         
-        # Make synchronous request
-        response = requests.post(url, headers=HEADERS, json=payload, timeout=90)
+        # Make request with extended timeout for larger files
+        timeout = 120 if processing_info['original_size'] > 1024*1024 else 90
+        response = requests.post(url, headers=HEADERS, json=payload, timeout=timeout)
         
-        logger.info(f"Unscripted API response status: {response.status_code}")
+        logger.info(f"API response status: {response.status_code}")
+        logger.info(f"Response headers: {dict(response.headers)}")
         
         if response.status_code >= 400:
-            logger.error(f"Language Confidence unscripted API error {response.status_code}: {response.text}")
-            return {
-                "error": "api_error", 
-                "status": response.status_code, 
-                "message": response.text[:500]
-            }
+            error_text = response.text
+            logger.error(f"Language Confidence API error {response.status_code}: {error_text}")
+            
+            # Parse common errors
+            if "audio" in error_text.lower():
+                return {
+                    "error": "audio_error",
+                    "status": response.status_code,
+                    "message": "Audio processing failed on server side",
+                    "details": error_text[:500],
+                    "processing_info": processing_info
+                }
+            else:
+                return {
+                    "error": "api_error",
+                    "status": response.status_code,
+                    "message": error_text[:500],
+                    "processing_info": processing_info
+                }
         
         result = response.json()
-        logger.info(f"Language Confidence unscripted API SUCCESS!")
-        logger.info(f"Full API response: {result}")
-        logger.info(f"Response contains {len(result.get('words', []))} words")
         
-        # Check if there's any error or message in the response
-        if "error" in result:
-            logger.error(f"API returned error: {result['error']}")
-        if "message" in result:
-            logger.info(f"API message: {result['message']}")
-        if "warnings" in result:
-            logger.warning(f"API warnings: {result['warnings']}")
+        # Enhanced result logging
+        logger.info("Language Confidence unscripted API SUCCESS!")
         
-        # Check audio processing info
-        if "metadata" in result:
-            logger.info(f"Audio metadata from API: {result['metadata']}")
+        if "words" in result:
+            word_count = len(result["words"])
+            logger.info(f"Response contains {word_count} words")
+            
+            if word_count == 0:
+                logger.warning("No words detected in audio!")
+                logger.warning("Possible issues:")
+                logger.warning("  - Audio contains no speech")
+                logger.warning("  - Audio is too quiet/low quality")
+                logger.warning(f"  - Format incompatibility (using {audio_format})")
+                logger.warning("  - Language detection issues")
+                
+                result["processing_info"] = processing_info
+                result["warnings"] = ["No speech detected in audio"]
+            else:
+                # Log sample words for verification
+                for i, word in enumerate(result["words"][:3]):
+                    word_text = word.get("word_text", word.get("text", ""))
+                    phoneme_count = len(word.get("phonemes", []))
+                    logger.info(f"  Word {i+1}: '{word_text}' ({phoneme_count} phonemes)")
         
-        # Log some details about the response
-        if "words" in result and result["words"]:
-            for i, word in enumerate(result["words"][:3]):  # Log first 3 words
-                word_text = word.get("word_text", word.get("text", ""))
-                phoneme_count = len(word.get("phonemes", []))
-                logger.info(f"  Word {i+1}: '{word_text}' ({phoneme_count} phonemes)")
-        else:
-            logger.warning("No words detected in audio! Possible issues:")
-            logger.warning("  - Audio might be too quiet")
-            logger.warning("  - Audio might be silence/no speech")
-            logger.warning("  - Audio format might be incompatible")
-            logger.warning("  - Speech might be in wrong language")
+        # Add processing metadata to result
+        result["audio_processing_info"] = processing_info
         
         return result
         
     except requests.exceptions.Timeout:
-        logger.error("Language Confidence unscripted API request timed out")
-        return {"error": "timeout", "message": "API request timed out"}
+        logger.error(f"Language Confidence API request timed out (timeout: {timeout}s)")
+        return {
+            "error": "timeout", 
+            "message": f"API request timed out after {timeout} seconds",
+            "processing_info": processing_info if 'processing_info' in locals() else None
+        }
     except Exception as e:
-        logger.error(f"Error calling Language Confidence unscripted API: {e}")
-        return {"error": "client_error", "message": str(e)}
+        logger.error(f"Error calling Language Confidence API: {e}")
+        return {
+            "error": "client_error", 
+            "message": str(e),
+            "processing_info": processing_info if 'processing_info' in locals() else None
+        }
 
 def lc_pronunciation_sync(audio_input, expected_text: str, accent: str = "us", user_metadata: dict = None):
-    """Call Language Confidence pronunciation API synchronously"""
+    """Enhanced pronunciation assessment with better error handling"""
     
     if not LC_KEY:
         logger.error("LC_API_KEY not found in environment variables")
@@ -204,14 +337,10 @@ def lc_pronunciation_sync(audio_input, expected_text: str, accent: str = "us", u
     url = f"{LC_BASE}/pronunciation/{accent}"
     
     try:
-        # Handle file path input
+        # Handle file path input with enhanced processing
         if isinstance(audio_input, str):
-            if not os.path.exists(audio_input):
-                logger.error(f"Audio file does not exist: {audio_input}")
-                return {"error": "file_not_found", "message": f"Audio file not found: {audio_input}"}
-            
-            logger.info(f"Processing audio file: {audio_input}")
-            audio_base64, audio_format = _b64_from_path(audio_input)
+            logger.info(f"Processing audio file for pronunciation assessment: {audio_input}")
+            audio_base64, audio_format, processing_info = _b64_from_path_enhanced(audio_input)
         else:
             logger.error(f"Unsupported audio input type: {type(audio_input)}")
             return {"error": "unsupported_input", "message": "Only file paths supported currently"}
@@ -226,49 +355,68 @@ def lc_pronunciation_sync(audio_input, expected_text: str, accent: str = "us", u
         
         payload = {
             "audio_base64": audio_base64,
-            "audio_format": audio_format,  # Use detected format
+            "audio_format": audio_format,
             "expected_text": expected_text,
             "user_metadata": user_metadata
         }
         
-        logger.info(f"Calling Language Confidence API: {url}")
+        logger.info(f"Calling Language Confidence pronunciation API: {url}")
         logger.info(f"Expected text: '{expected_text}'")
         logger.info(f"Audio format: {audio_format}")
         
-        # Make synchronous request
-        response = requests.post(url, headers=HEADERS, json=payload, timeout=60)
+        # Make request
+        response = requests.post(url, headers=HEADERS, json=payload, timeout=90)
         
         logger.info(f"API response status: {response.status_code}")
         
         if response.status_code >= 400:
-            logger.error(f"Language Confidence API error {response.status_code}: {response.text}")
+            error_text = response.text
+            logger.error(f"Language Confidence API error {response.status_code}: {error_text}")
             return {
-                "error": "api_error", 
-                "status": response.status_code, 
-                "message": response.text[:500]
+                "error": "api_error",
+                "status": response.status_code,
+                "message": error_text[:500],
+                "processing_info": processing_info
             }
         
         result = response.json()
-        logger.info(f"Language Confidence API SUCCESS!")
-        logger.info(f"Response contains {len(result.get('words', []))} words")
+        logger.info("Language Confidence pronunciation API SUCCESS!")
         
-        # Log some details about the response
         if "words" in result:
-            for i, word in enumerate(result["words"][:3]):  # Log first 3 words
+            word_count = len(result["words"])
+            logger.info(f"Response contains {word_count} words")
+            
+            # Log sample words
+            for i, word in enumerate(result["words"][:3]):
                 word_text = word.get("word_text", word.get("text", ""))
                 phoneme_count = len(word.get("phonemes", []))
                 logger.info(f"  Word {i+1}: '{word_text}' ({phoneme_count} phonemes)")
         
+        # Add processing metadata
+        result["audio_processing_info"] = processing_info
+        
         return result
         
     except requests.exceptions.Timeout:
-        logger.error("Language Confidence API request timed out")
-        return {"error": "timeout", "message": "API request timed out"}
+        logger.error("Language Confidence pronunciation API request timed out")
+        return {
+            "error": "timeout", 
+            "message": "API request timed out",
+            "processing_info": processing_info if 'processing_info' in locals() else None
+        }
     except Exception as e:
-        logger.error(f"Error calling Language Confidence API: {e}")
-        return {"error": "client_error", "message": str(e)}
+        logger.error(f"Error calling Language Confidence pronunciation API: {e}")
+        return {
+            "error": "client_error", 
+            "message": str(e),
+            "processing_info": processing_info if 'processing_info' in locals() else None
+        }
 
 # Keep async version for compatibility
+async def lc_unscripted(audio_input, question: str = None, context_description: str = None, accent: str = "us", user_metadata: dict = None):
+    """Async wrapper around enhanced sync function"""
+    return lc_unscripted_sync(audio_input, question, context_description, accent, user_metadata)
+
 async def lc_pronunciation(audio_input, expected_text: str, accent: str = "us", user_metadata: dict = None):
-    """Async wrapper around sync function"""
+    """Async wrapper around enhanced sync function"""
     return lc_pronunciation_sync(audio_input, expected_text, accent, user_metadata)
