@@ -1,12 +1,6 @@
 // Enhanced ListenMCQQuestion.jsx that works with external timer
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Volume2,
-  Play,
-  Pause,
-  RotateCcw,
-  CheckCircle,
-} from "lucide-react";
+import { Volume2, Play, Pause, RotateCcw, CheckCircle } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 
 const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
@@ -33,20 +27,17 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   }, [question.q_id]);
 
   const handleAudioPlay = async () => {
-    if (!audioRef.current || playCount >= MAX_PLAYS) return;
+    if (!audioRef.current || isLoading || isPlaying) return;
 
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      setIsLoading(true);
-      try {
-        await audioRef.current.play();
-        setPlayCount((prev) => prev + 1);
-      } catch (error) {
-        console.error("Audio play error:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+    try {
+      audioRef.current.currentTime = 0; // Always start from beginning
+      await audioRef.current.play();
+      setPlayCount((prev) => prev + 1);
+    } catch (error) {
+      console.error("Audio play error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -68,21 +59,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const handleSubmit = () => {
     if (selectedAnswer && !disabled) {
       onSubmit(selectedAnswer);
-    }
-  };
-
-  const handleReplay = async () => {
-    if (!audioRef.current || playCount >= MAX_PLAYS) return;
-
-    setIsLoading(true);
-    try {
-      audioRef.current.currentTime = 0;
-      await audioRef.current.play();
-      setPlayCount((prev) => prev + 1);
-    } catch (error) {
-      console.error("Audio replay error:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -125,7 +101,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               Listen Carefully
             </h3>
           </div>
-
           {/* Play Counter */}
           <div className="flex items-center justify-center mb-6">
             <div className="bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 border border-green-200">
@@ -138,7 +113,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               </div>
             </div>
           </div>
-
           {/* Hidden Audio Element */}
           <audio
             ref={audioRef}
@@ -157,44 +131,25 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               </>
             )}
           </audio>
-
-          {/* Audio Controls */}
-          <div className="flex items-center justify-center space-x-4">
+          /* Audio Controls */
+          <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={!canPlay || isLoading || !audioUrl}
+              disabled={isLoading || !audioUrl || isPlaying}
               className={`
-                relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
-                ${
-                  canPlay && !isLoading && audioUrl
-                    ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }
-              `}
+      relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
+      ${
+        !isLoading && audioUrl && !isPlaying
+          ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
+          : "bg-gray-300 text-gray-500 cursor-not-allowed"
+      }
+    `}
             >
               {isLoading ? (
                 <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
-              ) : isPlaying ? (
-                <Pause className="w-7 h-7 mx-auto" />
               ) : (
                 <Play className="w-7 h-7 mx-auto ml-5" />
               )}
-            </button>
-
-            <button
-              onClick={handleReplay}
-              disabled={!canPlay || isLoading || !audioUrl}
-              className={`
-                w-12 h-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md
-                ${
-                  canPlay && !isLoading && audioUrl
-                    ? "bg-white/80 backdrop-blur-sm hover:bg-white text-green-600 border-2 border-green-300 hover:border-green-400"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed border-2 border-gray-300"
-                }
-              `}
-              title="Replay from beginning"
-            >
-              <RotateCcw className="w-5 h-5 mx-auto" />
             </button>
           </div>
         </div>
@@ -244,8 +199,9 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       {/* Debug info in development */}
       {process.env.NODE_ENV === "development" && (
         <div className="text-xs text-gray-400 mt-4">
-          Question ID: {question.q_id} | Selected: {selectedAnswer || "None"} | 
-          Plays: {playCount}/{MAX_PLAYS} | Audio: {audioUrl ? "Loaded" : "Not loaded"}
+          Question ID: {question.q_id} | Selected: {selectedAnswer || "None"} |
+          Plays: {playCount}/{MAX_PLAYS} | Audio:{" "}
+          {audioUrl ? "Loaded" : "Not loaded"}
         </div>
       )}
     </div>

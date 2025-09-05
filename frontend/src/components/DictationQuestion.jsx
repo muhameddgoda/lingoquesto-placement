@@ -1,15 +1,17 @@
-// Enhanced DictationQuestion.jsx with spell check disabled
+// Enhanced DictationQuestion.jsx with TextInput component and single play button
 import React, { useState, useRef, useEffect } from "react";
-import { Volume2, Play, Pause, RotateCcw, Send, Clock } from "lucide-react";
+import { Volume2, Play, Send, Clock } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
+import TextInput from "./TextInput";
 
 const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [userInput, setUserInput] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  
   const audioRef = useRef(null);
-  const textareaRef = useRef(null);
+  const textInputRef = useRef(null);
   const MAX_PLAYS = 3;
 
   useEffect(() => {
@@ -18,6 +20,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
+    
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -25,31 +28,29 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     }
 
     // Focus on textarea when question loads
-    if (textareaRef.current) {
-      textareaRef.current.focus();
+    if (textInputRef.current) {
+      textInputRef.current.focus();
     }
   }, [question.audio_ref]);
 
   const handleAudioPlay = async () => {
-    if (!audioRef.current || playCount >= MAX_PLAYS) return;
+    if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS) return;
 
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      setIsLoading(true);
-      try {
-        await audioRef.current.play();
-        setPlayCount((prev) => prev + 1);
-      } catch (error) {
-        console.error("Audio play error:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+    try {
+      audioRef.current.currentTime = 0; // Always start from beginning
+      await audioRef.current.play();
+      setPlayCount((prev) => prev + 1);
+    } catch (error) {
+      console.error("Audio play error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleAudioEnded = () => {
     setIsPlaying(false);
+    // Allow playing again after it ends (if plays remaining)
   };
 
   const handleAudioPlayStart = () => {
@@ -63,21 +64,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     }
   };
 
-  const handleReplay = async () => {
-    if (!audioRef.current || playCount >= MAX_PLAYS) return;
-
-    setIsLoading(true);
-    try {
-      audioRef.current.currentTime = 0;
-      await audioRef.current.play();
-      setPlayCount((prev) => prev + 1);
-    } catch (error) {
-      console.error("Audio replay error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleKeyPress = (e) => {
     // Submit on Enter (but not Shift+Enter for line breaks)
     if (e.key === 'Enter' && !e.shiftKey && !disabled) {
@@ -87,7 +73,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   };
 
   const remainingPlays = MAX_PLAYS - playCount;
-  const canPlay = remainingPlays > 0 && !disabled;
+  const canPlay = remainingPlays > 0 && !disabled && !isPlaying;
 
   // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
@@ -158,8 +144,8 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             )}
           </audio>
 
-          {/* Audio Controls */}
-          <div className="flex items-center justify-center space-x-4">
+          {/* Audio Controls - Single Play Button */}
+          <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
               disabled={!canPlay || isLoading || !audioUrl}
@@ -174,66 +160,27 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             >
               {isLoading ? (
                 <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
-              ) : isPlaying ? (
-                <Pause className="w-7 h-7 mx-auto" />
               ) : (
                 <Play className="w-7 h-7 mx-auto ml-5" />
               )}
-            </button>
-
-            <button
-              onClick={handleReplay}
-              disabled={!canPlay || isLoading || !audioUrl}
-              className={`
-                w-12 h-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md
-                ${
-                  canPlay && !isLoading && audioUrl
-                    ? "bg-white/80 backdrop-blur-sm hover:bg-white text-purple-600 border-2 border-purple-300 hover:border-purple-400"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed border-2 border-gray-300"
-                }
-              `}
-              title="Replay from beginning"
-            >
-              <RotateCcw className="w-5 h-5 mx-auto" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Text Input Section - Enhanced with no spell check */}
+      {/* Text Input Section - Using TextInput Component */}
       <div className="space-y-6">
-        <div className="relative">
-          <textarea
-            ref={textareaRef}
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type the sentence you heard here..."
-            className="w-full p-6 border-2 border-purple-200 rounded-2xl focus:ring-4 focus:ring-purple-200 focus:border-purple-400 resize-none text-lg transition-all duration-200 bg-white/50 backdrop-blur-sm"
-            rows={4}
-            disabled={disabled}
-            // Disable spell check and related features
-            spellCheck={false}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            data-gramm="false" // Disable Grammarly
-            data-gramm_editor="false"
-            data-enable-grammarly="false"
-            style={{
-              // Additional CSS to disable spell check on various browsers
-              WebkitTextDecorationSkip: 'none',
-              textDecorationSkipInk: 'none'
-            }}
-          />
-
-          {/* Character counter with gradient */}
-          <div className="absolute bottom-4 right-4 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full px-3 py-1 border border-purple-200">
-            <span className="text-xs font-medium text-purple-700">
-              {userInput.length} characters
-            </span>
-          </div>
-        </div>
+        <TextInput
+          ref={textInputRef}
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Type the sentence you heard here..."
+          disabled={disabled}
+          rows={4}
+          disableSpellCheck={true}
+          showCharCount={true}
+        />
 
         {/* Helpful instruction */}
         <div className="text-center">

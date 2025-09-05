@@ -382,23 +382,6 @@ const ExamInterface = () => {
             </h1>
           </div>
 
-          {/* Timer Display - Prominent */}
-          {questionTimeLeft !== null && (
-            <div className="flex justify-center">
-              <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl border-2 text-xl font-bold ${
-                questionPhase === 'expired' ? 'bg-red-100 border-red-400 text-red-800 animate-pulse' :
-                questionPhase === 'warning' ? 'bg-orange-100 border-orange-400 text-orange-800 animate-pulse' :
-                'bg-blue-100 border-blue-400 text-blue-800'
-              }`}>
-                <Clock className="w-6 h-6" />
-                <span>
-                  {questionPhase === 'expired' ? 'Time Expired!' : `Time: ${formatTime(questionTimeLeft)}`}
-                </span>
-                {questionPhase === 'expired' && <FastForward className="w-6 h-6 animate-bounce" />}
-              </div>
-            </div>
-          )}
-
           {/* Progress */}
           <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
             <div className="flex justify-between items-center mb-4">
