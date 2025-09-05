@@ -9,10 +9,54 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(15); // Default, will be updated
+  const timerRef = useRef(null);
 
   const audioRef = useRef(null);
   const textInputRef = useRef(null);
   const MAX_PLAYS = 3;
+
+  useEffect(() => {
+    // Get timing from exam config
+    const totalTime = question.timing?.total_estimated_sec || 15; // Default 15 seconds
+    setTimeLeft(totalTime);
+
+    // Start countdown timer
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        const newTime = prevTime - 1;
+        if (newTime <= 0) {
+          clearInterval(timerRef.current);
+          // Auto-submit when time expires
+          if (userInput.trim()) {
+            onSubmit(userInput.trim());
+          } else {
+            onSubmit(""); // Submit empty if no input
+          }
+          return 0;
+        }
+        return newTime;
+      });
+    }, 1000);
+
+    // Cleanup on unmount
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [question.audio_ref, userInput, onSubmit]);
+
+  // Add formatTime function:
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
   useEffect(() => {
     // Reset state when question changes
@@ -100,10 +144,36 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
       {/* Timer Display */}
       <div className="flex justify-center mb-6">
-        <div className="flex items-center space-x-2 px-4 py-2 bg-purple-50 border border-purple-300 rounded-full">
-          <Clock className="w-4 h-4 text-purple-600" />
-          <span className="text-sm font-medium text-purple-600">
-            15 seconds remaining
+        <div
+          className={`flex items-center space-x-2 px-4 py-2 rounded-full border-2 ${
+            timeLeft <= 0
+              ? "bg-gray-100 border-gray-300"
+              : timeLeft <= 5
+              ? "bg-red-50 border-red-300"
+              : "bg-purple-50 border-purple-300"
+          }`}
+        >
+          <Clock
+            className={`w-4 h-4 ${
+              timeLeft <= 0
+                ? "text-gray-500"
+                : timeLeft <= 5
+                ? "text-red-600"
+                : "text-purple-600"
+            }`}
+          />
+          <span
+            className={`text-sm font-medium ${
+              timeLeft <= 0
+                ? "text-gray-500"
+                : timeLeft <= 5
+                ? "text-red-600"
+                : "text-purple-600"
+            }`}
+          >
+            {timeLeft <= 0
+              ? "Time expired"
+              : `${formatTime(timeLeft)} remaining`}
           </span>
         </div>
       </div>
