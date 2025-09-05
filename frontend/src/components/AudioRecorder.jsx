@@ -200,6 +200,18 @@ const AudioRecorder = ({
     }
   };
 
+  const playAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
+
   const startNewRecording = async () => {
     // Clear previous recording
     if (audioUrl) {
@@ -209,8 +221,8 @@ const AudioRecorder = ({
     setAudioBlob(null);
     setIsPlaying(false);
 
-    // DON'T restart timer - keep existing timer running
-    // Just start fresh recording without timer changes
+    // CRITICAL: Don't restart any timers - timer should keep running from original start
+    // Just start fresh recording WITHOUT touching the timer
     try {
       if (
         mediaRecorderRef.current &&
@@ -264,7 +276,7 @@ const AudioRecorder = ({
 
       mediaRecorderRef.current.start(1000);
       setIsRecording(true);
-      // NOTE: NO timer restart here - timer continues from where it was
+      // ABSOLUTELY NO TIMER OPERATIONS HERE - timer keeps running from original start
     } catch (error) {
       console.error("Error starting new recording:", error);
       alert("Unable to access microphone.");

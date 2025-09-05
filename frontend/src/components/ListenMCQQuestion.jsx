@@ -1,6 +1,13 @@
 // Enhanced ListenMCQQuestion.jsx that works with external timer
 import React, { useState, useRef, useEffect } from "react";
-import { Volume2, Play, Pause, RotateCcw, CheckCircle } from "lucide-react";
+import {
+  Volume2,
+  Play,
+  Pause,
+  RotateCcw,
+  CheckCircle,
+  Clock,
+} from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 
 const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
@@ -65,7 +72,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   };
 
   const remainingPlays = MAX_PLAYS - playCount;
-  const canPlay = remainingPlays > 0 && !disabled;
+  const canPlay = remainingPlays > 0 && !disabled && !isPlaying;
 
   // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
@@ -146,7 +153,9 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={!canPlay || isLoading || !audioUrl || isPlaying || playCount >= MAX_PLAYS}
+              disabled={
+                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
+              }
               className={`
       relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
       ${
