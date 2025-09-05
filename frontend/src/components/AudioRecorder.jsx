@@ -344,22 +344,28 @@ const AudioRecorder = ({ onSubmit, disabled, thinkTime = 5, responseTime = 120, 
             ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200'
             : isRecording 
               ? 'bg-gradient-to-r from-red-50 to-pink-50 border-red-200'
-              : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200'
+              : isSubmitting
+                ? 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200'
+                : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200'
         }`}>
           <p className={`font-medium ${
             phase === 'thinking' 
               ? 'text-yellow-800'
               : isRecording 
                 ? 'text-red-800'
-                : 'text-blue-800'
+                : isSubmitting
+                  ? 'text-gray-700'
+                  : 'text-blue-800'
           }`}>
             {phase === 'thinking' 
-              ? '🤔 Thinking time: Prepare your answer. Recording will start automatically.'
-              : isRecording 
-                ? '🎙️ Recording now: Speak clearly into your microphone. You can stop early or submit directly.'
-                : audioBlob 
-                  ? '✅ Recording complete: You can play your recording, record again, or submit.'
-                  : '🎯 Ready to record your response.'
+              ? 'Thinking time: Prepare your answer. Recording will start automatically.'
+              : isSubmitting
+                ? 'Submitting your response...'
+                : isRecording 
+                  ? 'Recording now: Speak clearly into your microphone. You can stop early or submit directly.'
+                  : audioBlob 
+                    ? 'Recording complete: You can play your recording, record again, or submit.'
+                    : 'Ready to record your response.'
             }
           </p>
         </div>

@@ -131,7 +131,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
               </>
             )}
           </audio>
-          /* Audio Controls */
           <div className="flex items-center justify-center">
             <button
               onClick={handleAudioPlay}
