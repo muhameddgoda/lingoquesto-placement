@@ -1,5 +1,5 @@
-// frontend/src/components/ExamInterface.jsx
-import React, { useState } from "react";
+// Enhanced ExamInterface.jsx with automatic timing
+import React, { useState, useEffect, useRef } from "react";
 import {
   Play,
   Award,
@@ -15,6 +15,8 @@ import {
   BookOpen,
   Headphones,
   Image,
+  AlertTriangle,
+  FastForward
 } from "lucide-react";
 import AudioRecorder from "./AudioRecorder";
 import MCQQuestion from "./MCQQuestion";
@@ -30,21 +32,123 @@ const ExamInterface = () => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [finalReport, setFinalReport] = useState(null);
+  
+  // Timing states
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(null);
+  const [questionPhase, setQuestionPhase] = useState('ready'); // 'ready', 'active', 'warning', 'expired'
+  const [hasUserStarted, setHasUserStarted] = useState(false);
+  const [userResponse, setUserResponse] = useState(null);
+  
+  const questionTimerRef = useRef(null);
+  const autoSubmitTimeoutRef = useRef(null);
 
-  // Mock current question for demo
-  const mockQuestion = {
-    q_id: "A1-OR-1",
-    current_level: "A1",
-    question_number: 1,
-    total_questions_in_level: 5,
-    q_type: "open_response",
-    prompt:
-      "Tell me about your hobbies. What do you like to do in your free time?",
-    timing: {
-      think_time_sec: 8,
-      response_time_sec: 120,
-      total_estimated_sec: 128,
-    },
+  // Get question timing from config
+  const getQuestionTiming = (questionType) => {
+    const timingConfig = {
+      repeat_sentence: { total: 18, warning_at: 5 },
+      minimal_pair: { total: 12, warning_at: 3 },
+      dictation: { total: 15, warning_at: 5 },
+      listen_mcq: { total: 30, warning_at: 10 },
+      image_description: { total: 90, warning_at: 20 },
+      open_response: { total: 150, warning_at: 30 },
+      best_response_mcq: { total: 30, warning_at: 10 },
+      sequence: { total: 20, warning_at: 5 },
+      listen_answer: { total: 30, warning_at: 10 }
+    };
+    
+    return timingConfig[questionType] || { total: 30, warning_at: 10 };
+  };
+
+  // Start question timer automatically when question loads
+  useEffect(() => {
+    if (currentQuestion && examState === "in_progress") {
+      const timing = getQuestionTiming(currentQuestion.q_type);
+      setQuestionTimeLeft(timing.total);
+      setQuestionPhase('active');
+      setHasUserStarted(false);
+      setUserResponse(null);
+      
+      startQuestionTimer(timing.total, timing.warning_at);
+    }
+    
+    return () => {
+      clearTimers();
+    };
+  }, [currentQuestion?.q_id]);
+
+  const clearTimers = () => {
+    if (questionTimerRef.current) {
+      clearInterval(questionTimerRef.current);
+      questionTimerRef.current = null;
+    }
+    if (autoSubmitTimeoutRef.current) {
+      clearTimeout(autoSubmitTimeoutRef.current);
+      autoSubmitTimeoutRef.current = null;
+    }
+  };
+
+  const startQuestionTimer = (totalTime, warningTime) => {
+    clearTimers();
+    
+    questionTimerRef.current = setInterval(() => {
+      setQuestionTimeLeft(prevTime => {
+        const newTime = prevTime - 1;
+        
+        // Update phase based on remaining time
+        if (newTime <= 0) {
+          setQuestionPhase('expired');
+          clearInterval(questionTimerRef.current);
+          
+          // Auto-submit after 2 seconds grace period
+          autoSubmitTimeoutRef.current = setTimeout(() => {
+            handleAutoSubmit();
+          }, 2000);
+          
+          return 0;
+        } else if (newTime <= warningTime) {
+          setQuestionPhase('warning');
+        }
+        
+        return newTime;
+      });
+    }, 1000);
+  };
+
+  const handleAutoSubmit = () => {
+    console.log('Auto-submitting due to time expiry');
+    
+    if (userResponse) {
+      // User has provided a response, submit it
+      submitResponseInternal(userResponse);
+    } else {
+      // No response provided, submit empty/default response
+      const defaultResponse = getDefaultResponse(currentQuestion.q_type);
+      submitResponseInternal(defaultResponse);
+    }
+  };
+
+  const getDefaultResponse = (questionType) => {
+    switch (questionType) {
+      case 'dictation':
+      case 'open_response':
+      case 'listen_answer':
+        return { response_type: "text", response_data: "" };
+      case 'listen_mcq':
+      case 'best_response_mcq':
+        return { response_type: "text", response_data: "" };
+      case 'repeat_sentence':
+      case 'minimal_pair':
+      case 'image_description':
+        return { response_type: "audio", audio_file_path: null };
+      default:
+        return { response_type: "text", response_data: "" };
+    }
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   const startExam = async () => {
@@ -65,19 +169,27 @@ const ExamInterface = () => {
       console.error("Failed to start exam:", error);
       // For demo, use mock data
       setSessionId("session123");
-      setCurrentQuestion(mockQuestion);
+      setCurrentQuestion({
+        q_id: "A1-OR-1",
+        current_level: "A1",
+        question_number: 1,
+        total_questions_in_level: 5,
+        q_type: "open_response",
+        prompt: "Tell me about your hobbies. What do you like to do in your free time?",
+        timing: { think_time_sec: 8, response_time_sec: 120, total_estimated_sec: 128 }
+      });
       setExamState("in_progress");
     }
   };
 
-  // In your ExamInterface.jsx, replace the submitResponse function with this:
-
-  const submitResponse = async (responseData) => {
+  const submitResponseInternal = async (responseData) => {
+    if (isProcessing) return; // Prevent double submission
+    
+    clearTimers();
     setIsProcessing(true);
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/exam/submit-response`, {
-        // Added API_BASE_URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -96,7 +208,9 @@ const ExamInterface = () => {
           setFinalReport(data.final_report);
           setExamState("completed");
         } else {
+          // Move to next question immediately
           setCurrentQuestion(data.next_question);
+          setQuestionPhase('ready');
         }
       }
     } catch (error) {
@@ -111,7 +225,18 @@ const ExamInterface = () => {
     }
   };
 
-  // Also fix the handleAudioSubmit function:
+  // Modified submit handlers that store response but don't submit immediately
+  const handleResponseReady = (responseData) => {
+    setUserResponse(responseData);
+    setHasUserStarted(true);
+  };
+
+  const handleManualSubmit = () => {
+    if (userResponse && !isProcessing) {
+      submitResponseInternal(userResponse);
+    }
+  };
+
   const handleAudioSubmit = async (audioBlob) => {
     const formData = new FormData();
     formData.append("audio", audioBlob, "recording.webm");
@@ -120,7 +245,6 @@ const ExamInterface = () => {
 
     try {
       const uploadResponse = await fetch(`${API_BASE_URL}/api/upload-audio`, {
-        // Added API_BASE_URL
         method: "POST",
         body: formData,
       });
@@ -128,75 +252,65 @@ const ExamInterface = () => {
       const uploadResult = await uploadResponse.json();
 
       if (uploadResult.success) {
-        await submitResponse({
+        const responseData = {
           response_type: "audio",
           audio_file_path: uploadResult.file_path,
-        });
+        };
+        submitResponseInternal(responseData);
       }
     } catch (error) {
       console.error("Failed to upload audio:", error);
-      await submitResponse({
+      const responseData = {
         response_type: "audio",
         audio_file_path: "mock_path",
-      });
+      };
+      submitResponseInternal(responseData);
     }
   };
 
   const handleTextSubmit = async (text) => {
-    await submitResponse({
+    const responseData = {
       response_type: "text",
       response_data: text,
-    });
+    };
+    submitResponseInternal(responseData);
   };
 
   const getQuestionTypeIcon = (type) => {
     switch (type) {
-      case "open_response":
-        return <MessageSquare className="w-5 h-5" />;
-      case "image_description":
-        return <Image className="w-5 h-5" />;
-      case "mcq":
-        return <List className="w-5 h-5" />;
-      case "listen_mcq":
-        return <Headphones className="w-5 h-5" />;
-      case "dictation":
-        return <Volume2 className="w-5 h-5" />;
-      default:
-        return <MessageSquare className="w-5 h-5" />;
+      case "open_response": return <MessageSquare className="w-5 h-5" />;
+      case "image_description": return <Image className="w-5 h-5" />;
+      case "listen_mcq": case "best_response_mcq": return <List className="w-5 h-5" />;
+      case "listen_answer": return <Headphones className="w-5 h-5" />;
+      case "dictation": return <Volume2 className="w-5 h-5" />;
+      case "repeat_sentence": case "minimal_pair": return <Mic className="w-5 h-5" />;
+      default: return <MessageSquare className="w-5 h-5" />;
     }
   };
 
   const getQuestionTypeLabel = (type) => {
     switch (type) {
-      case "open_response":
-        return "Speaking Question";
-      case "image_description":
-        return "Image Description";
-      case "mcq":
-        return "Multiple Choice";
-      case "listen_mcq":
-        return "Listen & Choose";
-      case "dictation":
-        return "Dictation";
-      default:
-        return "Question";
+      case "open_response": return "Speaking Question";
+      case "image_description": return "Image Description";
+      case "listen_mcq": return "Listen & Choose";
+      case "best_response_mcq": return "Best Response";
+      case "listen_answer": return "Listen & Answer";
+      case "dictation": return "Dictation";
+      case "repeat_sentence": return "Repeat Sentence";
+      case "minimal_pair": return "Pronunciation";
+      default: return "Question";
     }
   };
 
   const getQuestionTypeColor = (type) => {
     switch (type) {
-      case "open_response":
-        return "bg-purple-100 text-purple-800 border-purple-200";
-      case "image_description":
-        return "bg-indigo-100 text-indigo-800 border-indigo-200";
-      case "mcq":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "listen_mcq":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "dictation":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+      case "open_response": return "bg-purple-100 text-purple-800 border-purple-200";
+      case "image_description": return "bg-indigo-100 text-indigo-800 border-indigo-200";
+      case "listen_mcq": case "best_response_mcq": return "bg-green-100 text-green-800 border-green-200";
+      case "listen_answer": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "dictation": return "bg-red-100 text-red-800 border-red-200";
+      case "repeat_sentence": case "minimal_pair": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      default: return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -206,7 +320,6 @@ const ExamInterface = () => {
         <div className="flex items-center justify-center min-h-screen p-6">
           <div className="max-w-3xl w-full bg-white rounded-2xl shadow-xl p-10">
             <div className="text-center space-y-8">
-              {/* Header */}
               <div className="flex items-center justify-center space-x-4 mb-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
                   <Award className="w-8 h-8 text-white" />
@@ -220,40 +333,20 @@ const ExamInterface = () => {
                 English Proficiency Assessment
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed">
-                This adaptive exam will assess your English proficiency across
-                multiple levels. The exam will automatically adjust based on
-                your performance.
+                This adaptive exam will assess your English proficiency across multiple levels. 
+                Each question has a strict time limit and will automatically advance.
               </p>
 
-              <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-8 rounded-xl border border-purple-200">
-                <h3 className="text-xl font-bold mb-6 text-gray-800">
-                  Exam Structure:
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-xl border border-red-200">
+                <h3 className="text-lg font-bold mb-4 text-red-800 flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 mr-2" />
+                  Important: Timed Exam
                 </h3>
-                <div className="grid md:grid-cols-3 gap-6 text-sm">
-                  <div className="flex flex-col items-center space-y-3">
-                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                      <Target className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <span className="font-semibold text-center">
-                      Progressive levels from A1 to C2
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center space-y-3">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <span className="font-semibold text-center">
-                      75% score required to advance
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center space-y-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                      <Brain className="w-6 h-6 text-green-600" />
-                    </div>
-                    <span className="font-semibold text-center">
-                      Speaking, listening, and multiple choice questions
-                    </span>
-                  </div>
+                <div className="text-sm text-red-700 space-y-2">
+                  <p>• Each question has a strict time limit</p>
+                  <p>• Questions advance automatically when time expires</p>
+                  <p>• No pausing or going back to previous questions</p>
+                  <p>• Prepare your answers quickly and efficiently</p>
                 </div>
               </div>
 
@@ -262,7 +355,7 @@ const ExamInterface = () => {
                 className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-12 py-4 rounded-xl text-xl font-semibold hover:from-purple-700 hover:to-blue-700 flex items-center mx-auto transition-all transform hover:scale-105 shadow-lg"
               >
                 <Play className="w-6 h-6 mr-3" />
-                Start Assessment
+                Start Timed Assessment
               </button>
             </div>
           </div>
@@ -288,6 +381,23 @@ const ExamInterface = () => {
               LingoQuesto
             </h1>
           </div>
+
+          {/* Timer Display - Prominent */}
+          {questionTimeLeft !== null && (
+            <div className="flex justify-center">
+              <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl border-2 text-xl font-bold ${
+                questionPhase === 'expired' ? 'bg-red-100 border-red-400 text-red-800 animate-pulse' :
+                questionPhase === 'warning' ? 'bg-orange-100 border-orange-400 text-orange-800 animate-pulse' :
+                'bg-blue-100 border-blue-400 text-blue-800'
+              }`}>
+                <Clock className="w-6 h-6" />
+                <span>
+                  {questionPhase === 'expired' ? 'Time Expired!' : `Time: ${formatTime(questionTimeLeft)}`}
+                </span>
+                {questionPhase === 'expired' && <FastForward className="w-6 h-6 animate-bounce" />}
+              </div>
+            </div>
+          )}
 
           {/* Progress */}
           <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
@@ -339,65 +449,30 @@ const ExamInterface = () => {
                     {getQuestionTypeLabel(currentQuestion.q_type)}
                   </span>
                 </div>
-
-                {/* Timing info for different question types */}
-                {currentQuestion.timing && (
-                  <div className="flex items-center space-x-4 text-sm text-gray-600">
-                    {(currentQuestion.q_type === "open_response" ||
-                      currentQuestion.q_type === "image_description") && (
-                      <>
-                        {currentQuestion.timing.think_time_sec && (
-                          <div className="flex items-center space-x-1">
-                            <Clock className="w-4 h-4" />
-                            <span>
-                              Think: {currentQuestion.timing.think_time_sec}s
-                            </span>
-                          </div>
-                        )}
-                        {currentQuestion.timing.response_time_sec && (
-                          <div className="flex items-center space-x-1">
-                            <Mic className="w-4 h-4" />
-                            <span>
-                              Record: {currentQuestion.timing.response_time_sec}
-                              s
-                            </span>
-                          </div>
-                        )}
-                      </>
-                    )}
-                    {(currentQuestion.q_type === "listen_mcq" ||
-                      currentQuestion.q_type === "dictation") && (
-                      <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
-                        <span>
-                          Time limit:{" "}
-                          {currentQuestion.timing.response_time_sec || 25}s
-                        </span>
-                      </div>
-                    )}
+                
+                {questionPhase === 'expired' && (
+                  <div className="flex items-center space-x-2 px-3 py-1 bg-red-100 text-red-700 rounded-full border border-red-300">
+                    <AlertTriangle className="w-4 h-4" />
+                    <span className="text-sm font-medium">Auto-submitting...</span>
                   </div>
                 )}
               </div>
 
-              {/* Question Interface - Clean routing */}
+              {/* Question Interface */}
               {currentQuestion.q_type === "image_description" ? (
                 <ImageDescription
                   question={currentQuestion}
                   onSubmit={handleAudioSubmit}
-                  disabled={isProcessing}
+                  disabled={isProcessing || questionPhase === 'expired'}
                 />
               ) : currentQuestion.q_type === "open_response" ? (
                 <>
-                  {/* Simple open response - just prompt and audio recorder */}
                   <div className="mb-6">
                     <div className="text-xl font-medium text-gray-800 mb-4">
                       {currentQuestion.prompt}
                     </div>
-
-                    {/* Additional Context */}
                     {currentQuestion.metadata?.context?.question &&
-                      currentQuestion.metadata.context.question !==
-                        currentQuestion.prompt && (
+                      currentQuestion.metadata.context.question !== currentQuestion.prompt && (
                         <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                           <p className="text-blue-800 text-sm">
                             <strong>Additional context:</strong>{" "}
@@ -406,14 +481,11 @@ const ExamInterface = () => {
                         </div>
                       )}
                   </div>
-
                   <AudioRecorder
                     onSubmit={handleAudioSubmit}
-                    disabled={isProcessing}
+                    disabled={isProcessing || questionPhase === 'expired'}
                     thinkTime={currentQuestion.timing?.think_time_sec || 30}
-                    responseTime={
-                      currentQuestion.timing?.response_time_sec || 120
-                    }
+                    responseTime={currentQuestion.timing?.response_time_sec || 120}
                     questionId={currentQuestion.q_id}
                   />
                 </>
@@ -421,19 +493,19 @@ const ExamInterface = () => {
                 <DictationQuestion
                   question={currentQuestion}
                   onSubmit={handleTextSubmit}
-                  disabled={isProcessing}
+                  disabled={isProcessing || questionPhase === 'expired'}
                 />
               ) : currentQuestion.q_type === "listen_mcq" ? (
                 <ListenMCQQuestion
                   question={currentQuestion}
                   onSubmit={handleTextSubmit}
-                  disabled={isProcessing}
+                  disabled={isProcessing || questionPhase === 'expired'}
                 />
               ) : (
                 <MCQQuestion
                   question={currentQuestion}
                   onSubmit={handleTextSubmit}
-                  disabled={isProcessing}
+                  disabled={isProcessing || questionPhase === 'expired'}
                 />
               )}
 

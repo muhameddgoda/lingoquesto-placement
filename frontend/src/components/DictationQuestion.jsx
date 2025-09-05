@@ -1,4 +1,4 @@
-// frontend/src/components/DictationQuestion.jsx
+// Enhanced DictationQuestion.jsx with spell check disabled
 import React, { useState, useRef, useEffect } from "react";
 import { Volume2, Play, Pause, RotateCcw, Send, Clock } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
@@ -9,6 +9,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef(null);
+  const textareaRef = useRef(null);
   const MAX_PLAYS = 3;
 
   useEffect(() => {
@@ -21,6 +22,11 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.load();
+    }
+
+    // Focus on textarea when question loads
+    if (textareaRef.current) {
+      textareaRef.current.focus();
     }
   }, [question.audio_ref]);
 
@@ -72,12 +78,19 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    // Submit on Enter (but not Shift+Enter for line breaks)
+    if (e.key === 'Enter' && !e.shiftKey && !disabled) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
   const remainingPlays = MAX_PLAYS - playCount;
   const canPlay = remainingPlays > 0 && !disabled;
 
-  // Get audio reference and construct URL (fixed variable naming)
+  // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
-  // Remove 'audio/' prefix if it exists
   const cleanAudioFileName = audioFileName?.startsWith("audio/")
     ? audioFileName.substring(6)
     : audioFileName;
@@ -187,16 +200,31 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         </div>
       </div>
 
-      {/* Text Input Section */}
+      {/* Text Input Section - Enhanced with no spell check */}
       <div className="space-y-6">
         <div className="relative">
           <textarea
+            ref={textareaRef}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="Type the sentence you heard here..."
             className="w-full p-6 border-2 border-purple-200 rounded-2xl focus:ring-4 focus:ring-purple-200 focus:border-purple-400 resize-none text-lg transition-all duration-200 bg-white/50 backdrop-blur-sm"
             rows={4}
             disabled={disabled}
+            // Disable spell check and related features
+            spellCheck={false}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            data-gramm="false" // Disable Grammarly
+            data-gramm_editor="false"
+            data-enable-grammarly="false"
+            style={{
+              // Additional CSS to disable spell check on various browsers
+              WebkitTextDecorationSkip: 'none',
+              textDecorationSkipInk: 'none'
+            }}
           />
 
           {/* Character counter with gradient */}
@@ -205,6 +233,13 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
               {userInput.length} characters
             </span>
           </div>
+        </div>
+
+        {/* Helpful instruction */}
+        <div className="text-center">
+          <p className="text-sm text-gray-600">
+            Type exactly what you hear. Press Enter to submit, or use the button below.
+          </p>
         </div>
       </div>
 
@@ -220,8 +255,13 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         </button>
       </div>
 
-      {/* Progress indicator */}
-      {userInput.length > 0 && <div className="flex justify-center"></div>}
+      {/* Debug info in development */}
+      {process.env.NODE_ENV === "development" && (
+        <div className="text-xs text-gray-400 mt-4">
+          Audio: {audioUrl ? "Loaded" : "Not loaded"} | Plays: {playCount}/{MAX_PLAYS} | 
+          Input: {userInput.length} chars | Spell check: disabled
+        </div>
+      )}
     </div>
   );
 };

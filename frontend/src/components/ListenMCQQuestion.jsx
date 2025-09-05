@@ -1,11 +1,10 @@
-// frontend/src/components/ListenMCQQuestion.jsx
+// Enhanced ListenMCQQuestion.jsx that works with external timer
 import React, { useState, useRef, useEffect } from "react";
 import {
   Volume2,
   Play,
   Pause,
   RotateCcw,
-  Clock,
   CheckCircle,
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
@@ -15,15 +14,9 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(null);
-  const [showTimeWarning, setShowTimeWarning] = useState(false);
 
   const audioRef = useRef(null);
-  const timerRef = useRef(null);
   const MAX_PLAYS = 3;
-
-  // Get timing from question configuration
-  const responseTimeLimit = question.timing?.response_time_sec || 25; // Default 25 seconds for MCQ
 
   useEffect(() => {
     // Reset state when question changes
@@ -31,54 +24,13 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
-    setTimeRemaining(responseTimeLimit);
-    setShowTimeWarning(false);
 
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.load();
     }
-
-    // Start countdown timer
-    if (!disabled) {
-      startTimer();
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [question.q_id, disabled, responseTimeLimit]);
-
-  const startTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-
-    timerRef.current = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev <= 1) {
-          // Time's up - auto-submit current answer or empty
-          clearInterval(timerRef.current);
-          if (selectedAnswer) {
-            onSubmit(selectedAnswer);
-          } else {
-            onSubmit(""); // Submit empty answer if no selection
-          }
-          return 0;
-        }
-
-        // Show warning when 10 seconds or less remain
-        if (prev <= 10 && !showTimeWarning) {
-          setShowTimeWarning(true);
-        }
-
-        return prev - 1;
-      });
-    }, 1000);
-  };
+  }, [question.q_id]);
 
   const handleAudioPlay = async () => {
     if (!audioRef.current || playCount >= MAX_PLAYS) return;
@@ -115,9 +67,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
   const handleSubmit = () => {
     if (selectedAnswer && !disabled) {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
       onSubmit(selectedAnswer);
     }
   };
@@ -140,15 +89,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const remainingPlays = MAX_PLAYS - playCount;
   const canPlay = remainingPlays > 0 && !disabled;
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
   // Get audio reference and construct URL
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
-  // Remove 'audio/' prefix if it exists
   const cleanAudioFileName = audioFileName?.startsWith("audio/")
     ? audioFileName.substring(6)
     : audioFileName;
@@ -158,28 +100,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
   return (
     <div className="space-y-8">
-      {/* Timer Display */}
-      {timeRemaining !== null && (
-        <div
-          className={`flex justify-center ${
-            showTimeWarning ? "animate-pulse" : ""
-          }`}
-        >
-          <div
-            className={`flex items-center space-x-2 px-4 py-2 rounded-full border-2 ${
-              showTimeWarning
-                ? "bg-red-50 border-red-300 text-red-700"
-                : "bg-blue-50 border-blue-300 text-blue-700"
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            <span className="font-medium">
-              Time remaining: {formatTime(timeRemaining)}
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* Question Prompt */}
       <div className="text-center">
         <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -324,8 +244,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       {/* Debug info in development */}
       {process.env.NODE_ENV === "development" && (
         <div className="text-xs text-gray-400 mt-4">
-          Question ID: {question.q_id} | Selected: {selectedAnswer || "None"} |
-          Time: {timeRemaining}s | Plays: {playCount}/{MAX_PLAYS}
+          Question ID: {question.q_id} | Selected: {selectedAnswer || "None"} | 
+          Plays: {playCount}/{MAX_PLAYS} | Audio: {audioUrl ? "Loaded" : "Not loaded"}
         </div>
       )}
     </div>
