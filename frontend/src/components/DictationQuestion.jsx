@@ -1,5 +1,5 @@
 // Enhanced DictationQuestion.jsx with TextInput component and single play button
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Volume2, Play, Send, Clock } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
@@ -49,7 +49,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         clearInterval(timerRef.current);
       }
     };
-  }, [question.audio_ref]);
+  }, [question.audio_ref, userInput, onSubmit]);
 
   // Add formatTime function:
   const formatTime = (seconds) => {
@@ -57,29 +57,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
-
-  // Add this after your useState declarations:
-  const handleAutoSubmit = useCallback(() => {
-    console.log("Auto-submitting Dictation:", userInput);
-    if (userInput.trim()) {
-      onSubmit(userInput.trim());
-    } else {
-      onSubmit(""); // Submit empty if no input
-    }
-  }, [userInput, onSubmit]);
-
-  // Then update your timer logic in useEffect:
-  timerRef.current = setInterval(() => {
-    setTimeLeft((prevTime) => {
-      const newTime = prevTime - 1;
-      if (newTime <= 0) {
-        clearInterval(timerRef.current);
-        handleAutoSubmit(); // Use the callback function
-        return 0;
-      }
-      return newTime;
-    });
-  }, 1000);
 
   useEffect(() => {
     // Reset state when question changes
