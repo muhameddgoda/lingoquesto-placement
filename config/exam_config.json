@@ -11,7 +11,7 @@
           "dictation": 1,
           "listen_mcq": 1,
           "best_response_mcq": 0,
-          "open_response": 0,
+          "open_response": 1,
           "image_description": 0,
           "listen_answer": 0,
           "sequence": 0
@@ -27,7 +27,7 @@
           "minimal_pair": 1,
           "sequence": 0,
           "best_response_mcq": 0,
-          "open_response": 0,
+          "open_response": 1,
           "image_description": 0,
           "listen_answer": 0
         },
