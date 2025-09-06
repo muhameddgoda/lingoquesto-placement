@@ -6,7 +6,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes describing a personal or professional challenge you faced, explaining the steps you took to overcome it and what you learned from the experience.",
+        "question": "Speak for up to 2 minutes describing a personal or professional challenge you faced, explaining the steps you took to overcome it and what you learned from the experience.",
         "context_description": "Personal development and problem-solving assessment"
       }
     }
@@ -18,7 +18,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes about a trip or vacation that was particularly memorable, including where you went, what you did, who you were with, and why it was special.",
+        "question": "Speak for up to 2 minutes about a trip or vacation that was particularly memorable, including where you went, what you did, who you were with, and why it was special.",
         "context_description": "Travel experience and narrative skills assessment"
       }
     }
@@ -30,7 +30,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes discussing both the benefits and drawbacks of using technology in education, giving specific examples and your personal opinion.",
+        "question": "Speak for up to 2 minutes discussing both the benefits and drawbacks of using technology in education, giving specific examples and your personal opinion.",
         "context_description": "Opinion and argumentation skills assessment"
       }
     }
@@ -42,7 +42,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes about your main goals for the next 5-10 years, explaining your plans, potential obstacles, and the steps you're taking to achieve them.",
+        "question": "Speak for up to 2 minutes about your main goals for the next 5-10 years, explaining your plans, potential obstacles, and the steps you're taking to achieve them.",
         "context_description": "Future planning and goal-setting assessment"
       }
     }
@@ -54,7 +54,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes about a significant decision in your life, explaining why it was important, how you made it, and what the results were.",
+        "question": "Speak for up to 2 minutes about a significant decision in your life, explaining why it was important, how you made it, and what the results were.",
         "context_description": "Decision-making and reflection skills assessment"
       }
     }
@@ -66,7 +66,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes describing a trip that you particularly enjoyed, including details about the destination, activities, and what made it special for you.",
+        "question": "Speak for up to 2 minutes describing a trip that you particularly enjoyed, including details about the destination, activities, and what made it special for you.",
         "context_description": "Travel experience narration assessment"
       }
     }
@@ -78,7 +78,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes about your personal and professional goals for the next five years, explaining how you plan to achieve them and what challenges you might face.",
+        "question": "Speak for up to 2 minutes about your personal and professional goals for the next five years, explaining how you plan to achieve them and what challenges you might face.",
         "context_description": "Future planning and goal articulation assessment"
       }
     }
@@ -90,7 +90,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes describing what you consider to be an ideal weekend, including activities you enjoy, people you spend time with, and why these weekends are special to you.",
+        "question": "Speak for up to 2 minutes describing what you consider to be an ideal weekend, including activities you enjoy, people you spend time with, and why these weekends are special to you.",
         "context_description": "Lifestyle and preference expression assessment"
       }
     }
@@ -102,7 +102,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes explaining whether you prefer working individually or as part of a team, giving reasons for your preference and examples from your experience.",
+        "question": "Speak for up to 2 minutes explaining whether you prefer working individually or as part of a team, giving reasons for your preference and examples from your experience.",
         "context_description": "Work preference and reasoning assessment"
       }
     }
@@ -114,7 +114,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 3 minutes describing a specific problem you encountered in your personal or professional life, explaining the steps you took to solve it and what you learned from the experience.",
+        "question": "Speak for up to 2 minutes describing a specific problem you encountered in your personal or professional life, explaining the steps you took to solve it and what you learned from the experience.",
         "context_description": "Problem-solving and reflection skills assessment"
       }
     }

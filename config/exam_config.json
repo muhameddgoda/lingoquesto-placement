@@ -52,9 +52,9 @@
       "B2": {
         "type_counts": {
           "open_response": 1,
-          "listen_answer": 1,
+          "listen_answer": 0,
           "dictation": 1,
-          "repeat_sentence": 0,
+          "repeat_sentence": 2,
           "minimal_pair": 0,
           "listen_mcq": 0,
           "best_response_mcq": 0,
@@ -82,10 +82,10 @@
       "C2": {
         "type_counts": {
           "open_response": 1,
-          "listen_answer": 1,
+          "listen_answer": 0,
           "sequence": 0,
-          "best_response_mcq": 0,
-          "repeat_sentence": 0,
+          "best_response_mcq": 2,
+          "repeat_sentence": 2,
           "minimal_pair": 0,
           "dictation": 0,
           "listen_mcq": 0,

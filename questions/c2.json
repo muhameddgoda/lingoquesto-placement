@@ -6,7 +6,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes presenting a sophisticated philosophical debate on free will versus determinism. Define both concepts, analyze their explanatory power for human behavior, examine the implications for moral responsibility, and present your reasoned conclusion with supporting arguments.",
+        "question": "Speak for up to 2 minutes presenting a sophisticated philosophical debate on free will versus determinism. Define both concepts, analyze their explanatory power for human behavior, examine the implications for moral responsibility, and present your reasoned conclusion with supporting arguments.",
         "context_description": "Advanced philosophical argumentation and meta-ethical reasoning"
       }
     }
@@ -18,7 +18,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes analyzing how big-data analytics transforms knowledge generation, examining epistemological issues including data bias, correlation versus causation, algorithmic opacity, and the limits of inductive reasoning in massive datasets.",
+        "question": "Speak for up to 2 minutes analyzing how big-data analytics transforms knowledge generation, examining epistemological issues including data bias, correlation versus causation, algorithmic opacity, and the limits of inductive reasoning in massive datasets.",
         "context_description": "Advanced epistemology and philosophy of science"
       }
     }
@@ -30,7 +30,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes providing a critical examination of how AI systems perpetuate and amplify social biases, analyzing specific mechanisms, real-world examples, systemic causes, and proposing comprehensive solutions involving technical, legal, and social interventions.",
+        "question": "Speak for up to 2 minutes providing a critical examination of how AI systems perpetuate and amplify social biases, analyzing specific mechanisms, real-world examples, systemic causes, and proposing comprehensive solutions involving technical, legal, and social interventions.",
         "context_description": "AI ethics and social justice analysis"
       }
     }
@@ -42,7 +42,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes presenting a nuanced ethical debate on autonomous weapons systems, examining arguments from just war theory, international humanitarian law, technological determinism, and moral agency, before articulating your reasoned position.",
+        "question": "Speak for up to 2 minutes presenting a nuanced ethical debate on autonomous weapons systems, examining arguments from just war theory, international humanitarian law, technological determinism, and moral agency, before articulating your reasoned position.",
         "context_description": "Military ethics and moral philosophy"
       }
     }
@@ -54,7 +54,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes proposing comprehensive solutions to a global health crisis by synthesizing perspectives from medicine, epidemiology, economics, sociology, political science, and ethics. Address systemic causes, implementation challenges, and long-term sustainability.",
+        "question": "Speak for up to 2 minutes proposing comprehensive solutions to a global health crisis by synthesizing perspectives from medicine, epidemiology, economics, sociology, political science, and ethics. Address systemic causes, implementation challenges, and long-term sustainability.",
         "context_description": "Interdisciplinary policy analysis and global health governance"
       }
     }
@@ -66,7 +66,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes describing a situation where you had to advocate for a sophisticated concept to a non-specialist audience, analyzing your communication strategies, addressing counterarguments, and reflecting on the challenges of translating complexity without losing nuance.",
+        "question": "Speak for up to 2 minutes describing a situation where you had to advocate for a sophisticated concept to a non-specialist audience, analyzing your communication strategies, addressing counterarguments, and reflecting on the challenges of translating complexity without losing nuance.",
         "context_description": "Advanced communication and persuasion in complex contexts"
       }
     }
@@ -78,7 +78,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes analyzing the inherent limitations of data-driven decision-making in critical situations, examining issues of measurement, context, uncertainty, human judgment, and the role of qualitative factors in complex decisions.",
+        "question": "Speak for up to 2 minutes analyzing the inherent limitations of data-driven decision-making in critical situations, examining issues of measurement, context, uncertainty, human judgment, and the role of qualitative factors in complex decisions.",
         "context_description": "Decision theory and philosophy of data science"
       }
     }
@@ -90,7 +90,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes discussing the distinction between sophisticated nuance and problematic ambiguity in argumentation, examining criteria for evaluation, the role of precision in complex discourse, and methods for assessing argumentative quality.",
+        "question": "Speak for up to 2 minutes discussing the distinction between sophisticated nuance and problematic ambiguity in argumentation, examining criteria for evaluation, the role of precision in complex discourse, and methods for assessing argumentative quality.",
         "context_description": "Advanced rhetoric and critical thinking analysis"
       }
     }
@@ -102,7 +102,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes examining how cognitive, cultural, and institutional biases shape the interpretation of historical events and scientific findings, analyzing specific examples and discussing methods for minimizing bias while acknowledging its inevitability.",
+        "question": "Speak for up to 2 minutes examining how cognitive, cultural, and institutional biases shape the interpretation of historical events and scientific findings, analyzing specific examples and discussing methods for minimizing bias while acknowledging its inevitability.",
         "context_description": "Historiography and philosophy of science"
       }
     }
@@ -114,7 +114,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 6 minutes discussing sophisticated communication strategies for conveying complex, abstract ideas to diverse audiences while maintaining intellectual integrity, examining the balance between accessibility and precision.",
+        "question": "Speak for up to 2 minutes discussing sophisticated communication strategies for conveying complex, abstract ideas to diverse audiences while maintaining intellectual integrity, examining the balance between accessibility and precision.",
         "context_description": "Advanced pedagogical communication and public intellectualism"
       }
     }

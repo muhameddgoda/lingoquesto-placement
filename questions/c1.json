@@ -128,7 +128,7 @@
       "imageRef": "c1_img_001.png",
       "imageDescription": "A politician giving a speech to a sparse audience in an empty hall",
       "context": {
-        "question": "Examine this image and provide a sophisticated analysis of what you observe. Discuss the potential implications for democratic engagement, political communication, and the relationship between leaders and citizens. Consider what this scene might represent about contemporary politics. Speak for up to 3 minutes.",
+        "question": "Examine this image and provide a sophisticated analysis of what you observe. Discuss the potential implications for democratic engagement, political communication, and the relationship between leaders and citizens. Consider what this scene might represent about contemporary politics. Speak for up to 2 minutes.",
         "context_description": "Political communication and democratic participation analysis"
       }
     }
@@ -142,7 +142,7 @@
       "imageRef": "c1_img_002.png",
       "imageDescription": "An abandoned factory overtaken by nature's vines and flowers",
       "context": {
-        "question": "Analyze this image thoughtfully, considering themes of industrial decline, environmental reclamation, economic transformation, and the relationship between human activity and nature. Discuss what this scene might symbolize about societal change. Speak for up to 3 minutes.",
+        "question": "Analyze this image thoughtfully, considering themes of industrial decline, environmental reclamation, economic transformation, and the relationship between human activity and nature. Discuss what this scene might symbolize about societal change. Speak for up to 2 minutes.",
         "context_description": "Post-industrial society and environmental themes analysis"
       }
     }
@@ -156,7 +156,7 @@
       "imageRef": "c1_img_003.png",
       "imageDescription": "Two business people shaking hands while their expressions seem tense",
       "context": {
-        "question": "Examine this business interaction critically, analyzing the disconnect between formal gestures and underlying tension. Discuss what this might reveal about professional relationships, negotiation dynamics, and the complexities of corporate communication. Speak for up to 3 minutes.",
+        "question": "Examine this business interaction critically, analyzing the disconnect between formal gestures and underlying tension. Discuss what this might reveal about professional relationships, negotiation dynamics, and the complexities of corporate communication. Speak for up to 2 minutes.",
         "context_description": "Business communication and interpersonal dynamics analysis"
       }
     }
@@ -170,7 +170,7 @@
       "imageRef": "c1_img_004.png",
       "imageDescription": "A doctor watching monitors with concern in an ICU corridor",
       "context": {
-        "question": "Provide a nuanced analysis of this medical scene, discussing the emotional and ethical dimensions of healthcare, the burden of medical responsibility, and the human elements of clinical practice. Consider the broader healthcare system implications. Speak for up to 3 minutes.",
+        "question": "Provide a nuanced analysis of this medical scene, discussing the emotional and ethical dimensions of healthcare, the burden of medical responsibility, and the human elements of clinical practice. Consider the broader healthcare system implications. Speak for up to 2 minutes.",
         "context_description": "Healthcare ethics and medical responsibility analysis"
       }
     }
@@ -184,7 +184,7 @@
       "imageRef": "c1_img_005.png",
       "imageDescription": "A refugee family walking through a train station with few belongings",
       "context": {
-        "question": "Analyze this powerful image thoughtfully, discussing themes of displacement, resilience, global migration, and human dignity. Consider the broader social, political, and humanitarian implications of forced migration in our interconnected world. Speak for up to 3 minutes.",
+        "question": "Analyze this powerful image thoughtfully, discussing themes of displacement, resilience, global migration, and human dignity. Consider the broader social, political, and humanitarian implications of forced migration in our interconnected world. Speak for up to 2 minutes.",
         "context_description": "Migration, displacement, and humanitarian issues analysis"
       }
     }
