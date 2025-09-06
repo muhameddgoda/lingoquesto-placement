@@ -168,8 +168,8 @@
     },
     "open_response": {
       "think_time_sec": 30,
-      "response_time_sec": 120,
-      "total_estimated_sec": 150
+      "response_time_sec": 90,
+      "total_estimated_sec": 120
     },
     "best_response_mcq": {
       "think_time_sec": 5,

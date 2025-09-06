@@ -25,6 +25,7 @@ import DictationQuestion from "./DictationQuestion";
 import ListenMCQQuestion from "./ListenMCQQuestion";
 import ImageDescription from "./ImageDescription";
 import { API_BASE_URL } from "../config/api";
+import ListenAnswerQuestion from "./ListenAnswerQuestion";
 
 const ExamInterface = () => {
   const [examState, setExamState] = useState("not_started");
@@ -367,7 +368,58 @@ const ExamInterface = () => {
                     disabled={isProcessing}
                     thinkTime={currentQuestion.timing?.think_time_sec || 30}
                     responseTime={
-                      currentQuestion.timing?.response_time_sec || 120
+                      currentQuestion.timing?.response_time_sec || 90
+                    }
+                    questionId={currentQuestion.q_id}
+                  />
+                </>
+              ) : currentQuestion.q_type === "listen_answer" ? (
+                <>
+                  <div className="mb-6">
+                    <div className="text-xl font-medium text-gray-800 mb-4">
+                      {currentQuestion.prompt}
+                    </div>
+                    {currentQuestion.metadata?.context?.question && (
+                      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-blue-800 text-sm">
+                          <strong>Instructions:</strong>{" "}
+                          {currentQuestion.metadata.context.question}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Audio Player for Listen Answer */}
+                  {currentQuestion.metadata?.audioRef && (
+                    <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                      <div className="flex items-center justify-center space-x-4 mb-4">
+                        <Volume2 className="w-6 h-6 text-blue-600" />
+                        <span className="font-medium text-blue-800">
+                          Listen to the question first:
+                        </span>
+                      </div>
+                      <div className="flex justify-center">
+                        <audio
+                          controls
+                          className="w-full max-w-md"
+                          src={`${API_BASE_URL}/api/audio/${currentQuestion.metadata.audioRef}`}
+                          onError={(e) => console.error("Audio error:", e)}
+                        >
+                          Your browser does not support audio playback.
+                        </audio>
+                      </div>
+                      <p className="text-center text-sm text-blue-700 mt-2">
+                        Listen carefully, then record your response below
+                      </p>
+                    </div>
+                  )}
+
+                  <AudioRecorder
+                    onSubmit={handleAudioSubmit}
+                    disabled={isProcessing}
+                    thinkTime={currentQuestion.timing?.think_time_sec || 5}
+                    responseTime={
+                      currentQuestion.timing?.response_time_sec || 25
                     }
                     questionId={currentQuestion.q_id}
                   />

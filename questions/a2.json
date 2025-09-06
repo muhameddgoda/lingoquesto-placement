@@ -827,5 +827,65 @@
       ],
       "correctAnswer": "Card, please."
     }
+  },
+  {
+    "id": "A2-OR-011",
+    "type": "open_response",
+    "prompt": "Talk about what you did last weekend.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about your last weekend. Where did you go? What activities did you do? Who did you spend time with? Did you enjoy it?",
+        "context_description": "Past experience narration and weekend activities"
+      }
+    }
+  },
+  {
+    "id": "A2-OR-012",
+    "type": "open_response",
+    "prompt": "Describe your favorite place in your town.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about a place you really like in your town or city. What is this place? Why do you like it? How often do you go there?",
+        "context_description": "Place description and personal preferences"
+      }
+    }
+  },
+  {
+    "id": "A2-OR-013",
+    "type": "open_response",
+    "prompt": "Describe a meal you cooked recently.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about something you cooked recently. What did you make? How did you prepare it? Was it difficult? Did it taste good?",
+        "context_description": "Cooking experience and food preparation narrative"
+      }
+    }
+  },
+  {
+    "id": "A2-OR-014",
+    "type": "open_response",
+    "prompt": "Talk about how you get to school or work each day.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about your daily commute. How do you travel to school or work? How long does it take? Do you like your journey? What do you see on the way?",
+        "context_description": "Daily transportation and routine description"
+      }
+    }
+  },
+  {
+    "id": "A2-OR-015",
+    "type": "open_response",
+    "prompt": "Talk about your plans for the next holiday.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about your next holiday or vacation. Where do you want to go? What do you plan to do? Who will you travel with? Why did you choose this destination?",
+        "context_description": "Future travel plans and holiday expectations"
+      }
+    }
   }
 ]

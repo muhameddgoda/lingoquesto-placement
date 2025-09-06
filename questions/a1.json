@@ -555,5 +555,65 @@
       ],
       "correctAnswer": "You're welcome!"
     }
+  },
+  {
+  "id": "A1-OR-011",
+  "type": "open_response",
+  "prompt": "Talk about your name, age and where you live.",
+  "metadata": {
+    "accent": "us",
+    "context": {
+      "question": "Speak for up to 2 minutes about yourself. Tell me your name, how old you are, and where you live. You can also mention your family or what you like to do.",
+      "context_description": "Personal introduction and basic information sharing"
+    }
   }
+},
+{
+  "id": "A1-OR-012",
+  "type": "open_response",
+  "prompt": "Describe your family members.",
+  "metadata": {
+    "accent": "us",
+    "context": {
+      "question": "Speak for up to 2 minutes about your family. Who do you live with? Tell me about your parents, brothers, sisters, or other family members.",
+      "context_description": "Family description and relationships"
+    }
+  }
+},
+{
+  "id": "A1-OR-013",
+  "type": "open_response",
+  "prompt": "Talk about your daily morning routine.",
+  "metadata": {
+    "accent": "us",
+    "context": {
+      "question": "Speak for up to 2 minutes about what you do every morning. What time do you wake up? What do you eat for breakfast? How do you get ready for the day?",
+      "context_description": "Daily routine and habits description"
+    }
+  }
+},
+{
+  "id": "A1-OR-014",
+  "type": "open_response",
+  "prompt": "Talk about your favorite food and why you like it.",
+  "metadata": {
+    "accent": "us",
+    "context": {
+      "question": "Speak for up to 2 minutes about food you really like. What is your favorite food? Why do you like it? When do you usually eat it?",
+      "context_description": "Food preferences and personal taste description"
+    }
+  }
+},
+{
+  "id": "A1-OR-015",
+  "type": "open_response",
+  "prompt": "Describe your weekend plans.",
+  "metadata": {
+    "accent": "us",
+    "context": {
+      "question": "Speak for up to 2 minutes about what you plan to do this weekend. Where will you go? Who will you see? What activities do you want to do?",
+      "context_description": "Future plans and weekend activities"
+    }
+  }
+}
 ]
