@@ -92,117 +92,117 @@
   {
     "id": "A1-MP-001",
     "type": "minimal_pair",
-    "prompt": "Say the word: sheep",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "sheep",
-      "pair": ["ship", "sheep"],
-      "target": "sheep"
+      "audioRef": "audio/a1_mp_001.wav",
+      "options": ["ship", "sheep"],
+      "correctAnswer": "sheep"
     }
   },
   {
     "id": "A1-MP-002",
     "type": "minimal_pair",
-    "prompt": "Say the word: ship",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "ship",
-      "pair": ["ship", "sheep"],
-      "target": "ship"
+      "audioRef": "audio/a1_mp_002.wav",
+      "options": ["ship", "sheep"],
+      "correctAnswer": "ship"
     }
   },
   {
     "id": "A1-MP-003",
     "type": "minimal_pair",
-    "prompt": "Say the word: cap",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "cap",
-      "pair": ["cap", "cup"],
-      "target": "cap"
+      "audioRef": "audio/a1_mp_003.wav",
+      "options": ["cap", "cup"],
+      "correctAnswer": "cap"
     }
   },
   {
     "id": "A1-MP-004",
     "type": "minimal_pair",
-    "prompt": "Say the word: cup",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "cup",
-      "pair": ["cap", "cup"],
-      "target": "cup"
+      "audioRef": "audio/a1_mp_004.wav",
+      "options": ["cap", "cup"],
+      "correctAnswer": "cup"
     }
   },
   {
     "id": "A1-MP-005",
     "type": "minimal_pair",
-    "prompt": "Say the word: bat",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "bat",
-      "pair": ["bat", "vat"],
-      "target": "bat"
+      "audioRef": "audio/a1_mp_005.wav",
+      "options": ["bat", "vat"],
+      "correctAnswer": "bat"
     }
   },
   {
     "id": "A1-MP-006",
     "type": "minimal_pair",
-    "prompt": "Say the word: vat",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "vat",
-      "pair": ["bat", "vat"],
-      "target": "vat"
+      "audioRef": "audio/a1_mp_006.wav",
+      "options": ["bat", "vat"],
+      "correctAnswer": "vat"
     }
   },
   {
     "id": "A1-MP-007",
     "type": "minimal_pair",
-    "prompt": "Say the word: sip",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "sip",
-      "pair": ["sip", "zip"],
-      "target": "sip"
+      "audioRef": "audio/a1_mp_007.wav",
+      "options": ["sip", "zip"],
+      "correctAnswer": "sip"
     }
   },
   {
     "id": "A1-MP-008",
     "type": "minimal_pair",
-    "prompt": "Say the word: zip",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "zip",
-      "pair": ["sip", "zip"],
-      "target": "zip"
+      "audioRef": "audio/a1_mp_008.wav",
+      "options": ["sip", "zip"],
+      "correctAnswer": "zip"
     }
   },
   {
     "id": "A1-MP-009",
     "type": "minimal_pair",
-    "prompt": "Say the word: think",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "think",
-      "pair": ["think", "sink"],
-      "target": "think"
+      "audioRef": "audio/a1_mp_009.wav",
+      "options": ["think", "sink"],
+      "correctAnswer": "think"
     }
   },
   {
     "id": "A1-MP-010",
     "type": "minimal_pair",
-    "prompt": "Say the word: sink",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "sink",
-      "pair": ["think", "sink"],
-      "target": "sink"
+      "audioRef": "audio/a1_mp_010.wav",
+      "options": ["think", "sink"],
+      "correctAnswer": "sink"
     }
   },
   {
     "id": "A1-DICT-001",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "The museum opens at ten o'clock.",
@@ -212,7 +212,7 @@
   {
     "id": "A1-DICT-002",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "My name is Anna.",
@@ -222,7 +222,7 @@
   {
     "id": "A1-DICT-003",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "I live in New York.",
@@ -232,7 +232,7 @@
   {
     "id": "A1-DICT-004",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "This is my friend.",
@@ -242,7 +242,7 @@
   {
     "id": "A1-DICT-005",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "I have a small dog.",
@@ -252,7 +252,7 @@
   {
     "id": "A1-DICT-006",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "He is a teacher.",
@@ -262,7 +262,7 @@
   {
     "id": "A1-DICT-007",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Where do you live?",
@@ -272,7 +272,7 @@
   {
     "id": "A1-DICT-008",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "How old are you?",
@@ -289,7 +289,6 @@
       "audioText": "Good morning! How are you?",
       "question": "What is the appropriate response?",
       "options": [
-        "I am twenty.",
         "Yes, I am.",
         "I am fine, thank you.",
         "No, I don't.",
@@ -309,7 +308,6 @@
       "question": "What is the appropriate response?",
       "options": [
         "I live in Mexico City.",
-        "I am ten.",
         "I like pizza.",
         "She is my friend.",
         "My name is Carlos."
@@ -330,7 +328,6 @@
         "Yes, I do.",
         "Nice to meet you.",
         "I'm from Brazil.",
-        "No, it isn't.",
         "I like dogs."
       ],
       "correctAnswer": "Nice to meet you."
@@ -349,7 +346,6 @@
         "I like music.",
         "Yes, I do.",
         "It is blue.",
-        "I am happy.",
         "No, he doesn't."
       ],
       "correctAnswer": "Yes, I do."
@@ -368,7 +364,6 @@
         "I'm 12 years old.",
         "I live in a house.",
         "I have a dog.",
-        "She is fine.",
         "I am at school."
       ],
       "correctAnswer": "I'm 12 years old."
@@ -557,63 +552,63 @@
     }
   },
   {
-  "id": "A1-OR-011",
-  "type": "open_response",
-  "prompt": "Talk about your name, age and where you live.",
-  "metadata": {
-    "accent": "us",
-    "context": {
-      "question": "Speak for up to 2 minutes about yourself. Tell me your name, how old you are, and where you live. You can also mention your family or what you like to do.",
-      "context_description": "Personal introduction and basic information sharing"
+    "id": "A1-OR-011",
+    "type": "open_response",
+    "prompt": "Talk about your name, age and where you live.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about yourself. Tell me your name, how old you are, and where you live. You can also mention your family or what you like to do.",
+        "context_description": "Personal introduction and basic information sharing"
+      }
+    }
+  },
+  {
+    "id": "A1-OR-012",
+    "type": "open_response",
+    "prompt": "Describe your family members.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about your family. Who do you live with? Tell me about your parents, brothers, sisters, or other family members.",
+        "context_description": "Family description and relationships"
+      }
+    }
+  },
+  {
+    "id": "A1-OR-013",
+    "type": "open_response",
+    "prompt": "Talk about your daily morning routine.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about what you do every morning. What time do you wake up? What do you eat for breakfast? How do you get ready for the day?",
+        "context_description": "Daily routine and habits description"
+      }
+    }
+  },
+  {
+    "id": "A1-OR-014",
+    "type": "open_response",
+    "prompt": "Talk about your favorite food and why you like it.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about food you really like. What is your favorite food? Why do you like it? When do you usually eat it?",
+        "context_description": "Food preferences and personal taste description"
+      }
+    }
+  },
+  {
+    "id": "A1-OR-015",
+    "type": "open_response",
+    "prompt": "Describe your weekend plans.",
+    "metadata": {
+      "accent": "us",
+      "context": {
+        "question": "Speak for up to 2 minutes about what you plan to do this weekend. Where will you go? Who will you see? What activities do you want to do?",
+        "context_description": "Future plans and weekend activities"
+      }
     }
   }
-},
-{
-  "id": "A1-OR-012",
-  "type": "open_response",
-  "prompt": "Describe your family members.",
-  "metadata": {
-    "accent": "us",
-    "context": {
-      "question": "Speak for up to 2 minutes about your family. Who do you live with? Tell me about your parents, brothers, sisters, or other family members.",
-      "context_description": "Family description and relationships"
-    }
-  }
-},
-{
-  "id": "A1-OR-013",
-  "type": "open_response",
-  "prompt": "Talk about your daily morning routine.",
-  "metadata": {
-    "accent": "us",
-    "context": {
-      "question": "Speak for up to 2 minutes about what you do every morning. What time do you wake up? What do you eat for breakfast? How do you get ready for the day?",
-      "context_description": "Daily routine and habits description"
-    }
-  }
-},
-{
-  "id": "A1-OR-014",
-  "type": "open_response",
-  "prompt": "Talk about your favorite food and why you like it.",
-  "metadata": {
-    "accent": "us",
-    "context": {
-      "question": "Speak for up to 2 minutes about food you really like. What is your favorite food? Why do you like it? When do you usually eat it?",
-      "context_description": "Food preferences and personal taste description"
-    }
-  }
-},
-{
-  "id": "A1-OR-015",
-  "type": "open_response",
-  "prompt": "Describe your weekend plans.",
-  "metadata": {
-    "accent": "us",
-    "context": {
-      "question": "Speak for up to 2 minutes about what you plan to do this weekend. Where will you go? Who will you see? What activities do you want to do?",
-      "context_description": "Future plans and weekend activities"
-    }
-  }
-}
 ]

@@ -1,11 +1,11 @@
-// ListenMCQQuestion.jsx - Complete version with consistent styling
+// MinimalPairQuestion.jsx - Listening pronunciation test component
 import React, { useState, useRef, useEffect } from "react";
 import { Volume2, Play, CheckCircle } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import { useGlobalTimer } from "../hooks/useGlobalTimer";
 import TimerDisplay from "./TimerDisplay";
 
-const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
+const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
@@ -20,10 +20,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
   // Start timer when question loads
   useEffect(() => {
-    const totalTime = question.timing?.total_estimated_sec || 45;
+    const totalTime = question.timing?.total_estimated_sec || 30;
 
     console.log(
-      "ListenMCQQuestion: Starting timer for question:",
+      "MinimalPairQuestion: Starting timer for question:",
       question.q_id
     );
 
@@ -31,7 +31,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       responseTime: totalTime,
       onTimeExpired: () => {
         console.log(
-          "ListenMCQQuestion: Time expired, auto-submitting for:",
+          "MinimalPairQuestion: Time expired, auto-submitting for:",
           question.q_id
         );
         handleAutoSubmit();
@@ -54,7 +54,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     // Cleanup function to prevent stale submissions
     return () => {
       console.log(
-        "ListenMCQQuestion: Cleaning up for question:",
+        "MinimalPairQuestion: Cleaning up for question:",
         question.q_id
       );
       stopTimer();
@@ -64,7 +64,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   // Handle auto-submit
   const handleAutoSubmit = () => {
     console.log(
-      "ListenMCQQuestion: Auto-submitting for question:",
+      "MinimalPairQuestion: Auto-submitting for question:",
       question.q_id,
       "Selected:",
       selectedAnswer
@@ -72,7 +72,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
     // Prevent double submission
     if (disabled) {
-      console.log("ListenMCQQuestion: Already disabled, skipping submission");
+      console.log("MinimalPairQuestion: Already disabled, skipping submission");
       return;
     }
 
@@ -149,17 +149,24 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     : null;
 
   return (
-    <div className="space-y-4">
-      {/* Audio Player Section with Timer */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-3 border border-gray-200/50 mb-6">
-        <div className="text-center space-y-4">
+    <div className="space-y-3">
+      {/* Question Prompt */}
+      <div className="mb-2">
+        <p className="text-md font-semibold text-gray-600">
+          Listen carefully and choose which word or phrase you hear.
+        </p>
+      </div>
+
+      {/* Audio Player Section */}
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-4 border border-amber-200/50">
+        <div className="text-center space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#967AFE] to-[#9AD0F0] rounded-lg flex items-center justify-center">
-                <Volume2 className="w-4 h-4 text-white" />
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
+                <Volume2 className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-md font-semibold text-gray-800">
-                Listen Carefully
+              <h3 className="text-lg font-semibold text-amber-800">
+                Minimal Pairs
               </h3>
             </div>
 
@@ -173,8 +180,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           </div>
 
           <div className="flex items-center justify-center">
-            <div className="bg-gray-50 rounded-lg px-3 py-1 border border-gray-200">
-              <span className="text-xs font-medium text-gray-600">
+            <div className="bg-white rounded-lg px-3 py-1 border border-amber-200">
+              <span className="text-sm font-medium text-amber-700">
                 {audioError
                   ? "Audio unavailable"
                   : `${remainingPlays} play${
@@ -204,7 +211,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
             )}
           </audio>
 
-          {/* Play Button - Smaller */}
+          {/* Play Button */}
           <div className="flex justify-center">
             <button
               onClick={handleAudioPlay}
@@ -212,18 +219,18 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
                 !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
               }
               className={`
-          w-16 h-16 rounded-full transition-all shadow-sm flex items-center justify-center
-          ${
-            !isLoading && audioUrl && canPlay
-              ? "bg-gradient-to-br from-[#967AFE] to-[#9AD0F0] hover:from-[#8B6FF7] hover:to-[#87C5EC] text-white"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }
-        `}
+    w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center
+    ${
+      !isLoading && audioUrl && canPlay
+        ? "bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
+        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+    }
+  `}
             >
               {isLoading ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                <Play className="w-5 h-5 ml-0.5" />
+                <Play className="w-6 h-6 ml-1" />
               )}
             </button>
           </div>
@@ -231,7 +238,7 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           {/* Audio Error Message */}
           {audioError && (
             <div className="text-center">
-              <p className="text-xs text-[#FF5454]">
+              <p className="text-sm text-red-600">
                 Audio could not be loaded. Please contact support if this
                 persists.
               </p>
@@ -240,62 +247,51 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
           {/* Audio Playing Indicator */}
           {isPlaying && (
-            <div className="flex items-center justify-center space-x-2 text-[#967AFE]">
-              <div className="w-2 h-2 bg-[#967AFE] rounded-full animate-pulse"></div>
-              <span className="text-xs font-medium">Playing audio...</span>
+            <div className="flex items-center justify-center space-x-2 text-amber-700">
+              <div className="w-2 h-2 bg-amber-600 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium">Playing audio...</span>
             </div>
           )}
         </div>
       </div>
 
-      {/* MCQ Options - 2x2 Grid with smaller boxes */}
-      <div className="grid grid-cols-2 gap-3">
-        {question.options?.map((option, index) => {
-          // Different gradient colors for each option
-          const gradients = [
-            "border-[#967AFE] bg-gradient-to-br from-[#967AFE]/10 to-[#9AD0F0]/10", // Purple to Blue
-            "border-[#FFAF54] bg-gradient-to-br from-[#FFAF54]/10 to-[#FF82AC]/10", // Orange to Pink
-            "border-[#48D19C] bg-gradient-to-br from-[#48D19C]/10 to-[#9AD0F0]/10", // Green to Blue
-            "border-[#FF82AC] bg-gradient-to-br from-[#FF82AC]/10 to-[#FFAF54]/10", // Pink to Orange
-          ];
-
-          const selectedGradient = gradients[index % gradients.length];
-
-          return (
-            <label
-              key={index}
-              className={`
-          flex items-center justify-center space-x-2 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 text-center min-h-[80px]
-          ${
-            selectedAnswer === option
-              ? selectedGradient + " shadow-md transform scale-[1.02]"
-              : "border-gray-200 hover:border-[#967AFE]/50 hover:bg-gray-50 bg-white/80 backdrop-blur-sm"
-          }
-          ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-        `}
-            >
-              <input
-                type="radio"
-                name={`listen-mcq-${question.q_id}`}
-                value={option}
-                checked={selectedAnswer === option}
-                onChange={(e) => handleOptionChange(e.target.value)}
-                disabled={disabled}
-                className="w-4 h-4 text-[#967AFE] border-gray-300 focus:ring-[#967AFE]/50"
-              />
-              <span className="flex-1 text-gray-900 font-medium text-sm leading-tight">
-                {option}
-              </span>
-              {selectedAnswer === option && (
-                <CheckCircle className="w-4 h-4 text-[#967AFE] flex-shrink-0" />
-              )}
-            </label>
-          );
-        })}
+      {/* MCQ Options */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {question.metadata?.options?.map((option, index) => (
+          <label
+            key={index}
+            className={`
+    flex items-center space-x-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md
+    ${
+      selectedAnswer === option
+        ? "border-amber-400 bg-gradient-to-r from-amber-50 to-amber-100 shadow-md transform scale-[1.02]"
+        : "border-gray-200 hover:border-amber-300 hover:bg-gray-50 bg-white/80 backdrop-blur-sm"
+    }
+    ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+  `}
+          >
+            <input
+              type="radio"
+              name={`minimal-pair-${question.q_id}`}
+              value={option}
+              checked={selectedAnswer === option}
+              onChange={(e) => handleOptionChange(e.target.value)}
+              disabled={disabled}
+              className="w-4 h-4 text-amber-600 border-gray-300 focus:ring-amber-500"
+            />
+            <span className="flex-1 text-gray-900 font-medium text-lg">
+              {option}
+            </span>
+            {selectedAnswer === option && (
+              <CheckCircle className="w-5 h-5 text-amber-600" />
+            )}
+          </label>
+        ))}
       </div>
 
       {/* No Options Warning */}
-      {(!question.options || question.options.length === 0) && (
+      {(!question.metadata?.options ||
+        question.metadata.options.length === 0) && (
         <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="text-yellow-800 font-medium">
             No answer options available for this question.
@@ -309,13 +305,13 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
           onClick={handleSubmit}
           disabled={disabled || !selectedAnswer}
           className={`
-      px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
-      ${
-        disabled || !selectedAnswer
-          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-          : "bg-gradient-to-r from-[#967AFE] to-[#9AD0F0] text-white hover:from-[#8B6FF7] hover:to-[#87C5EC]"
-      }
-    `}
+    px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
+    ${
+      disabled || !selectedAnswer
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+        : "bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800"
+    }
+  `}
         >
           <CheckCircle className="w-4 h-4" />
           <span>Submit Answer</span>
@@ -325,4 +321,4 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   );
 };
 
-export default ListenMCQQuestion;
+export default MinimalPairQuestion;

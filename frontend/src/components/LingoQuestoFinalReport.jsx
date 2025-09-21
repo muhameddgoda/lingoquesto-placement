@@ -59,14 +59,14 @@ const LingoQuestoFinalReport = ({ report }) => {
               word: "my",
               phonemes: [
                 { ipa: "m", score: 100, confidence: 0.95, expected_ipa: "m", actual_ipa: "m" },
-                { ipa: "aɪ", score: 100, confidence: 0.98, expected_ipa: "aɪ", actual_ipa: "aɪ" }
+                { ipa: "aÉª", score: 100, confidence: 0.98, expected_ipa: "aÉª", actual_ipa: "aÉª" }
               ]
             },
             {
               word: "family",
               phonemes: [
                 { ipa: "f", score: 100, confidence: 0.92, expected_ipa: "f", actual_ipa: "f" },
-                { ipa: "æ", score: 100, confidence: 0.89, expected_ipa: "æ", actual_ipa: "æ" },
+                { ipa: "Ã¦", score: 100, confidence: 0.89, expected_ipa: "Ã¦", actual_ipa: "Ã¦" },
                 { ipa: "m", score: 100, confidence: 0.94, expected_ipa: "m", actual_ipa: "m" },
                 { ipa: "l", score: 100, confidence: 0.97, expected_ipa: "l", actual_ipa: "l" },
                 { ipa: "i", score: 73, confidence: 0.82, expected_ipa: "i", actual_ipa: "i" }
@@ -76,10 +76,10 @@ const LingoQuestoFinalReport = ({ report }) => {
               word: "members",
               phonemes: [
                 { ipa: "m", score: 100, confidence: 0.96, expected_ipa: "m", actual_ipa: "m" },
-                { ipa: "ɛ", score: 100, confidence: 0.93, expected_ipa: "ɛ", actual_ipa: "ɛ" },
+                { ipa: "É›", score: 100, confidence: 0.93, expected_ipa: "É›", actual_ipa: "É›" },
                 { ipa: "m", score: 100, confidence: 0.91, expected_ipa: "m", actual_ipa: "m" },
                 { ipa: "b", score: 98, confidence: 0.88, expected_ipa: "b", actual_ipa: "b" },
-                { ipa: "ə", score: 80, confidence: 0.85, expected_ipa: "ə", actual_ipa: "ə" },
+                { ipa: "É™", score: 80, confidence: 0.85, expected_ipa: "É™", actual_ipa: "É™" },
                 { ipa: "r", score: 88, confidence: 0.90, expected_ipa: "r", actual_ipa: "r" },
                 { ipa: "z", score: 92, confidence: 0.94, expected_ipa: "z", actual_ipa: "z" }
               ]
@@ -250,7 +250,7 @@ const LingoQuestoFinalReport = ({ report }) => {
             </h1>
           </div>
           
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Assessment Complete! 🎉</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Assessment Complete!</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Congratulations on completing your English proficiency assessment. Here are your detailed results with AI-powered speech analysis.
           </p>

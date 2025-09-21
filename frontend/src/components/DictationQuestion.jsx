@@ -1,60 +1,47 @@
-// Enhanced DictationQuestion.jsx with TextInput component and single play button
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Volume2, Play, Send, Clock } from "lucide-react";
+// DictationQuestion.jsx - Fixed with consistent styling
+import React, { useState, useRef, useEffect } from "react";
+import { Volume2, Play, Send } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
+import { useGlobalTimer } from "../hooks/useGlobalTimer";
+import TimerDisplay from "./TimerDisplay";
 
 const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [userInput, setUserInput] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(15);
-  
-  const timerRef = useRef(null);
+
   const audioRef = useRef(null);
   const textInputRef = useRef(null);
   const MAX_PLAYS = 3;
 
-  // Auto-submit function using useCallback
-  const handleAutoSubmit = useCallback(() => {
-    console.log('Auto-submitting Dictation:', userInput);
+  // Use global timer
+  const { timeLeft, phase, startTimer, stopTimer, formatTime } =
+    useGlobalTimer();
+
+  // Start timer when question loads
+  useEffect(() => {
+    const totalTime = question.timing?.total_estimated_sec || 30;
+
+    startTimer({
+      responseTime: totalTime,
+      onTimeExpired: () => {
+        console.log("Time expired, auto-submitting Dictation");
+        handleAutoSubmit();
+      },
+    });
+  }, [question.audio_ref]);
+
+  // Handle auto-submit
+  const handleAutoSubmit = () => {
+    console.log("Auto-submitting Dictation:", userInput);
     if (userInput.trim()) {
       onSubmit(userInput.trim());
     } else {
       onSubmit(""); // Submit empty if no input
     }
-  }, [userInput, onSubmit]);
-
-  useEffect(() => {
-    // Get timing from exam config
-    const totalTime = question.timing?.total_estimated_sec || 15;
-    setTimeLeft(totalTime);
-
-    // Start countdown timer
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        const newTime = prevTime - 1;
-        if (newTime <= 0) {
-          clearInterval(timerRef.current);
-          handleAutoSubmit();
-          return 0;
-        }
-        return newTime;
-      });
-    }, 1000);
-
-    // Cleanup on unmount
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [question.audio_ref]); // ONLY question.audio_ref in dependency array
+  };
 
   useEffect(() => {
     // Reset state when question changes
@@ -73,12 +60,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
       textInputRef.current.focus();
     }
   }, [question.audio_ref]);
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
 
   const handleAudioPlay = async () => {
     if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
@@ -107,6 +88,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
   const handleSubmit = () => {
     if (userInput.trim() && !disabled) {
+      stopTimer(); // Stop the global timer
       onSubmit(userInput.trim());
     }
   };
@@ -130,76 +112,41 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     : null;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Question Prompt Display */}
-      <div className="text-center mb-6">
-        <h3 className="text-xl font-semibold text-gray-800 mb-2">
-          {question.prompt}
-        </h3>
+      <div className="text-center">
         {question.metadata?.question && (
           <p className="text-gray-600">{question.metadata.question}</p>
         )}
       </div>
 
-      {/* Timer Display */}
-      <div className="flex justify-center mb-6">
-        <div
-          className={`flex items-center space-x-2 px-4 py-2 rounded-full border-2 ${
-            timeLeft <= 0
-              ? "bg-gray-100 border-gray-300"
-              : timeLeft <= 5
-              ? "bg-red-50 border-red-300"
-              : "bg-purple-50 border-purple-300"
-          }`}
-        >
-          <Clock
-            className={`w-4 h-4 ${
-              timeLeft <= 0
-                ? "text-gray-500"
-                : timeLeft <= 5
-                ? "text-red-600"
-                : "text-purple-600"
-            }`}
-          />
-          <span
-            className={`text-sm font-medium ${
-              timeLeft <= 0
-                ? "text-gray-500"
-                : timeLeft <= 5
-                ? "text-red-600"
-                : "text-purple-600"
-            }`}
-          >
-            {timeLeft <= 0
-              ? "Time expired"
-              : `${formatTime(timeLeft)} remaining`}
-          </span>
-        </div>
-      </div>
-
       {/* Audio Player Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 rounded-2xl border-2 border-purple-200 shadow-lg">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-200/30 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-200/30 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
-
-        <div className="relative z-10">
-          <div className="flex items-center justify-center space-x-4 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Volume2 className="w-6 h-6 text-white" />
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-4 border border-purple-200/50">
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                <Volume2 className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-purple-800">
+                Listen Carefully
+              </h3>
             </div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-700 to-indigo-700 bg-clip-text text-transparent">
-              Listen Carefully
-            </h3>
+
+            {/* Timer on the right side */}
+            <TimerDisplay
+              timeLeft={timeLeft}
+              formatTime={formatTime}
+              phase={phase}
+              size="large"
+            />
           </div>
 
-          <div className="flex items-center justify-center mb-6">
-            <div className="bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 border border-purple-200">
-              <div className="flex items-center space-x-2 text-purple-700">
-                <Clock className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  {remainingPlays} play{remainingPlays !== 1 ? "s" : ""} remaining
-                </span>
-              </div>
+          <div className="flex items-center justify-center">
+            <div className="bg-white rounded-lg px-3 py-1 border border-purple-200">
+              <span className="text-sm font-medium text-purple-700">
+                {remainingPlays} play{remainingPlays !== 1 ? "s" : ""} remaining
+              </span>
             </div>
           </div>
 
@@ -221,23 +168,26 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
             )}
           </audio>
 
-          <div className="flex items-center justify-center">
+          {/* Play Button */}
+          <div className="flex justify-center">
             <button
               onClick={handleAudioPlay}
-              disabled={!canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS}
+              disabled={
+                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
+              }
               className={`
-                relative w-16 h-16 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg
-                ${
-                  canPlay && !isLoading && audioUrl
-                    ? "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }
-              `}
+      w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center
+      ${
+        canPlay && !isLoading && audioUrl
+          ? "bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+          : "bg-gray-300 text-gray-500 cursor-not-allowed"
+      }
+    `}
             >
               {isLoading ? (
-                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                <Play className="w-7 h-7 mx-auto ml-5" />
+                <Play className="w-6 h-6 ml-1" />
               )}
             </button>
           </div>
@@ -245,7 +195,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
       </div>
 
       {/* Text Input Section */}
-      <div className="space-y-6">
+      <div className="space-y-2">
         <TextInput
           ref={textInputRef}
           value={userInput}
@@ -253,36 +203,31 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
           onKeyPress={handleKeyPress}
           placeholder="Type the sentence you heard here..."
           disabled={disabled}
-          rows={4}
+          rows={3}
           disableSpellCheck={true}
           showCharCount={true}
+          className="border-purple-200 focus:border-purple-400 focus:ring-purple-200"
         />
-
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
-            Type exactly what you hear. Press Enter to submit, or use the button below.
-          </p>
-        </div>
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-center pt-4 pb-4">
+<div className="flex justify-center">
         <button
           onClick={handleSubmit}
           disabled={disabled || !userInput.trim()}
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-2xl text-lg font-semibold hover:from-purple-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-purple-600 disabled:hover:to-indigo-600 flex items-center space-x-3 transition-all duration-300 shadow-lg hover:shadow-xl"
+          className={`
+    px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
+    ${
+      disabled || !userInput.trim()
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+        : "bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800"
+    }
+  `}
         >
-          <Send className="w-5 h-5" />
+          <Send className="w-4 h-4" />
           <span>Submit Answer</span>
         </button>
       </div>
-
-      {process.env.NODE_ENV === "development" && (
-        <div className="text-xs text-gray-400 mt-4">
-          Audio: {audioUrl ? "Loaded" : "Not loaded"} | Plays: {playCount}/{MAX_PLAYS} | 
-          Input: {userInput.length} chars | Spell check: disabled
-        </div>
-      )}
     </div>
   );
 };

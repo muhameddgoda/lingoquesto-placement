@@ -92,7 +92,7 @@
   {
     "id": "A2-DICT-001",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "I work in a small office near the train station.",
@@ -102,7 +102,7 @@
   {
     "id": "A2-DICT-002",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "My sister is studying medicine at university.",
@@ -112,7 +112,7 @@
   {
     "id": "A2-DICT-003",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Can I pay with a credit card, please?",
@@ -122,7 +122,7 @@
   {
     "id": "A2-DICT-004",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "He goes to the gym every Tuesday and Thursday.",
@@ -132,7 +132,7 @@
   {
     "id": "A2-DICT-005",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "We are planning a trip to the mountains this weekend.",
@@ -142,7 +142,7 @@
   {
     "id": "A2-DICT-006",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Could you tell me where the nearest supermarket is?",
@@ -152,7 +152,7 @@
   {
     "id": "A2-DICT-007",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "We usually go shopping every Saturday morning.",
@@ -162,7 +162,7 @@
   {
     "id": "A2-DICT-008",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "The market opens at eight o'clock and closes at five.",
@@ -267,111 +267,111 @@
   {
     "id": "A2-MP-001",
     "type": "minimal_pair",
-    "prompt": "Say the word: full",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "full",
-      "pair": ["full", "fool"],
-      "target": "full"
+      "audioRef": "audio/a2_mp_001.wav",
+      "options": ["full", "fool"],
+      "correctAnswer": "full"
     }
   },
   {
     "id": "A2-MP-002",
     "type": "minimal_pair",
-    "prompt": "Say the word: fool",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "fool",
-      "pair": ["full", "fool"],
-      "target": "fool"
+      "audioRef": "audio/a2_mp_002.wav",
+      "options": ["full", "fool"],
+      "correctAnswer": "fool"
     }
   },
   {
     "id": "A2-MP-003",
     "type": "minimal_pair",
-    "prompt": "Say the word: cheap",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "cheap",
-      "pair": ["cheap", "sheep"],
-      "target": "cheap"
+      "audioRef": "audio/a2_mp_003.wav",
+      "options": ["cheap", "sheep"],
+      "correctAnswer": "cheap"
     }
   },
   {
     "id": "A2-MP-004",
     "type": "minimal_pair",
-    "prompt": "Say the word: sheep",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "sheep",
-      "pair": ["cheap", "sheep"],
-      "target": "sheep"
+      "audioRef": "audio/a2_mp_004.wav",
+      "options": ["cheap", "sheep"],
+      "correctAnswer": "sheep"
     }
   },
   {
     "id": "A2-MP-005",
     "type": "minimal_pair",
-    "prompt": "Say the word: pen",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "pen",
-      "pair": ["pen", "pan"],
-      "target": "pen"
+      "audioRef": "audio/a2_mp_005.wav",
+      "options": ["pen", "pan"],
+      "correctAnswer": "pen"
     }
   },
   {
     "id": "A2-MP-006",
     "type": "minimal_pair",
-    "prompt": "Say the word: pan",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "pan",
-      "pair": ["pen", "pan"],
-      "target": "pan"
+      "audioRef": "audio/a2_mp_006.wav",
+      "options": ["pen", "pan"],
+      "correctAnswer": "pan"
     }
   },
   {
     "id": "A2-MP-007",
     "type": "minimal_pair",
-    "prompt": "Say the word: day",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "day",
-      "pair": ["day", "they"],
-      "target": "day"
+      "audioRef": "audio/a2_mp_007.wav",
+      "options": ["day", "they"],
+      "correctAnswer": "day"
     }
   },
   {
     "id": "A2-MP-008",
     "type": "minimal_pair",
-    "prompt": "Say the word: they",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "they",
-      "pair": ["day", "they"],
-      "target": "they"
+      "audioRef": "audio/a2_mp_008.wav",
+      "options": ["day", "they"],
+      "correctAnswer": "they"
     }
   },
   {
     "id": "A2-MP-009",
     "type": "minimal_pair",
-    "prompt": "Say the word: see",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "see",
-      "pair": ["see", "seer"],
-      "target": "see"
+      "audioRef": "audio/a2_mp_009.wav",
+      "options": ["see", "seer"],
+      "correctAnswer": "see"
     }
   },
   {
     "id": "A2-MP-010",
     "type": "minimal_pair",
-    "prompt": "Say the word: seer",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "expectedText": "seer",
-      "pair": ["see", "seer"],
-      "target": "seer"
+      "audioRef": "audio/a2_mp_010.wav",
+      "options": ["see", "seer"],
+      "correctAnswer": "seer"
     }
   },
   {

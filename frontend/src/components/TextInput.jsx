@@ -1,4 +1,4 @@
-// frontend/src/components/TextInput.jsx
+// frontend/src/components/TextInput.jsx - Consistent styling
 import React, { forwardRef } from 'react';
 
 const TextInput = forwardRef(({
@@ -16,11 +16,11 @@ const TextInput = forwardRef(({
 }, ref) => {
   
   const baseClassName = `
-    w-full p-6 border-2 border-purple-200 rounded-2xl 
-    focus:ring-4 focus:ring-purple-200 focus:border-purple-400 
-    resize-none text-lg transition-all duration-200 
-    bg-white/50 backdrop-blur-sm
-    ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+    w-full p-4 border-2 border-gray-200 rounded-lg 
+    focus:ring-2 focus:ring-blue-200 focus:border-blue-400 
+    resize-none text-base transition-all duration-200 
+    bg-white
+    ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}
     ${className}
   `;
 
@@ -57,8 +57,8 @@ const TextInput = forwardRef(({
       />
       
       {showCharCount && (
-        <div className="absolute bottom-4 right-4 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full px-3 py-1 border border-purple-200">
-          <span className="text-xs font-medium text-purple-700">
+        <div className="absolute bottom-3 right-3 bg-gray-100 rounded-md px-2 py-1 border border-gray-200">
+          <span className="text-xs font-medium text-gray-600">
             {value.length}{maxLength ? `/${maxLength}` : ''} characters
           </span>
         </div>

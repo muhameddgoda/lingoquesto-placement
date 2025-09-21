@@ -1,4 +1,4 @@
-// Enhanced ExamInterface.jsx with automatic timing
+// Enhanced ExamInterface.jsx with complete MinimalPair support and consistent styling
 import React, { useState, useEffect, useRef } from "react";
 import {
   Play,
@@ -17,12 +17,17 @@ import {
   Image,
   AlertTriangle,
   FastForward,
+  ChevronRight,
+  Star,
+  Zap,
 } from "lucide-react";
+
 import AudioRecorder from "./AudioRecorder";
 import MCQQuestion from "./MCQQuestion";
 import LingoQuestoFinalReport from "./LingoQuestoFinalReport";
 import DictationQuestion from "./DictationQuestion";
 import ListenMCQQuestion from "./ListenMCQQuestion";
+import MinimalPairQuestion from "./MinimalPairQuestion";
 import ImageDescription from "./ImageDescription";
 import { API_BASE_URL } from "../config/api";
 import ListenAnswerQuestion from "./ListenAnswerQuestion";
@@ -76,10 +81,14 @@ const ExamInterface = () => {
     }
   };
 
-  // Replace submitResponseInternal with this simpler version:
   const submitResponseInternal = async (responseData) => {
     if (isProcessing) return;
     setIsProcessing(true);
+
+    console.log(
+      "ExamInterface: Submitting response for question:",
+      currentQuestion?.q_id
+    );
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/exam/submit-response`, {
@@ -99,6 +108,10 @@ const ExamInterface = () => {
           setFinalReport(data.final_report);
           setExamState("completed");
         } else {
+          console.log(
+            "ExamInterface: Moving to next question:",
+            data.next_question?.q_id
+          );
           setCurrentQuestion(data.next_question);
         }
       }
@@ -107,13 +120,32 @@ const ExamInterface = () => {
       setTimeout(() => {
         setIsProcessing(false);
         alert("Response submitted successfully! (Demo mode)");
+
+        // For demo mode, simulate next question
+        const nextQuestionNumber = (currentQuestion?.question_number || 0) + 1;
+        if (
+          nextQuestionNumber <= (currentQuestion?.total_questions_in_level || 5)
+        ) {
+          setCurrentQuestion({
+            ...currentQuestion,
+            q_id: `${currentQuestion.current_level}-DEMO-${nextQuestionNumber}`,
+            question_number: nextQuestionNumber,
+            prompt: `Demo question ${nextQuestionNumber}: Tell me about your favorite food.`,
+          });
+        } else {
+          // Demo completion
+          setExamState("completed");
+          setFinalReport({
+            overall_level: "A2",
+            score: 75,
+            feedback: "Demo completed successfully!",
+          });
+        }
       }, 2000);
     } finally {
       setIsProcessing(false);
     }
   };
-
-  // Modified submit handlers that store response but don't submit immediately
 
   const handleAudioSubmit = async (audioBlob) => {
     const formData = new FormData();
@@ -157,21 +189,21 @@ const ExamInterface = () => {
   const getQuestionTypeIcon = (type) => {
     switch (type) {
       case "open_response":
-        return <MessageSquare className="w-5 h-5" />;
+        return <MessageSquare className="w-4 h-4" />;
       case "image_description":
-        return <Image className="w-5 h-5" />;
+        return <Image className="w-4 h-4" />;
       case "listen_mcq":
       case "best_response_mcq":
-        return <List className="w-5 h-5" />;
+        return <List className="w-4 h-4" />;
       case "listen_answer":
-        return <Headphones className="w-5 h-5" />;
+        return <Headphones className="w-4 h-4" />;
       case "dictation":
-        return <Volume2 className="w-5 h-5" />;
+        return <Volume2 className="w-4 h-4" />;
       case "repeat_sentence":
       case "minimal_pair":
-        return <Mic className="w-5 h-5" />;
+        return <Mic className="w-4 h-4" />;
       default:
-        return <MessageSquare className="w-5 h-5" />;
+        return <MessageSquare className="w-4 h-4" />;
     }
   };
 
@@ -201,68 +233,133 @@ const ExamInterface = () => {
   const getQuestionTypeColor = (type) => {
     switch (type) {
       case "open_response":
-        return "bg-purple-100 text-purple-800 border-purple-200";
+        return "bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 border-blue-300";
       case "image_description":
-        return "bg-indigo-100 text-indigo-800 border-indigo-200";
+        return "bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 border-indigo-300";
       case "listen_mcq":
+        return "bg-gradient-to-r from-amber-100 to-amber-200 text-amber-700 border-amber-300";
       case "best_response_mcq":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 border-indigo-300";
       case "listen_answer":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-gradient-to-r from-cyan-100 to-cyan-200 text-cyan-700 border-cyan-300";
       case "dictation":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border-purple-300";
       case "repeat_sentence":
       case "minimal_pair":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return "bg-gradient-to-r from-amber-100 to-amber-200 text-amber-700 border-amber-300";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-300";
     }
   };
 
   if (examState === "not_started") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
-        <div className="flex items-center justify-center min-h-screen p-6">
-          <div className="max-w-3xl w-full bg-white rounded-2xl shadow-xl p-10">
-            <div className="text-center space-y-8">
-              <div className="flex items-center justify-center space-x-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
-                  <Award className="w-8 h-8 text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-transparent rounded-full -translate-x-48 -translate-y-48"></div>
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-blue-200/30 to-transparent rounded-full translate-x-40 translate-y-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-gradient-to-bl from-indigo-200/20 to-transparent rounded-full"></div>
+
+        <div className="relative z-10 flex items-center justify-center min-h-screen p-6">
+          <div className="max-w-2xl w-full">
+            {/* Main Card */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-6 md:p-4">
+              {/* Header with Logo */}
+              <div className="text-center space-y-4 mb-4">
+                <div className="flex items-center justify-center mb-2">
+                  <img
+                    src="./lingoquesto.png"
+                    alt="LingoQuesto Logo"
+                    className="h-20 w-auto"
+                    onError={(e) => {
+                      console.log("Logo failed to load, using fallback");
+                      e.target.style.display = "none";
+                      e.target.nextElementSibling.style.display = "flex";
+                    }}
+                  />
+                  <div
+                    style={{ display: "none" }}
+                    className="flex items-center justify-center space-x-4"
+                  >
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
+                      <Award className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent">
+                        LingoQuesto
+                      </h1>
+                    </div>
+                  </div>
                 </div>
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                  LingoQuesto
-                </h1>
+
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    English Proficiency Assessment
+                  </h2>
+                  <p className="text-base font-semibold text-gray-700">
+                    This adaptive exam will assess your English proficiency
+                    across multiple levels. Each question has a strict time
+                    limit and will automatically advance.
+                  </p>
+                </div>
               </div>
 
-              <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                English Proficiency Assessment
-              </h2>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                This adaptive exam will assess your English proficiency across
-                multiple levels. Each question has a strict time limit and will
-                automatically advance.
-              </p>
+              {/* Exam Structure Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl border border-purple-200">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">
+                    Progressive Levels; from A1 to C2
+                  </h3>
+                </div>
 
-              <div className="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-xl border border-red-200">
-                <h3 className="text-lg font-bold mb-4 text-red-800 flex items-center justify-center">
-                  <AlertTriangle className="w-5 h-5 mr-2" />
-                  Important: Timed Exam
-                </h3>
-                <div className="text-sm text-red-700 space-y-2">
-                  <p>• Each question has a strict time limit</p>
-                  <p>• Questions advance automatically when time expires</p>
-                  <p>• No pausing or going back to previous questions</p>
-                  <p>• Prepare your answers quickly and efficiently</p>
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">
+                    Score 75% to advance to next level
+                  </h3>
+                </div>
+
+                <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl border border-green-200">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4">
+                    <Brain className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">
+                    Multiple Skills; speaking, writing, and choice questions
+                  </h3>
+                </div>
+
+                {/* Important Notice as 4th card */}
+                <div className="bg-gradient-to-br from-red-50 to-orange-100 p-6 rounded-2xl border border-red-200">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center mb-4">
+                    <AlertTriangle className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-2">
+                    Timed Exam; each question has a strict time limit
+                  </h3>
                 </div>
               </div>
 
-              <button
-                onClick={startExam}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-12 py-4 rounded-xl text-xl font-semibold hover:from-purple-700 hover:to-blue-700 flex items-center mx-auto transition-all transform hover:scale-105 shadow-lg"
-              >
-                <Play className="w-6 h-6 mr-3" />
-                Start Timed Assessment
-              </button>
+              {/* Start Button */}
+              <div className="text-center">
+                <button
+                  onClick={startExam}
+                  className="group bg-gradient-to-r from-purple-600 to-purple-700 text-white px-10 py-4 rounded-2xl text-lg font-bold hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center mx-auto"
+                >
+                  <Play className="w-6 h-6 mr-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  Start Assessment
+                  <ChevronRight className="w-5 h-5 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                </button>
+
+                <p className="text-sm text-gray-500 mt-4">
+                  Make sure you have a stable internet connection and a quiet
+                  environment
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -276,31 +373,47 @@ const ExamInterface = () => {
 
   if (examState === "in_progress" && currentQuestion) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 pb-16">
-        <div className="max-w-5xl mx-auto p-6 space-y-8 pb-24">
-          {/* Header */}
-          <div className="flex items-center justify-center space-x-4 py-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
-              <Award className="w-6 h-6 text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-purple-200/20 to-transparent rounded-full translate-x-48 -translate-y-48"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-200/20 to-transparent rounded-full -translate-x-40 translate-y-40"></div>
+        {/* Logo - Fixed to top left of entire page */}
+        <div className="absolute top-8 left-20 z-20">
+          <img
+            src="/lingoquesto.png"
+            alt="LingoQuesto Logo"
+            className="h-24 w-auto"
+            onError={(e) => {
+              e.target.style.display = "none";
+              e.target.nextElementSibling.style.display = "flex";
+            }}
+          />
+          <div
+            style={{ display: "none" }}
+            className="flex items-center space-x-3"
+          >
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center shadow-lg">
+              <Award className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent">
               LingoQuesto
             </h1>
           </div>
-
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto p-6 space-y-6">
           {/* Progress */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-200/50">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center space-x-3">
-                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-semibold">
+                <span className="bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 px-4 py-2 rounded-xl font-bold text-sm border border-purple-300">
                   Level {currentQuestion.current_level}
                 </span>
-                <span className="text-gray-600 font-medium">
+                <span className="text-gray-700 font-medium">
                   Question {currentQuestion.question_number} of{" "}
                   {currentQuestion.total_questions_in_level}
                 </span>
               </div>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">
                 {Math.round(
                   (currentQuestion.question_number /
                     currentQuestion.total_questions_in_level) *
@@ -309,9 +422,9 @@ const ExamInterface = () => {
                 % Complete
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
               <div
-                className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full transition-all duration-500 shadow-sm"
                 style={{
                   width: `${
                     (currentQuestion.question_number /
@@ -324,20 +437,37 @@ const ExamInterface = () => {
           </div>
 
           {/* Question */}
-          <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 min-h-fit">
-            <div className="space-y-6 pb-8">
-              {/* Question Type Badge */}
-              <div className="flex items-center justify-between">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-3 border border-purple-200/50">
+            <div className="space-y-4">
+              {/* Question Type Badge - Left aligned */}
+              <div className="flex items-center justify-start mb-4">
                 <div
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full border-2 ${getQuestionTypeColor(
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl border-2 ${getQuestionTypeColor(
                     currentQuestion.q_type
                   )}`}
                 >
                   {getQuestionTypeIcon(currentQuestion.q_type)}
-                  <span className="font-semibold">
+                  <span className="font-bold text-sm">
                     {getQuestionTypeLabel(currentQuestion.q_type)}
                   </span>
                 </div>
+              </div>
+
+              {/* Question Content */}
+              <div className="mb-4">
+                <div className="text-xl font-semibold text-gray-800 mb-2">
+                  {currentQuestion.prompt}
+                </div>
+                {currentQuestion.metadata?.context?.question &&
+                  currentQuestion.metadata.context.question !==
+                    currentQuestion.prompt && (
+                    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                      <p className="text-blue-800 text-sm">
+                        <strong>Additional context:</strong>
+                        {currentQuestion.metadata.context.question}
+                      </p>
+                    </div>
+                  )}
               </div>
 
               {/* Question Interface */}
@@ -347,83 +477,19 @@ const ExamInterface = () => {
                   onSubmit={handleAudioSubmit}
                 />
               ) : currentQuestion.q_type === "open_response" ? (
-                <>
-                  <div className="mb-6">
-                    <div className="text-xl font-medium text-gray-800 mb-4">
-                      {currentQuestion.prompt}
-                    </div>
-                    {currentQuestion.metadata?.context?.question &&
-                      currentQuestion.metadata.context.question !==
-                        currentQuestion.prompt && (
-                        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                          <p className="text-blue-800 text-sm">
-                            <strong>Additional context:</strong>{" "}
-                            {currentQuestion.metadata.context.question}
-                          </p>
-                        </div>
-                      )}
-                  </div>
-                  <AudioRecorder
-                    onSubmit={handleAudioSubmit}
-                    disabled={isProcessing}
-                    thinkTime={currentQuestion.timing?.think_time_sec || 30}
-                    responseTime={
-                      currentQuestion.timing?.response_time_sec || 90
-                    }
-                    questionId={currentQuestion.q_id}
-                  />
-                </>
+                <AudioRecorder
+                  onSubmit={handleAudioSubmit}
+                  disabled={isProcessing}
+                  thinkTime={currentQuestion.timing?.think_time_sec || 30}
+                  responseTime={currentQuestion.timing?.response_time_sec || 90}
+                  questionId={currentQuestion.q_id}
+                />
               ) : currentQuestion.q_type === "listen_answer" ? (
-                <>
-                  <div className="mb-6">
-                    <div className="text-xl font-medium text-gray-800 mb-4">
-                      {currentQuestion.prompt}
-                    </div>
-                    {currentQuestion.metadata?.context?.question && (
-                      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p className="text-blue-800 text-sm">
-                          <strong>Instructions:</strong>{" "}
-                          {currentQuestion.metadata.context.question}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Audio Player for Listen Answer */}
-                  {currentQuestion.metadata?.audioRef && (
-                    <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-                      <div className="flex items-center justify-center space-x-4 mb-4">
-                        <Volume2 className="w-6 h-6 text-blue-600" />
-                        <span className="font-medium text-blue-800">
-                          Listen to the question first:
-                        </span>
-                      </div>
-                      <div className="flex justify-center">
-                        <audio
-                          controls
-                          className="w-full max-w-md"
-                          src={`${API_BASE_URL}/api/audio/${currentQuestion.metadata.audioRef}`}
-                          onError={(e) => console.error("Audio error:", e)}
-                        >
-                          Your browser does not support audio playback.
-                        </audio>
-                      </div>
-                      <p className="text-center text-sm text-blue-700 mt-2">
-                        Listen carefully, then record your response below
-                      </p>
-                    </div>
-                  )}
-
-                  <AudioRecorder
-                    onSubmit={handleAudioSubmit}
-                    disabled={isProcessing}
-                    thinkTime={currentQuestion.timing?.think_time_sec || 5}
-                    responseTime={
-                      currentQuestion.timing?.response_time_sec || 25
-                    }
-                    questionId={currentQuestion.q_id}
-                  />
-                </>
+                <ListenAnswerQuestion
+                  question={currentQuestion}
+                  onSubmit={handleAudioSubmit}
+                  disabled={isProcessing}
+                />
               ) : currentQuestion.q_type === "dictation" ? (
                 <DictationQuestion
                   question={currentQuestion}
@@ -436,6 +502,20 @@ const ExamInterface = () => {
                   onSubmit={handleTextSubmit}
                   disabled={isProcessing}
                 />
+              ) : currentQuestion.q_type === "minimal_pair" ? (
+                <MinimalPairQuestion
+                  question={currentQuestion}
+                  onSubmit={handleTextSubmit}
+                  disabled={isProcessing}
+                />
+              ) : currentQuestion.q_type === "repeat_sentence" ? (
+                <AudioRecorder
+                  onSubmit={handleAudioSubmit}
+                  disabled={isProcessing}
+                  thinkTime={5}
+                  responseTime={15}
+                  questionId={currentQuestion.q_id}
+                />
               ) : (
                 <MCQQuestion
                   question={currentQuestion}
@@ -446,8 +526,8 @@ const ExamInterface = () => {
 
               {isProcessing && (
                 <div className="text-center py-8">
-                  <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-purple-50 to-blue-50 px-8 py-4 rounded-xl border border-purple-200">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                  <div className="inline-flex items-center space-x-4 bg-purple-50 px-8 py-4 rounded-2xl border border-purple-200">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
                     <span className="text-lg font-semibold text-purple-700">
                       Processing your response...
                     </span>
@@ -463,7 +543,7 @@ const ExamInterface = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
     </div>
   );
 };

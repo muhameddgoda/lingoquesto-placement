@@ -274,7 +274,7 @@
   {
     "id": "B2-DICT-001",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "The report highlights a significant shift in consumer behavior over the past year.",
@@ -284,7 +284,7 @@
   {
     "id": "B2-DICT-002",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Although the deadline is approaching, we still need to revise the main proposal.",
@@ -294,7 +294,7 @@
   {
     "id": "B2-DICT-003",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "He argued that remote work can increase productivity, especially in creative fields.",
@@ -304,7 +304,7 @@
   {
     "id": "B2-DICT-004",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Before launching the campaign, we need to clarify the target audience and goals.",
@@ -314,7 +314,7 @@
   {
     "id": "B2-DICT-005",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Even though the experiment failed, the team learned valuable lessons from it.",
@@ -324,7 +324,7 @@
   {
     "id": "B2-DICT-006",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Although renewable energy sources offer significant environmental benefits, they often require substantial initial investments and complex infrastructure planning.",
@@ -334,7 +334,7 @@
   {
     "id": "B2-DICT-007",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "The study's findings suggest that implementing artificial intelligence in healthcare can improve diagnostic accuracy while raising ethical concerns about patient data privacy.",
@@ -344,7 +344,7 @@
   {
     "id": "B2-DICT-008",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Despite the potential advantages of remote work, employees may experience feelings of isolation and struggle to maintain a healthy work-life balance.",
@@ -354,7 +354,7 @@
   {
     "id": "B2-DICT-009",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "The government should invest more in public transportation, since it reduces traffic congestion, lowers carbon emissions, and promotes social equity.",
@@ -364,7 +364,7 @@
   {
     "id": "B2-DICT-010",
     "type": "dictation",
-    "prompt": "Type what you hear, then read it aloud.",
+    "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Effective communication in multicultural teams requires cultural sensitivity, precise language use, and active listening skills.",

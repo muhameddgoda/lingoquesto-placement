@@ -1,4 +1,4 @@
-// frontend/src/components/ImageDescription.jsx
+// ImageDescription.jsx - Updated with consistent styling
 import React, { useState, useEffect } from "react";
 import AudioRecorder from "./AudioRecorder";
 import { API_BASE_URL } from '../config/api';
@@ -47,53 +47,58 @@ const ImageDescription = ({ question, onSubmit, disabled }) => {
   }, [question]);
 
   return (
-    <div className="space-y-6">
-      {/* Question Prompt */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl border border-purple-200">
-        <h3 className="text-xl font-semibold text-gray-800 mb-3">
+    <div className="space-y-8">
+      {/* Question Prompt - Consistent with other components */}
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">
           {question.prompt}
         </h3>
         {question.metadata?.context?.question && (
-          <p className="text-gray-700 text-sm leading-relaxed">
-            {question.metadata.context.question}
-          </p>
+          <p className="text-gray-600">{question.metadata.context.question}</p>
         )}
       </div>
 
-      {/* Image Display */}
-      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-        <div className="flex justify-center">
-          {imageLoading ? (
-            <div className="flex items-center justify-center h-64 w-full">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-              <span className="ml-3 text-gray-600">Loading image...</span>
-            </div>
-          ) : imageError ? (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center w-full">
-              <p className="text-red-600 font-medium">
-                {imageError}
-              </p>
-            </div>
-          ) : imageDataUrl ? (
-            <img
-              src={imageDataUrl}
-              alt="Describe this image"
-              className="max-w-full max-h-96 rounded-lg border shadow-lg"
-              onLoad={() => {
-                console.log('Image loaded successfully from base64');
-              }}
-            />
-          ) : (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center w-full">
-              <p className="text-yellow-800 font-medium">
-                No image available for this question
-              </p>
-            </div>
-          )}
+      {/* Image Display - Enhanced styling to match other components */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 p-8 rounded-2xl border-2 border-indigo-200 shadow-lg">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-200/30 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-200/30 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+        
+        <div className="relative z-10">
+          <div className="flex justify-center">
+            {imageLoading ? (
+              <div className="flex items-center justify-center h-64 w-full">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <span className="ml-3 text-indigo-700 font-medium">Loading image...</span>
+              </div>
+            ) : imageError ? (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center w-full">
+                <p className="text-red-600 font-medium">
+                  {imageError}
+                </p>
+              </div>
+            ) : imageDataUrl ? (
+              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-indigo-200 shadow-lg">
+                <img
+                  src={imageDataUrl}
+                  alt="Describe this image"
+                  className="max-w-full max-h-96 rounded-lg shadow-lg"
+                  onLoad={() => {
+                    console.log('Image loaded successfully from base64');
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center w-full">
+                <p className="text-yellow-800 font-medium">
+                  No image available for this question
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Audio Recorder */}
+      {/* Audio Recorder - This handles its own timer */}
       <AudioRecorder
         onSubmit={onSubmit}
         disabled={disabled}
@@ -102,12 +107,15 @@ const ImageDescription = ({ question, onSubmit, disabled }) => {
         questionId={question.q_id}
       />
 
-      {/* Instructions */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-        <p className="text-blue-800 text-sm">
-          <strong>Instructions:</strong> Look at the image carefully and provide a detailed description. 
-          Analyze what you see and discuss any broader implications or themes that come to mind.
-        </p>
+      {/* Instructions - Consistent styling */}
+      <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
+        <div className="text-center">
+          <p className="text-indigo-800 font-medium mb-2">Instructions:</p>
+          <p className="text-indigo-700 text-sm leading-relaxed">
+            Look at the image carefully and provide a detailed description. 
+            Analyze what you see and discuss any broader implications or themes that come to mind.
+          </p>
+        </div>
       </div>
     </div>
   );

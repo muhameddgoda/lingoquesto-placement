@@ -385,3 +385,4 @@ __pycache__/
 *.pyc
 *.patch
 questions\generate_audio.py
+exam_results/

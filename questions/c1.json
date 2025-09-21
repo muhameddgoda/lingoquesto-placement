@@ -355,136 +355,136 @@
     }
   },
   {
-    "id": "C1-MP-001",
-    "type": "minimal_pair",
-    "prompt": "Say the word: no",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "no",
-      "pair": ["no", "now"],
-      "target": "no",
-      "phonemes": ["/É™ÊŠ/", "/aÊŠ/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-002",
-    "type": "minimal_pair",
-    "prompt": "Say the word: now",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "now",
-      "pair": ["no", "now"],
-      "target": "now",
-      "phonemes": ["/É™ÊŠ/", "/aÊŠ/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-003",
-    "type": "minimal_pair",
-    "prompt": "Say the word: live (as in 'to live')",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "live",
-      "pair": ["live", "leave"],
-      "target": "live",
-      "phonemes": ["/Éª/", "/iË/"],
-      "difficulty": "advanced",
-      "note": "verb form with short i sound"
-    }
-  },
-  {
-    "id": "C1-MP-004",
-    "type": "minimal_pair",
-    "prompt": "Say the word: leave",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "leave",
-      "pair": ["live", "leave"],
-      "target": "leave",
-      "phonemes": ["/Éª/", "/iË/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-005",
-    "type": "minimal_pair",
-    "prompt": "Say the word: part",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "part",
-      "pair": ["part", "pert"],
-      "target": "part",
-      "phonemes": ["/É‘Ë/", "/ÉœË/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-006",
-    "type": "minimal_pair",
-    "prompt": "Say the word: pert",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "pert",
-      "pair": ["part", "pert"],
-      "target": "pert",
-      "phonemes": ["/É‘Ë/", "/ÉœË/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-007",
-    "type": "minimal_pair",
-    "prompt": "Say the word: CONduct (noun)",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "conduct",
-      "pair": ["CONduct", "conDUCT"],
-      "target": "CONduct",
-      "stress_pattern": "first_syllable",
-      "difficulty": "advanced",
-      "note": "noun form with first syllable stress"
-    }
-  },
-  {
-    "id": "C1-MP-008",
-    "type": "minimal_pair",
-    "prompt": "Say the word: conDUCT (verb)",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "conduct",
-      "pair": ["CONduct", "conDUCT"],
-      "target": "conDUCT",
-      "stress_pattern": "second_syllable",
-      "difficulty": "advanced",
-      "note": "verb form with second syllable stress"
-    }
-  },
-  {
-    "id": "C1-MP-009",
-    "type": "minimal_pair",
-    "prompt": "Say the phrase: I scream",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "I scream",
-      "pair": ["I scream", "ice cream"],
-      "target": "I scream",
-      "difficulty": "advanced",
-      "note": "connected speech distinction"
-    }
-  },
-  {
-    "id": "C1-MP-010",
-    "type": "minimal_pair",
-    "prompt": "Say the phrase: ice cream",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "ice cream",
-      "pair": ["I scream", "ice cream"],
-      "target": "ice cream",
-      "difficulty": "advanced",
-      "note": "connected speech distinction"
-    }
+  "id": "C1-MP-001",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_001.wav",
+    "options": ["no", "now"],
+    "correctAnswer": "no",
+    "phonemes": ["/noʊ/", "/aʊ/"],
+    "difficulty": "advanced"
   }
+},
+{
+  "id": "C1-MP-002",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_002.wav",
+    "options": ["no", "now"],
+    "correctAnswer": "now",
+    "phonemes": ["/noʊ/", "/aʊ/"],
+    "difficulty": "advanced"
+  }
+},
+{
+  "id": "C1-MP-003",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_003.wav",
+    "options": ["live", "leave"],
+    "correctAnswer": "live",
+    "phonemes": ["/ɪ/", "/iː/"],
+    "difficulty": "advanced",
+    "note": "verb form with short i sound"
+  }
+},
+{
+  "id": "C1-MP-004",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_004.wav",
+    "options": ["live", "leave"],
+    "correctAnswer": "leave",
+    "phonemes": ["/ɪ/", "/iː/"],
+    "difficulty": "advanced"
+  }
+},
+{
+  "id": "C1-MP-005",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_005.wav",
+    "options": ["part", "pert"],
+    "correctAnswer": "part",
+    "phonemes": ["/ɑː/", "/ɜː/"],
+    "difficulty": "advanced"
+  }
+},
+{
+  "id": "C1-MP-006",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_006.wav",
+    "options": ["part", "pert"],
+    "correctAnswer": "pert",
+    "phonemes": ["/ɑː/", "/ɜː/"],
+    "difficulty": "advanced"
+  }
+},
+{
+  "id": "C1-MP-007",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_007.wav",
+    "options": ["CONduct", "conDUCT"],
+    "correctAnswer": "conduct",
+    "stress_pattern": "first_syllable",
+    "difficulty": "advanced",
+    "note": "noun form with first syllable stress"
+  }
+},
+{
+  "id": "C1-MP-008",
+  "type": "minimal_pair",
+  "prompt": "Which word did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_008.wav",
+    "options": ["CONduct", "conDUCT"],
+    "correctAnswer": "conduct",
+    "stress_pattern": "second_syllable",
+    "difficulty": "advanced",
+    "note": "verb form with second syllable stress"
+  }
+},
+{
+  "id": "C1-MP-009",
+  "type": "minimal_pair",
+  "prompt": "Which phrase did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_009.wav",
+    "options": ["I scream", "ice cream"],
+    "correctAnswer": "I scream",
+    "difficulty": "advanced",
+    "note": "connected speech distinction"
+  }
+},
+{
+  "id": "C1-MP-010",
+  "type": "minimal_pair",
+  "prompt": "Which phrase did you hear?",
+  "metadata": {
+    "accent": "us",
+    "audioRef": "audio/c1_mp_010.wav",
+    "options": ["I scream", "ice cream"],
+    "correctAnswer": "ice cream",
+    "difficulty": "advanced",
+    "note": "connected speech distinction"
+  }
+}
 ]

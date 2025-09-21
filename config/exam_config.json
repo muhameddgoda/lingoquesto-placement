@@ -152,9 +152,9 @@
       "total_estimated_sec": 12
     },
     "dictation": {
-      "think_time_sec": 3,
-      "response_time_sec": 12,
-      "total_estimated_sec": 15
+      "think_time_sec": 0,
+      "response_time_sec": 30,
+      "total_estimated_sec": 30
     },
     "listen_mcq": {
       "think_time_sec": 5,

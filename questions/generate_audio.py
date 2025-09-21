@@ -2,6 +2,7 @@
 """
 Script to generate audio files using ElevenLabs API for placement test questions.
 Processes JSON files and creates audio files for questions with audioRef metadata.
+Modified to handle minimal pairs using the "correctAnswer" field.
 """
 
 import json
@@ -93,8 +94,12 @@ class ElevenLabsAudioGenerator:
                     # Determine which text to use for audio generation
                     text_to_convert = None
                     
+                    # For minimal pairs, use the "correctAnswer" field
+                    if item.get('type') == 'minimal_pair' and 'correctAnswer' in metadata:
+                        text_to_convert = metadata['correctAnswer']
+                        print(f"🎯 Minimal pair detected - using correctAnswer: '{text_to_convert}'")
                     # Priority: expectedText first, then audioText
-                    if 'expectedText' in metadata:
+                    elif 'expectedText' in metadata:
                         text_to_convert = metadata['expectedText']
                     elif 'audioText' in metadata:
                         text_to_convert = metadata['audioText']
@@ -110,7 +115,7 @@ class ElevenLabsAudioGenerator:
                         # Add a small delay to avoid rate limiting
                         time.sleep(0.5)
                     else:
-                        print(f"⚠ Warning: {item.get('id', 'Unknown ID')} has audioRef but no expectedText or audioText")
+                        print(f"⚠ Warning: {item.get('id', 'Unknown ID')} has audioRef but no correctAnswer/expectedText/audioText")
             
             print(f"Generated {processed_count} audio files from {json_file_path.name}")
             return processed_count

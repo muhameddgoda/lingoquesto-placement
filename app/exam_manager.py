@@ -46,7 +46,7 @@ class ExamManager:
                 except Exception as e:
                     logger.warning(f"Error loading {path}: {e}")
         
-        # Simple default config
+        # Simple default config - UPDATED TO INCLUDE MINIMAL_PAIR
         logger.warning("Using default configuration")
         return {
             "accent": "us",
@@ -54,17 +54,18 @@ class ExamManager:
                 "order": ["A1", "A2", "B1", "B2", "C1", "C2"],
                 "gate_threshold": 75,
                 "per_level": {
-                    "A1": {"type_counts": {"repeat_sentence": 1, "open_response": 1}},
-                    "A2": {"type_counts": {"repeat_sentence": 1, "open_response": 0}},
-                    "B1": {"type_counts": {"repeat_sentence": 1, "open_response": 0}},
-                    "B2": {"type_counts": {"repeat_sentence": 0, "open_response": 1}},
-                    "C1": {"type_counts": {"repeat_sentence": 1, "open_response": 1}},
-                    "C2": {"type_counts": {"repeat_sentence": 0, "open_response": 1}}
+                    "A1": {"type_counts": {"repeat_sentence": 1, "open_response": 1, "minimal_pair": 2}},
+                    "A2": {"type_counts": {"repeat_sentence": 1, "open_response": 0, "minimal_pair": 2}},
+                    "B1": {"type_counts": {"repeat_sentence": 1, "open_response": 0, "minimal_pair": 1}},
+                    "B2": {"type_counts": {"repeat_sentence": 0, "open_response": 1, "minimal_pair": 1}},
+                    "C1": {"type_counts": {"repeat_sentence": 1, "open_response": 1, "minimal_pair": 2}},
+                    "C2": {"type_counts": {"repeat_sentence": 0, "open_response": 1, "minimal_pair": 1}}
                 }
             },
             "type_to_profile": {
                 "repeat_sentence": "pron_only",
-                "open_response": "unscripted_mixed"
+                "open_response": "unscripted_mixed",
+                "minimal_pair": "pron_only"
             },
             "scoring_profiles": {
                 "pron_only": {"pronunciation": 1.0, "fluency": 0.0, "grammar": 0.0, "vocabulary": 0.0},
@@ -80,6 +81,11 @@ class ExamManager:
                     "think_time_sec": 30,
                     "response_time_sec": 120,
                     "total_estimated_sec": 150
+                },
+                "minimal_pair": {
+                    "think_time_sec": 2,
+                    "response_time_sec": 15,
+                    "total_estimated_sec": 17
                 }
             }
         }
@@ -263,13 +269,9 @@ class ExamManager:
         """Format question for frontend with proper timing integration"""
         q_type = question.get("type", "open_response")
         
-        # Determine if audio-based
-        audio_types = ["repeat_sentence", "minimal_pair", "dictation", "open_response", "listen_answer", "image_description"]
-        is_audio = q_type in audio_types
-        
         formatted = {
             "q_id": question.get("id", f"unknown-{uuid.uuid4().hex[:8]}"),
-            "q_type": "open_response" if is_audio else "mcq",
+            "q_type": q_type,  # KEEP ORIGINAL TYPE - DON'T CONVERT
             "level": level,
             "prompt": question.get("prompt", "Question not available"),
             "original_type": q_type,
@@ -289,7 +291,7 @@ class ExamManager:
             # Default timing if not configured
             default_timings = {
                 "repeat_sentence": {"think_time_sec": 3, "response_time_sec": 15, "total_estimated_sec": 18},
-                "minimal_pair": {"think_time_sec": 2, "response_time_sec": 10, "total_estimated_sec": 12},
+                "minimal_pair": {"think_time_sec": 2, "response_time_sec": 15, "total_estimated_sec": 17},
                 "dictation": {"think_time_sec": 3, "response_time_sec": 12, "total_estimated_sec": 15},
                 "listen_mcq": {"think_time_sec": 5, "response_time_sec": 25, "total_estimated_sec": 30},
                 "image_description": {"think_time_sec": 10, "response_time_sec": 80, "total_estimated_sec": 90},
@@ -306,17 +308,18 @@ class ExamManager:
                 formatted["timing"] = {"think_time_sec": 5, "response_time_sec": 30, "total_estimated_sec": 35}
                 logger.warning(f"Using fallback timing for unknown question type {q_type}")
         
-        # Add MCQ options if needed
-        if not is_audio:
-            if "options" in question.get("metadata", {}):
-                formatted["options"] = question["metadata"]["options"]
-                formatted["correct_answer"] = question.get("metadata", {}).get("correctAnswer", "Option A")
-            else:
-                formatted["options"] = ["Option A", "Option B", "Option C", "Option D"]
-                formatted["correct_answer"] = "Option A"
+        # Handle minimal_pair specifically
+        if q_type == "minimal_pair":
+            formatted["options"] = question.get("metadata", {}).get("options", [])
+            formatted["correct_answer"] = question.get("metadata", {}).get("correctAnswer")
+            
+            # Add audio reference if present
+            audio_ref = question.get("metadata", {}).get("audioRef")
+            if audio_ref:
+                formatted["audio_ref"] = audio_ref
         
         # Add specific metadata for different question types
-        if q_type == "repeat_sentence":
+        elif q_type == "repeat_sentence":
             expected_text = question.get("metadata", {}).get("expectedText")
             if expected_text:
                 formatted["expected_text"] = expected_text
@@ -324,7 +327,7 @@ class ExamManager:
         elif q_type == "image_description":
             image_ref = question.get("metadata", {}).get("imageRef")
             if image_ref:
-                # FIXED: Strip 'images/' prefix if present
+                # Strip 'images/' prefix if present
                 if image_ref.startswith("images/"):
                     image_ref = image_ref[7:]  # Remove 'images/' prefix
                 formatted["image_ref"] = image_ref
@@ -335,22 +338,18 @@ class ExamManager:
             expected_text = question.get("metadata", {}).get("expectedText")
             if audio_ref:
                 formatted["audio_ref"] = audio_ref
-                formatted["q_type"] = "dictation"  # Keep as dictation type
             if expected_text:
-                formatted["expected_text"] = expected_text  # Keep for backend validation
+                formatted["expected_text"] = expected_text
         
         elif q_type in ["listen_mcq", "best_response_mcq"]:
-            # Determine if it has audio
-            has_audio = bool(question.get("metadata", {}).get("audioRef"))
-            formatted["q_type"] = "listen_mcq" if has_audio else "mcq"
-            
             # Add MCQ options
             formatted["options"] = question.get("metadata", {}).get("options", [])
             formatted["correct_answer"] = question.get("metadata", {}).get("correctAnswer")
             
             # Add audio reference if present
-            if has_audio:
-                formatted["audio_ref"] = question["metadata"]["audioRef"]
+            audio_ref = question.get("metadata", {}).get("audioRef")
+            if audio_ref:
+                formatted["audio_ref"] = audio_ref
             
         return formatted
     
@@ -456,7 +455,30 @@ class ExamManager:
             profile_name = self.config["type_to_profile"].get(q_type, "unscripted_mixed")
             scoring_profile = self.config["scoring_profiles"][profile_name]
             
-            if q_type == "dictation":
+            if q_type == "minimal_pair":
+                logger.info(f"Processing minimal pair question")
+                
+                # Get correct answer and user input
+                correct_answer = question_info.get("metadata", {}).get("correctAnswer", "")
+                user_answer = response_data.get("response_data", "").strip()
+                is_correct = user_answer == correct_answer
+                
+                score = 100 if is_correct else 0
+                
+                logger.info(f"Minimal pair evaluation: Expected '{correct_answer}', Got '{user_answer}', Correct: {is_correct}")
+                
+                return {
+                    "scores": {skill: score * weight for skill, weight in scoring_profile.items()},
+                    "overall_weighted": score,
+                    "is_mock_data": False,
+                    "minimal_pair_result": {
+                        "user_answer": user_answer,
+                        "correct_answer": correct_answer,
+                        "is_correct": is_correct
+                    }
+                }
+
+            elif q_type == "dictation":
                 logger.info(f"Processing dictation question")
                 
                 # Get expected text and user input - DICTATION IS TEXT-BASED
