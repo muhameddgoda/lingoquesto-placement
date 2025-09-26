@@ -1,8 +1,7 @@
-// AudioRecorder.jsx - Cleaned UI with minimal prompts
+// AudioRecorder.jsx - Clean rewrite with clear phase guidance
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Mic, Square, Play, Pause, Send, FastForward } from "lucide-react";
+import { Mic, Square, Play, Pause, Send, FastForward, Brain, Clock, CheckCircle } from "lucide-react";
 import { useGlobalTimer } from "../hooks/useGlobalTimer";
-import TimerDisplay from "./TimerDisplay";
 
 const AudioRecorder = ({
   onSubmit,
@@ -10,13 +9,13 @@ const AudioRecorder = ({
   thinkTime = 5,
   responseTime = 120,
   questionId,
+  questionContext = null,
 }) => {
-  // Core state - simplified to 3 main states
-  const [recordingState, setRecordingState] = useState("idle"); // 'idle', 'recording', 'complete'
+  // State
+  const [recordingState, setRecordingState] = useState("idle");
   const [audioBlob, setAudioBlob] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasStartedRecording, setHasStartedRecording] = useState(false);
 
   // Refs
@@ -24,155 +23,61 @@ const AudioRecorder = ({
   const audioRef = useRef(null);
   const chunksRef = useRef([]);
   const streamRef = useRef(null);
-  const isProcessingPhaseChangeRef = useRef(false);
-  const submissionInProgressRef = useRef(false);
 
   // Timer
-  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
-    useGlobalTimer();
+  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } = useGlobalTimer();
 
-  // Reset everything when question changes
+  // Initialize on question change
   useEffect(() => {
-    console.log("Question changed to:", questionId);
     resetComponent();
-    initializeTimer();
+    startTimer({
+      thinkTime,
+      responseTime,
+      onTimeExpired: handleTimeExpiry,
+    });
   }, [questionId]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      cleanupResources();
-    };
-  }, []);
 
   // Handle phase transitions
   useEffect(() => {
-    if (isProcessingPhaseChangeRef.current || submissionInProgressRef.current) {
-      return;
-    }
-
-    console.log(
-      "Phase changed to:",
-      phase,
-      "Current recording state:",
-      recordingState
-    );
-
     if (phase === "responding" && !hasStartedRecording) {
-      handleRespondingPhaseStart();
+      setHasStartedRecording(true);
+      startRecording();
     } else if (phase === "expired") {
       handleTimeExpiry();
     }
-  }, [phase, recordingState, hasStartedRecording]);
+  }, [phase, hasStartedRecording]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => cleanupResources();
+  }, []);
+
+  // Reset state
   const resetComponent = useCallback(() => {
-    console.log("Resetting component");
-
-    // Stop any ongoing processes
-    isProcessingPhaseChangeRef.current = false;
-    submissionInProgressRef.current = false;
-
-    // Cleanup resources
     cleanupResources();
-
-    // Reset state
     setRecordingState("idle");
     setAudioBlob(null);
     setAudioUrl(null);
     setIsPlaying(false);
-    setIsSubmitting(false);
     setHasStartedRecording(false);
     chunksRef.current = [];
   }, []);
 
-  const initializeTimer = useCallback(() => {
-    startTimer({
-      thinkTime,
-      responseTime,
-      onPhaseChange: (newPhase) => {
-        console.log("Timer phase change:", newPhase);
-      },
-      onThinkingComplete: () => {
-        console.log("Thinking complete - will transition to responding");
-      },
-      onTimeExpired: () => {
-        console.log("Timer expired");
-      },
-    });
-  }, [thinkTime, responseTime, startTimer]);
-
-  const handleRespondingPhaseStart = useCallback(() => {
-    if (isProcessingPhaseChangeRef.current || hasStartedRecording) {
-      return;
-    }
-
-    console.log("Starting responding phase - auto-starting recording");
-    isProcessingPhaseChangeRef.current = true;
-    setHasStartedRecording(true);
-
-    // Start recording immediately without any UI prompts
-    startRecording().finally(() => {
-      isProcessingPhaseChangeRef.current = false;
-    });
-  }, [hasStartedRecording]);
-
-  const handleTimeExpiry = useCallback(() => {
-    if (submissionInProgressRef.current) {
-      return;
-    }
-
-    console.log("Handling time expiry - current state:", recordingState);
-    submissionInProgressRef.current = true;
-
-    if (recordingState === "recording") {
-      console.log(
-        "Time expired while recording - submitting current recording"
-      );
-      // Stop recording silently and submit immediately
-      if (
-        mediaRecorderRef.current &&
-        mediaRecorderRef.current.state !== "inactive"
-      ) {
-        try {
-          mediaRecorderRef.current.stop();
-        } catch (e) {
-          console.log("MediaRecorder already stopped");
-        }
-      }
-
-      // Submit after a brief delay for recording to process
-      setTimeout(() => {
-        performSubmission();
-      }, 500);
-    } else {
-      // No active recording, submit immediately
-      console.log("No active recording, submitting immediately");
-      performSubmission();
-    }
-  }, [recordingState]);
-
+  // Cleanup media resources
   const cleanupResources = useCallback(() => {
-    console.log("Cleaning up resources");
-
-    // Stop media recorder
-    if (
-      mediaRecorderRef.current &&
-      mediaRecorderRef.current.state !== "inactive"
-    ) {
+    if (mediaRecorderRef.current?.state !== "inactive") {
       try {
         mediaRecorderRef.current.stop();
       } catch (e) {
-        console.log("MediaRecorder already stopped");
+        // Already stopped
       }
     }
 
-    // Stop media stream
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
 
-    // Cleanup audio URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
     }
@@ -180,170 +85,108 @@ const AudioRecorder = ({
     mediaRecorderRef.current = null;
   }, [audioUrl]);
 
-  const getBestAudioFormat = () => {
-    const formats = [
-      "audio/mp4",
-      "audio/mp4;codecs=mp4a.40.2",
-      "audio/webm;codecs=opus",
-      "audio/webm",
-      "audio/wav",
-    ];
-
-    for (const format of formats) {
-      if (MediaRecorder.isTypeSupported(format)) {
-        return format;
-      }
-    }
-    return "";
-  };
-
-  const getAudioConstraints = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
-      return { sampleRate: 44100, channelCount: 1, echoCancellation: true };
-    } else if (userAgent.includes("android")) {
-      return { channelCount: 1, echoCancellation: true };
-    } else {
-      return { sampleRate: 16000, channelCount: 1, echoCancellation: true };
-    }
-  };
-
+  // Start recording
   const startRecording = useCallback(async () => {
-    if (recordingState === "recording") {
-      console.log("Already recording");
-      return;
-    }
-
-    console.log("Starting recording...");
+    if (recordingState === "recording") return;
 
     try {
-      // Clean up any previous resources
       cleanupResources();
-
-      // Get new media stream silently
+      
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: getAudioConstraints(),
+        audio: { channelCount: 1, echoCancellation: true }
       });
 
       streamRef.current = stream;
       chunksRef.current = [];
 
-      const mimeType = getBestAudioFormat();
-      const recorderOptions = mimeType ? { mimeType } : {};
+      const recorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = recorder;
 
-      mediaRecorderRef.current = new MediaRecorder(stream, recorderOptions);
-
-      // Set up event handlers
-      mediaRecorderRef.current.ondataavailable = (event) => {
+      recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           chunksRef.current.push(event.data);
-          console.log("Audio chunk received:", event.data.size);
         }
       };
 
-      mediaRecorderRef.current.onstop = () => {
-        console.log("MediaRecorder stopped, processing audio...");
-        processRecordingData(mimeType);
+      recorder.onstop = () => {
+        createAudioBlob();
+        if (recordingState !== "submitting") {
+          setRecordingState("complete");
+        }
       };
 
-      mediaRecorderRef.current.onstart = () => {
-        console.log("MediaRecorder started successfully");
+      recorder.onstart = () => {
         setRecordingState("recording");
       };
 
-      mediaRecorderRef.current.onerror = (event) => {
-        console.error("MediaRecorder error:", event.error);
-        setRecordingState("idle");
-        cleanupResources();
-      };
-
-      // Start recording immediately
-      mediaRecorderRef.current.start(1000);
+      recorder.start(1000);
     } catch (error) {
-      console.error("Error starting recording:", error);
+      console.error("Recording error:", error);
       setRecordingState("idle");
-      cleanupResources();
-      // Silently fail - no alert to user
     }
   }, [recordingState]);
 
+  // Stop recording
   const stopRecording = useCallback(() => {
-    return new Promise((resolve) => {
-      if (mediaRecorderRef.current && recordingState === "recording") {
-        console.log("Stopping recording...");
-
-        // Set up one-time stop handler
-        const handleStop = () => {
-          mediaRecorderRef.current.removeEventListener("stop", handleStop);
-          // Only set to complete if not submitting (i.e., manual stop)
-          if (!submissionInProgressRef.current) {
-            setRecordingState("complete");
-          }
-          resolve();
-        };
-
-        mediaRecorderRef.current.addEventListener("stop", handleStop);
-
-        try {
-          mediaRecorderRef.current.stop();
-        } catch (error) {
-          console.error("Error stopping recording:", error);
-          mediaRecorderRef.current.removeEventListener("stop", handleStop);
-          resolve();
-        }
-      } else {
-        console.log("No active recording to stop");
-        resolve();
-      }
-    });
+    if (mediaRecorderRef.current && recordingState === "recording") {
+      mediaRecorderRef.current.stop();
+    }
   }, [recordingState]);
 
-  const processRecordingData = useCallback(
-    (mimeType) => {
-      console.log(
-        "Processing recording data, chunks:",
-        chunksRef.current.length
-      );
+  // Create audio blob from chunks
+  const createAudioBlob = useCallback(() => {
+    if (chunksRef.current.length === 0) return;
 
-      if (chunksRef.current.length === 0) {
-        console.log("No audio data to process");
-        return;
-      }
+    const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+    
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+    }
 
-      const totalSize = chunksRef.current.reduce(
-        (total, chunk) => total + chunk.size,
-        0
-      );
+    setAudioBlob(blob);
+    const url = URL.createObjectURL(blob);
+    setAudioUrl(url);
 
-      if (totalSize > 0) {
-        const blob = new Blob(chunksRef.current, {
-          type: mimeType || "audio/webm",
-        });
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  }, [audioUrl]);
 
-        // Clean up previous audio URL
-        if (audioUrl) {
-          URL.revokeObjectURL(audioUrl);
-        }
+  // Handle time expiry
+  const handleTimeExpiry = useCallback(() => {
+    if (recordingState === "recording") {
+      stopRecording();
+      // Wait for recording to process, then submit
+      setTimeout(() => performSubmission(), 500);
+    } else {
+      performSubmission();
+    }
+  }, [recordingState]);
 
-        setAudioBlob(blob);
-        const url = URL.createObjectURL(blob);
-        setAudioUrl(url);
-        console.log("Audio blob created successfully, size:", totalSize);
-      }
+  // Submit response
+  const performSubmission = useCallback(() => {
+    setRecordingState("submitting");
+    stopTimer();
 
-      // Clean up stream
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-        streamRef.current = null;
-      }
-    },
-    [audioUrl]
-  );
+    const submissionBlob = audioBlob || 
+      (chunksRef.current.length > 0 ? new Blob(chunksRef.current, { type: "audio/webm" }) : null);
 
-  const startNewRecording = useCallback(async () => {
-    console.log("Starting new recording");
+    setTimeout(() => onSubmit(submissionBlob), 100);
+  }, [audioBlob, stopTimer, onSubmit]);
 
-    // Clear previous recording
+  // Manual submit
+  const handleManualSubmit = useCallback(() => {
+    if (recordingState === "recording") {
+      stopRecording();
+      setTimeout(() => performSubmission(), 500);
+    } else {
+      performSubmission();
+    }
+  }, [recordingState, performSubmission]);
+
+  // Record again
+  const handleRecordAgain = useCallback(async () => {
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
@@ -352,153 +195,240 @@ const AudioRecorder = ({
     setIsPlaying(false);
     setRecordingState("idle");
     chunksRef.current = [];
-
-    // Start new recording
     await startRecording();
   }, [audioUrl, startRecording]);
 
-  const playAudio = useCallback(() => {
-    if (audioRef.current && audioUrl) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.play();
-        setIsPlaying(true);
-      }
+  // Play/pause audio
+  const togglePlayback = useCallback(() => {
+    if (!audioRef.current || !audioUrl) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
     }
   }, [audioUrl, isPlaying]);
 
-  const performSubmission = useCallback(() => {
-    console.log("Performing submission...");
-    stopTimer();
-
-    // Determine what to submit
-    let submissionBlob = null;
-
-    if (audioBlob) {
-      submissionBlob = audioBlob;
-      console.log("Submitting existing audio blob");
-    } else if (chunksRef.current.length > 0) {
-      const mimeType = getBestAudioFormat();
-      submissionBlob = new Blob(chunksRef.current, {
-        type: mimeType || "audio/webm",
-      });
-      console.log("Submitting from chunks");
+  // Format time for display
+  const formatTimeLimit = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    if (minutes > 0 && remainingSeconds > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} and ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''}`;
     } else {
-      console.log("No audio to submit");
+      return `${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
     }
+  };
 
-    // Submit after cleanup
-    setTimeout(() => {
-      onSubmit(submissionBlob);
-    }, 100);
-  }, [audioBlob, stopTimer, onSubmit]);
-
-  const handleManualSubmit = useCallback(() => {
-    console.log("Manual submit triggered");
-
-    // Mark submission in progress
-    submissionInProgressRef.current = true;
-
-    // If recording, stop it first and submit immediately
-    if (recordingState === "recording") {
-      if (
-        mediaRecorderRef.current &&
-        mediaRecorderRef.current.state !== "inactive"
-      ) {
-        try {
-          mediaRecorderRef.current.stop();
-        } catch (e) {
-          console.log("MediaRecorder already stopped");
+  // Get phase instructions
+  const getPhaseInstructions = () => {
+    switch(phase) {
+      case 'thinking':
+        return {
+          title: "Preparation Time",
+          instruction: questionContext ? 
+            `${questionContext} You will have ${formatTimeLimit(responseTime)} to record your response.` :
+            `Think about your response. Take your time to organize your thoughts. You have ${formatTimeLimit(responseTime)} to record your response.`,
+          action: "Recording will start automatically when preparation time ends.",
+          icon: Brain,
+          color: "blue",
+          showTimer: true
+        };
+      
+      case 'responding':
+        if (recordingState === 'recording') {
+          return {
+            title: "Recording Your Response",
+            instruction: questionContext || "Speak clearly and at a natural pace. You can stop early if you finish your answer.",
+            action: "Click 'Stop Recording' when you're done, or let the timer run out.",
+            icon: Mic,
+            color: "red",
+            showTimer: true
+          };
+        } else if (recordingState === 'complete') {
+          return {
+            title: "Review Your Recording",
+            instruction: "You can listen to your recording, record again, or submit your final answer.",
+            action: "Choose 'Submit' when you're satisfied with your response.",
+            icon: CheckCircle,
+            color: "green",
+            showTimer: true
+          };
+        } else {
+          return {
+            title: "Ready to Record",
+            instruction: questionContext || "Recording will start automatically. Speak your answer when it begins.",
+            action: "Get ready to speak your response.",
+            icon: Mic,
+            color: "orange",
+            showTimer: true
+          };
         }
-      }
-
-      setTimeout(() => {
-        performSubmission();
-      }, 500);
-    } else {
-      performSubmission();
+      
+      case 'expired':
+        return {
+          title: "Time Complete",
+          instruction: "Recording time has ended. Your response is being processed.",
+          action: "Please wait while we submit your answer.",
+          icon: Clock,
+          color: "gray",
+          showTimer: false
+        };
+      
+      case 'stopped':
+        return {
+          title: "Response Submitted",
+          instruction: "Your answer has been submitted successfully.",
+          action: "Moving to the next question...",
+          icon: CheckCircle,
+          color: "green",
+          showTimer: false
+        };
+      
+      default:
+        return {
+          title: "Preparing Question",
+          instruction: "Loading question...",
+          action: "Please wait.",
+          icon: Clock,
+          color: "gray",
+          showTimer: false
+        };
     }
-  }, [recordingState, performSubmission]);
+  };
+
+  // Timer display component
+  const TimerDisplay = () => {
+    const instructions = getPhaseInstructions();
+    
+    if (!instructions.showTimer || timeLeft <= 0) {
+      return null;
+    }
+
+    const getTimerState = () => {
+      if (timeLeft <= 10) return 'critical';
+      if (timeLeft <= 30) return 'warning';
+      return 'normal';
+    };
+
+    const timerState = getTimerState();
+    const stateColors = {
+      normal: 'bg-blue-50 border-blue-200 text-blue-700',
+      warning: 'bg-amber-50 border-amber-200 text-amber-700',
+      critical: 'bg-red-50 border-red-200 text-red-700 animate-pulse'
+    };
+
+    return (
+      <div className="flex justify-center mb-4">
+        <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl border-2 font-medium ${stateColors[timerState]}`}>
+          <Clock className="w-5 h-5" />
+          <div className="text-center">
+            <div className="text-lg font-bold">{formatTime(timeLeft)}</div>
+            <div className="text-xs opacity-75">
+              {phase === 'thinking' ? 'Prep time remaining' : 'Recording time remaining'}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Instruction panel component
+  const InstructionPanel = () => {
+    const instructions = getPhaseInstructions();
+    const IconComponent = instructions.icon;
+    
+    const colorClasses = {
+      blue: 'bg-blue-50 border-blue-200 text-blue-800',
+      red: 'bg-red-50 border-red-200 text-red-800',
+      green: 'bg-green-50 border-green-200 text-green-800',
+      orange: 'bg-orange-50 border-orange-200 text-orange-800',
+      gray: 'bg-gray-50 border-gray-200 text-gray-800'
+    };
+
+    return (
+      <div className={`rounded-xl border-2 p-4 mb-6 ${colorClasses[instructions.color]}`}>
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0 mt-1">
+            <IconComponent className="w-6 h-6" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg mb-2">{instructions.title}</h3>
+            <p className="text-base mb-2">{instructions.instruction}</p>
+            <p className="text-sm font-medium opacity-80">{instructions.action}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-4 border border-blue-200/50">
-      <div className="text-center space-y-6">
-        {/* Header with Timer */}
-        {phase !== "expired" && phase !== "stopped" && (
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Mic className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-blue-800">
-                Speaking Question
-              </h3>
-            </div>
+    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-200/50">
+      <div className="space-y-6">
+        {/* Phase Instructions */}
+        <InstructionPanel />
 
-            {/* Timer on the right side */}
-            <TimerDisplay
-              timeLeft={timeLeft}
-              formatTime={formatTime}
-              phase={phase}
-              size="large"
-            />
-          </div>
-        )}
+        {/* Timer */}
+        <TimerDisplay />
 
-        {/* Skip Thinking Button - only during thinking phase */}
+        {/* Skip Thinking Button */}
         {phase === "thinking" && (
-          <button
-            onClick={skipThinking}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center mx-auto"
-          >
-            <FastForward className="w-4 h-4 mr-2" />
-            Skip to Recording
-          </button>
-        )}
-
-        {/* Simple recording indicator - only when actively recording */}
-        {recordingState === "recording" && phase === "responding" && (
-          <div className="flex items-center justify-center space-x-3 text-red-600">
-            <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse"></div>
-            <span className="font-medium">Recording...</span>
+          <div className="flex justify-center">
+            <button
+              onClick={skipThinking}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center"
+            >
+              <FastForward className="w-4 h-4 mr-2" />
+              Skip to Recording
+            </button>
           </div>
         )}
 
-        {/* Control Buttons - only show when in responding phase */}
+        {/* Recording Indicator */}
+        {recordingState === "recording" && phase === "responding" && (
+          <div className="flex items-center justify-center space-x-3 bg-red-50 border border-red-200 rounded-xl p-4">
+            <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse"></div>
+            <span className="font-semibold text-red-700">Recording in progress...</span>
+          </div>
+        )}
+
+        {/* Control Buttons */}
         {phase === "responding" && (
           <div className="flex flex-wrap items-center justify-center gap-3">
-            {/* Stop Recording Button */}
+            {/* Stop Recording */}
             {recordingState === "recording" && (
               <button
-                onClick={() => stopRecording()}
-                disabled={disabled || submissionInProgressRef.current}
-                className="flex items-center space-x-2 px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={stopRecording}
+                disabled={disabled}
+                className="flex items-center space-x-2 px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50"
               >
                 <Square className="w-4 h-4" />
                 <span>Stop Recording</span>
               </button>
             )}
 
-            {/* Record Again Button */}
+            {/* Record Again */}
             {recordingState === "complete" && audioBlob && (
               <button
-                onClick={startNewRecording}
-                disabled={disabled || submissionInProgressRef.current}
-                className="flex items-center space-x-2 px-4 py-3 rounded-lg font-medium text-sm border-2 border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleRecordAgain}
+                disabled={disabled}
+                className="flex items-center space-x-2 px-4 py-3 rounded-lg font-medium text-sm border-2 border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors disabled:opacity-50"
               >
                 <Mic className="w-4 h-4" />
                 <span>Record Again</span>
               </button>
             )}
 
-            {/* Play Button */}
+            {/* Play/Pause */}
             {audioUrl && recordingState === "complete" && (
               <button
-                onClick={playAudio}
-                disabled={submissionInProgressRef.current}
-                className="flex items-center space-x-2 px-4 py-3 rounded-lg font-medium text-sm border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={togglePlayback}
+                disabled={disabled}
+                className="flex items-center space-x-2 px-4 py-3 rounded-lg font-medium text-sm border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
               >
                 {isPlaying ? (
                   <>
@@ -514,13 +444,12 @@ const AudioRecorder = ({
               </button>
             )}
 
-            {/* Submit Button */}
-            {((audioBlob && recordingState === "complete") ||
-              recordingState === "recording") && (
+            {/* Submit */}
+            {((audioBlob && recordingState === "complete") || recordingState === "recording") && (
               <button
                 onClick={handleManualSubmit}
-                disabled={disabled || submissionInProgressRef.current}
-                className="flex items-center space-x-2 px-8 py-4 rounded-xl font-bold text-sm bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={disabled}
+                className="flex items-center space-x-2 px-8 py-4 rounded-xl font-bold text-sm bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
                 <span>Submit Response</span>

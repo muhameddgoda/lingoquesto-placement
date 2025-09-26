@@ -6,7 +6,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes presenting a sophisticated philosophical debate on free will versus determinism. Define both concepts, analyze their explanatory power for human behavior, examine the implications for moral responsibility, and present your reasoned conclusion with supporting arguments.",
+        "question": "Questions to help you think about this topic: How do you define free will and determinism? What evidence supports each perspective? How do neuroscience and psychology inform this debate? What are the implications for moral responsibility and justice? Can both concepts coexist in some form?",
         "context_description": "Advanced philosophical argumentation and meta-ethical reasoning"
       }
     }
@@ -18,7 +18,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes analyzing how big-data analytics transforms knowledge generation, examining epistemological issues including data bias, correlation versus causation, algorithmic opacity, and the limits of inductive reasoning in massive datasets.",
+        "question": "Questions to help you think about this topic: How does big data change the way we generate knowledge? What are the limitations of correlation-based insights? How do algorithmic biases affect data interpretation? What epistemological assumptions underlie data analytics? How do we distinguish meaningful patterns from statistical noise?",
         "context_description": "Advanced epistemology and philosophy of science"
       }
     }
@@ -30,7 +30,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes providing a critical examination of how AI systems perpetuate and amplify social biases, analyzing specific mechanisms, real-world examples, systemic causes, and proposing comprehensive solutions involving technical, legal, and social interventions.",
+        "question": "Questions to help you think about this topic: How do AI systems learn and perpetuate existing biases? What are specific examples of algorithmic discrimination? What systemic factors contribute to biased AI? How can technical solutions address these issues? What role do social and legal interventions play?",
         "context_description": "AI ethics and social justice analysis"
       }
     }
@@ -42,7 +42,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes presenting a nuanced ethical debate on autonomous weapons systems, examining arguments from just war theory, international humanitarian law, technological determinism, and moral agency, before articulating your reasoned position.",
+        "question": "Questions to help you think about this topic: What ethical principles should govern warfare? How do autonomous weapons challenge traditional just war theory? What are the implications for human accountability in warfare? How might these weapons affect global security and conflict dynamics? What regulatory frameworks are needed?",
         "context_description": "Military ethics and moral philosophy"
       }
     }
@@ -54,7 +54,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes proposing comprehensive solutions to a global health crisis by synthesizing perspectives from medicine, epidemiology, economics, sociology, political science, and ethics. Address systemic causes, implementation challenges, and long-term sustainability.",
+        "question": "Questions to help you think about this topic: What insights can different disciplines offer to health crisis management? How do social, economic, and political factors influence health outcomes? What are the systemic causes of global health inequities? How can international cooperation be improved? What lessons have we learned from recent health crises?",
         "context_description": "Interdisciplinary policy analysis and global health governance"
       }
     }
@@ -66,7 +66,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes describing a situation where you had to advocate for a sophisticated concept to a non-specialist audience, analyzing your communication strategies, addressing counterarguments, and reflecting on the challenges of translating complexity without losing nuance.",
+        "question": "Questions to help you think about this topic: What made the idea complex and why was it important to communicate it? How did you adapt your communication style for your audience? What objections or misconceptions did you encounter? How did you maintain accuracy while making the idea accessible? What was the outcome of your efforts?",
         "context_description": "Advanced communication and persuasion in complex contexts"
       }
     }
@@ -78,7 +78,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes analyzing the inherent limitations of data-driven decision-making in critical situations, examining issues of measurement, context, uncertainty, human judgment, and the role of qualitative factors in complex decisions.",
+        "question": "Questions to help you think about this topic: What can data tell us and what can't it reveal? How do context and human judgment complement data analysis? What are the risks of over-relying on quantitative metrics? How do ethical considerations factor into data-driven decisions? When might intuition or experience trump data?",
         "context_description": "Decision theory and philosophy of data science"
       }
     }
@@ -90,7 +90,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes discussing the distinction between sophisticated nuance and problematic ambiguity in argumentation, examining criteria for evaluation, the role of precision in complex discourse, and methods for assessing argumentative quality.",
+        "question": "Questions to help you think about this topic: What distinguishes sophisticated nuance from problematic ambiguity? How do you evaluate the quality and clarity of complex arguments? What role does precision play in effective communication? How can you maintain nuance while avoiding confusion? What criteria help assess argumentative strength?",
         "context_description": "Advanced rhetoric and critical thinking analysis"
       }
     }
@@ -102,7 +102,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes examining how cognitive, cultural, and institutional biases shape the interpretation of historical events and scientific findings, analyzing specific examples and discussing methods for minimizing bias while acknowledging its inevitability.",
+        "question": "Questions to help you think about this topic: How do personal and cultural biases shape our understanding of history and science? What methods can help minimize bias in interpretation? How do institutional factors influence narrative construction? Can complete objectivity ever be achieved? How should we account for bias in evaluation?",
         "context_description": "Historiography and philosophy of science"
       }
     }
@@ -114,7 +114,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes discussing sophisticated communication strategies for conveying complex, abstract ideas to diverse audiences while maintaining intellectual integrity, examining the balance between accessibility and precision.",
+        "question": "Questions to help you think about this topic: How do you balance accessibility with intellectual rigor? What techniques help make abstract concepts concrete? How do you gauge your audience's understanding and adjust accordingly? What role do analogies and examples play? How do you maintain accuracy while simplifying complex ideas?",
         "context_description": "Advanced pedagogical communication and public intellectualism"
       }
     }

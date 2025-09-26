@@ -458,16 +458,6 @@ const ExamInterface = () => {
                 <div className="text-xl font-semibold text-gray-800 mb-2">
                   {currentQuestion.prompt}
                 </div>
-                {currentQuestion.metadata?.context?.question &&
-                  currentQuestion.metadata.context.question !==
-                    currentQuestion.prompt && (
-                    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                      <p className="text-blue-800 text-sm">
-                        <strong>Additional context:</strong>
-                        {currentQuestion.metadata.context.question}
-                      </p>
-                    </div>
-                  )}
               </div>
 
               {/* Question Interface */}
@@ -483,6 +473,7 @@ const ExamInterface = () => {
                   thinkTime={currentQuestion.timing?.think_time_sec || 30}
                   responseTime={currentQuestion.timing?.response_time_sec || 90}
                   questionId={currentQuestion.q_id}
+                  questionContext={currentQuestion.metadata?.context?.question} // This is the key line - passes the detailed instructions
                 />
               ) : currentQuestion.q_type === "listen_answer" ? (
                 <ListenAnswerQuestion
@@ -515,6 +506,7 @@ const ExamInterface = () => {
                   thinkTime={5}
                   responseTime={15}
                   questionId={currentQuestion.q_id}
+                  questionContext={currentQuestion.metadata?.context?.question} // Also pass context for repeat_sentence questions
                 />
               ) : (
                 <MCQQuestion

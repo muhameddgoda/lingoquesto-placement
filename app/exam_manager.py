@@ -491,29 +491,35 @@ class ExamManager:
                 user_input = response_data.get("response_data", "").lower().strip()
                 
                 logger.info(f"Dictation inputs - Expected: '{expected_text}', User: '{user_input}'")
-    
-                if expected_text and user_input:
-                    # Remove punctuation for fairer comparison
-                    import re
-                    expected_clean = re.sub(r'[^\w\s]', '', expected_text).strip()
-                    user_clean = re.sub(r'[^\w\s]', '', user_input).strip()
-                    
-                    # Calculate word-level accuracy
-                    expected_words = expected_clean.split()
-                    user_words = user_clean.split()
-                    
-                    # Simple word matching
-                    correct_words = 0
-                    total_words = len(expected_words)
-                    
-                    for i, expected_word in enumerate(expected_words):
-                        if i < len(user_words) and user_words[i] == expected_word:
-                            correct_words += 1
-                    
-                    # Calculate accuracy percentage
-                    accuracy = (correct_words / total_words * 100) if total_words > 0 else 0
-                    
-                    logger.info(f"Dictation evaluation: Expected '{expected_text}' -> '{expected_clean}', Got '{user_input}' -> '{user_clean}', Accuracy: {accuracy:.1f}%")
+
+                # FIXED: Check if we have expected text, and handle empty user input properly
+                if expected_text:  # Only need expected text to exist
+                    if user_input:  # User provided some input
+                        # Remove punctuation for fairer comparison
+                        import re
+                        expected_clean = re.sub(r'[^\w\s]', '', expected_text).strip()
+                        user_clean = re.sub(r'[^\w\s]', '', user_input).strip()
+                        
+                        # Calculate word-level accuracy
+                        expected_words = expected_clean.split()
+                        user_words = user_clean.split()
+                        
+                        # Simple word matching
+                        correct_words = 0
+                        total_words = len(expected_words)
+                        
+                        for i, expected_word in enumerate(expected_words):
+                            if i < len(user_words) and user_words[i] == expected_word:
+                                correct_words += 1
+                        
+                        # Calculate accuracy percentage
+                        accuracy = (correct_words / total_words * 100) if total_words > 0 else 0
+                        
+                    else:  # FIXED: User provided no input (empty string or timeout)
+                        accuracy = 0.0  # No input = 0% accuracy
+                        correct_words = 0
+                        total_words = len(expected_text.split())
+                        logger.info(f"Dictation: No user input provided - giving 0% accuracy")
                     
                     # For dictation, focus on vocabulary (listening comprehension + spelling)
                     scores = {
@@ -536,12 +542,12 @@ class ExamManager:
                             "user_input": user_input,
                             "word_accuracy": accuracy,
                             "correct_words": correct_words,
-                            "total_words": total_words
+                            "total_words": len(expected_text.split())
                         }
                     }
                 else:
-                    logger.warning(f"Missing expected text or user input for dictation")
-                    return self._get_mock_evaluation(scoring_profile, "Missing dictation data")
+                    logger.warning(f"No expected text available for dictation question")
+                    return self._get_mock_evaluation(scoring_profile, "No expected text available")
                     
             elif q_type in ["listen_mcq", "best_response_mcq"] or response_data.get("response_type") == "text":
                         # MCQ evaluation (including listen_mcq)

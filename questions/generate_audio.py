@@ -3,6 +3,7 @@
 Script to generate audio files using ElevenLabs API for placement test questions.
 Processes JSON files and creates audio files for questions with audioRef metadata.
 Modified to handle minimal pairs using the "correctAnswer" field.
+Skips audio generation if the file already exists.
 """
 
 import json
@@ -48,6 +49,13 @@ class ElevenLabsAudioGenerator:
     
     def text_to_speech(self, text, filename):
         """Convert text to speech and save as WAV file"""
+        output_path = self.audio_dir / filename
+        
+        # Check if file already exists
+        if output_path.exists():
+            print(f"⏭️  Skipped: {filename} (already exists)")
+            return True
+        
         url = f"{self.base_url}/text-to-speech/{self.voice_id}"
         
         data = {
@@ -65,15 +73,14 @@ class ElevenLabsAudioGenerator:
             response.raise_for_status()
             
             # Save the audio file
-            output_path = self.audio_dir / filename
             with open(output_path, 'wb') as f:
                 f.write(response.content)
             
-            print(f"✓ Generated: {filename}")
+            print(f"✅ Generated: {filename}")
             return True
             
         except requests.exceptions.RequestException as e:
-            print(f"✗ Error generating {filename}: {e}")
+            print(f"❌ Error generating {filename}: {e}")
             return False
     
     def process_json_file(self, json_file_path):
@@ -83,6 +90,7 @@ class ElevenLabsAudioGenerator:
                 data = json.load(f)
             
             processed_count = 0
+            skipped_count = 0
             
             for item in data:
                 metadata = item.get('metadata', {})
@@ -108,25 +116,34 @@ class ElevenLabsAudioGenerator:
                         # Extract filename from audioRef (e.g., "audio/a1_dict_001.wav" -> "a1_dict_001.wav")
                         filename = Path(audio_ref).name
                         
-                        # Generate audio (replacing existing files)
-                        if self.text_to_speech(text_to_convert, filename):
-                            processed_count += 1
-                        
-                        # Add a small delay to avoid rate limiting
-                        time.sleep(0.5)
+                        # Check if file already exists before processing
+                        output_path = self.audio_dir / filename
+                        if output_path.exists():
+                            skipped_count += 1
+                            print(f"⏭️  Skipped: {filename} (already exists)")
+                        else:
+                            # Generate audio
+                            if self.text_to_speech(text_to_convert, filename):
+                                processed_count += 1
+                            
+                            # Add a small delay to avoid rate limiting
+                            time.sleep(0.5)
                     else:
-                        print(f"⚠ Warning: {item.get('id', 'Unknown ID')} has audioRef but no correctAnswer/expectedText/audioText")
+                        print(f"⚠️  Warning: {item.get('id', 'Unknown ID')} has audioRef but no correctAnswer/expectedText/audioText")
             
-            print(f"Generated {processed_count} audio files from {json_file_path.name}")
-            return processed_count
+            print(f"Generated {processed_count} new audio files from {json_file_path.name}")
+            if skipped_count > 0:
+                print(f"Skipped {skipped_count} existing audio files from {json_file_path.name}")
+            return processed_count, skipped_count
             
         except (json.JSONDecodeError, FileNotFoundError) as e:
             print(f"Error processing {json_file_path}: {e}")
-            return 0
+            return 0, 0
     
     def process_all_files(self, json_files):
         """Process all JSON files provided"""
         total_processed = 0
+        total_skipped = 0
         
         print("Starting audio generation...")
         print(f"Using voice ID: {self.voice_id}")
@@ -135,13 +152,16 @@ class ElevenLabsAudioGenerator:
         
         for json_file in json_files:
             if json_file.exists():
-                count = self.process_json_file(json_file)
-                total_processed += count
+                processed, skipped = self.process_json_file(json_file)
+                total_processed += processed
+                total_skipped += skipped
             else:
                 print(f"Warning: {json_file} not found")
         
         print("-" * 50)
-        print(f"Total audio files generated: {total_processed}")
+        print(f"Total new audio files generated: {total_processed}")
+        print(f"Total existing audio files skipped: {total_skipped}")
+        print(f"Total audio files processed: {total_processed + total_skipped}")
     
     def list_voices_info(self):
         """Display available voices for reference"""

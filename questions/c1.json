@@ -6,7 +6,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes analyzing the ethical concerns and benefits of using artificial intelligence in healthcare, including patient privacy, diagnostic accuracy, healthcare equity, and the balance between automation and human medical judgment.",
+        "question": "Questions to help you think about this topic: What are the potential benefits of AI in healthcare? What ethical concerns arise from using AI for medical decisions? How might AI affect patient privacy and doctor-patient relationships? Should there be limits on AI's role in healthcare? How can we ensure AI is used responsibly in medicine?",
         "context_description": "Advanced ethical reasoning and healthcare policy analysis"
       }
     }
@@ -18,7 +18,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes evaluating the effectiveness of government policies in addressing climate change, analyzing specific policy instruments, their implementation challenges, and suggesting improvements based on evidence from different countries.",
+        "question": "Questions to help you think about this topic: Which climate policies have been most effective? What are the main challenges in implementing environmental policies? How can governments balance economic growth with environmental protection? What role should international cooperation play? How do different countries' approaches compare?",
         "context_description": "Environmental policy evaluation and comparative analysis"
       }
     }
@@ -30,7 +30,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes providing a critical analysis of how the gig economy has transformed workers' rights, examining both the opportunities for flexibility and the challenges to traditional labor protections.",
+        "question": "Questions to help you think about this topic: How has the gig economy changed traditional employment? What benefits does it offer workers? What labor protections are missing in gig work? How do workers' rights differ between traditional and gig employment? What reforms might be needed to protect gig workers?",
         "context_description": "Labor economics and workers' rights critical analysis"
       }
     }
@@ -42,7 +42,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes analyzing how economic inequality affects social structures, examining its impact on education, healthcare access, social mobility, and community cohesion, while discussing potential solutions.",
+        "question": "Questions to help you think about this topic: How does economic inequality affect social mobility and education? What impact does it have on healthcare access and community cohesion? What are the root causes of growing inequality? What solutions might help reduce inequality? How does inequality affect democracy and social stability?",
         "context_description": "Socioeconomic analysis and inequality assessment"
       }
     }
@@ -54,7 +54,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes critically examining whether technology truly democratizes knowledge, considering both the unprecedented access to information it provides and the digital divides, misinformation, and gatekeeping mechanisms that persist.",
+        "question": "Questions to help you think about this topic: In what ways has technology made knowledge more accessible? What barriers still exist to accessing information? How do digital divides affect knowledge access? What role does misinformation play? Does technology create new forms of knowledge gatekeeping?",
         "context_description": "Technology and knowledge accessibility critical evaluation"
       }
     }
@@ -66,7 +66,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes describing a complex situation involving conflicting perspectives, explaining how you analyzed different viewpoints, managed stakeholder relationships, and reached a resolution or compromise.",
+        "question": "Questions to help you think about this topic: What was the nature of the conflict between different viewpoints? How did you analyze and understand each perspective? What strategies did you use to find common ground? How did you manage relationships while addressing disagreements? What was the final outcome?",
         "context_description": "Conflict resolution and diplomatic communication assessment"
       }
     }
@@ -78,7 +78,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes examining the ethical dimensions of AI-powered decision-making across different sectors, including issues of bias, transparency, accountability, and human agency in algorithmic systems.",
+        "question": "Questions to help you think about this topic: What types of decisions is AI currently making? What ethical concerns arise from algorithmic decision-making? How can we ensure AI systems are fair and unbiased? What role should human oversight play? How do we balance efficiency with ethical considerations?",
         "context_description": "AI ethics and automated decision-making analysis"
       }
     }
@@ -90,7 +90,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes discussing comprehensive frameworks for evaluating long-term goal achievement, including quantitative metrics, qualitative indicators, unintended consequences, and the evolution of objectives over time.",
+        "question": "Questions to help you think about this topic: What metrics should be used to measure goal achievement? How do you account for changing circumstances and evolving objectives? What role do unintended consequences play in evaluation? How do you balance quantitative results with qualitative outcomes? When should goals be modified or abandoned?",
         "context_description": "Goal evaluation methodologies and strategic planning"
       }
     }
@@ -102,7 +102,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes analyzing the tension between innovation and risk management in organizations, discussing strategies for fostering creativity while maintaining prudent oversight and regulatory compliance.",
+        "question": "Questions to help you think about this topic: What tensions exist between innovation and risk management? How can organizations foster creativity while maintaining oversight? What role does regulatory compliance play? How should companies evaluate and manage innovation risks? What are the costs of being too conservative versus too aggressive?",
         "context_description": "Organizational strategy and risk-innovation balance"
       }
     }
@@ -114,7 +114,7 @@
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 5 minutes describing a significant change in your perspective, analyzing what new information or experiences led to this shift and reflecting on the importance of intellectual flexibility and evidence-based thinking.",
+        "question": "Questions to help you think about this topic: What was your original opinion and what new information challenged it? What made you open to changing your perspective? How did you evaluate the credibility of the new information? What was the process of changing your mind like? Why is intellectual flexibility important?",
         "context_description": "Intellectual humility and perspective evolution assessment"
       }
     }
@@ -355,136 +355,136 @@
     }
   },
   {
-  "id": "C1-MP-001",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_001.wav",
-    "options": ["no", "now"],
-    "correctAnswer": "no",
-    "phonemes": ["/noʊ/", "/aʊ/"],
-    "difficulty": "advanced"
+    "id": "C1-MP-001",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_001.wav",
+      "options": ["no", "now"],
+      "correctAnswer": "no",
+      "phonemes": ["/noʊ/", "/aʊ/"],
+      "difficulty": "advanced"
+    }
+  },
+  {
+    "id": "C1-MP-002",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_002.wav",
+      "options": ["no", "now"],
+      "correctAnswer": "now",
+      "phonemes": ["/noʊ/", "/aʊ/"],
+      "difficulty": "advanced"
+    }
+  },
+  {
+    "id": "C1-MP-003",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_003.wav",
+      "options": ["live", "leave"],
+      "correctAnswer": "live",
+      "phonemes": ["/ɪ/", "/iː/"],
+      "difficulty": "advanced",
+      "note": "verb form with short i sound"
+    }
+  },
+  {
+    "id": "C1-MP-004",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_004.wav",
+      "options": ["live", "leave"],
+      "correctAnswer": "leave",
+      "phonemes": ["/ɪ/", "/iː/"],
+      "difficulty": "advanced"
+    }
+  },
+  {
+    "id": "C1-MP-005",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_005.wav",
+      "options": ["part", "pert"],
+      "correctAnswer": "part",
+      "phonemes": ["/ɑː/", "/ɜː/"],
+      "difficulty": "advanced"
+    }
+  },
+  {
+    "id": "C1-MP-006",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_006.wav",
+      "options": ["part", "pert"],
+      "correctAnswer": "pert",
+      "phonemes": ["/ɑː/", "/ɜː/"],
+      "difficulty": "advanced"
+    }
+  },
+  {
+    "id": "C1-MP-007",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_007.wav",
+      "options": ["CONduct", "conDUCT"],
+      "correctAnswer": "conduct",
+      "stress_pattern": "first_syllable",
+      "difficulty": "advanced",
+      "note": "noun form with first syllable stress"
+    }
+  },
+  {
+    "id": "C1-MP-008",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_008.wav",
+      "options": ["CONduct", "conDUCT"],
+      "correctAnswer": "conduct",
+      "stress_pattern": "second_syllable",
+      "difficulty": "advanced",
+      "note": "verb form with second syllable stress"
+    }
+  },
+  {
+    "id": "C1-MP-009",
+    "type": "minimal_pair",
+    "prompt": "Which phrase did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_009.wav",
+      "options": ["I scream", "ice cream"],
+      "correctAnswer": "I scream",
+      "difficulty": "advanced",
+      "note": "connected speech distinction"
+    }
+  },
+  {
+    "id": "C1-MP-010",
+    "type": "minimal_pair",
+    "prompt": "Which phrase did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_010.wav",
+      "options": ["I scream", "ice cream"],
+      "correctAnswer": "ice cream",
+      "difficulty": "advanced",
+      "note": "connected speech distinction"
+    }
   }
-},
-{
-  "id": "C1-MP-002",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_002.wav",
-    "options": ["no", "now"],
-    "correctAnswer": "now",
-    "phonemes": ["/noʊ/", "/aʊ/"],
-    "difficulty": "advanced"
-  }
-},
-{
-  "id": "C1-MP-003",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_003.wav",
-    "options": ["live", "leave"],
-    "correctAnswer": "live",
-    "phonemes": ["/ɪ/", "/iː/"],
-    "difficulty": "advanced",
-    "note": "verb form with short i sound"
-  }
-},
-{
-  "id": "C1-MP-004",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_004.wav",
-    "options": ["live", "leave"],
-    "correctAnswer": "leave",
-    "phonemes": ["/ɪ/", "/iː/"],
-    "difficulty": "advanced"
-  }
-},
-{
-  "id": "C1-MP-005",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_005.wav",
-    "options": ["part", "pert"],
-    "correctAnswer": "part",
-    "phonemes": ["/ɑː/", "/ɜː/"],
-    "difficulty": "advanced"
-  }
-},
-{
-  "id": "C1-MP-006",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_006.wav",
-    "options": ["part", "pert"],
-    "correctAnswer": "pert",
-    "phonemes": ["/ɑː/", "/ɜː/"],
-    "difficulty": "advanced"
-  }
-},
-{
-  "id": "C1-MP-007",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_007.wav",
-    "options": ["CONduct", "conDUCT"],
-    "correctAnswer": "conduct",
-    "stress_pattern": "first_syllable",
-    "difficulty": "advanced",
-    "note": "noun form with first syllable stress"
-  }
-},
-{
-  "id": "C1-MP-008",
-  "type": "minimal_pair",
-  "prompt": "Which word did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_008.wav",
-    "options": ["CONduct", "conDUCT"],
-    "correctAnswer": "conduct",
-    "stress_pattern": "second_syllable",
-    "difficulty": "advanced",
-    "note": "verb form with second syllable stress"
-  }
-},
-{
-  "id": "C1-MP-009",
-  "type": "minimal_pair",
-  "prompt": "Which phrase did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_009.wav",
-    "options": ["I scream", "ice cream"],
-    "correctAnswer": "I scream",
-    "difficulty": "advanced",
-    "note": "connected speech distinction"
-  }
-},
-{
-  "id": "C1-MP-010",
-  "type": "minimal_pair",
-  "prompt": "Which phrase did you hear?",
-  "metadata": {
-    "accent": "us",
-    "audioRef": "audio/c1_mp_010.wav",
-    "options": ["I scream", "ice cream"],
-    "correctAnswer": "ice cream",
-    "difficulty": "advanced",
-    "note": "connected speech distinction"
-  }
-}
 ]

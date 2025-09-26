@@ -552,61 +552,61 @@
     }
   },
   {
-    "id": "A1-OR-011",
+    "id": "A1-OR-001",
     "type": "open_response",
     "prompt": "Talk about your name, age and where you live.",
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes about yourself. Tell me your name, how old you are, and where you live. You can also mention your family or what you like to do.",
+        "question": "Questions to help you think about this topic: What is your name? How old are you? Where do you live? Do you have any family members? What do you like to do in your free time?",
         "context_description": "Personal introduction and basic information sharing"
       }
     }
   },
   {
-    "id": "A1-OR-012",
+    "id": "A1-OR-002",
     "type": "open_response",
     "prompt": "Describe your family members.",
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes about your family. Who do you live with? Tell me about your parents, brothers, sisters, or other family members.",
+        "question": "Questions to help you think about this topic: Who do you live with? How many people are in your family? Do you have brothers or sisters? What do your parents do? Are your family members young or old?",
         "context_description": "Family description and relationships"
       }
     }
   },
   {
-    "id": "A1-OR-013",
+    "id": "A1-OR-003",
     "type": "open_response",
     "prompt": "Talk about your daily morning routine.",
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes about what you do every morning. What time do you wake up? What do you eat for breakfast? How do you get ready for the day?",
+        "question": "Questions to help you think about this topic: What time do you wake up? What do you eat for breakfast? How do you get ready for work or school? Do you walk, take the bus, or drive? What do you do first in the morning?",
         "context_description": "Daily routine and habits description"
       }
     }
   },
   {
-    "id": "A1-OR-014",
+    "id": "A1-OR-004",
     "type": "open_response",
     "prompt": "Talk about your favorite food and why you like it.",
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes about food you really like. What is your favorite food? Why do you like it? When do you usually eat it?",
+        "question": "Questions to help you think about this topic: What is your favorite food? Why do you like it? When do you usually eat it? Who do you eat it with? Is it easy or difficult to make?",
         "context_description": "Food preferences and personal taste description"
       }
     }
   },
   {
-    "id": "A1-OR-015",
+    "id": "A1-OR-005",
     "type": "open_response",
     "prompt": "Describe your weekend plans.",
     "metadata": {
       "accent": "us",
       "context": {
-        "question": "Speak for up to 2 minutes about what you plan to do this weekend. Where will you go? Who will you see? What activities do you want to do?",
+        "question": "Questions to help you think about this topic: What will you do this weekend? Where will you go? Who will you spend time with? Will you stay home or go out? What activities do you want to do?",
         "context_description": "Future plans and weekend activities"
       }
     }

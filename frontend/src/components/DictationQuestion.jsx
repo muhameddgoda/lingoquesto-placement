@@ -1,5 +1,5 @@
-// DictationQuestion.jsx - Fixed with consistent styling
-import React, { useState, useRef, useEffect } from "react";
+// DictationQuestion.jsx - Complete Fixed Version
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Volume2, Play, Send } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
@@ -17,8 +17,21 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const MAX_PLAYS = 3;
 
   // Use global timer
-  const { timeLeft, phase, startTimer, stopTimer, formatTime } =
-    useGlobalTimer();
+  const { timeLeft, phase, startTimer, stopTimer, formatTime } = useGlobalTimer();
+
+  // FIXED: Create a stable reference to get current input value
+  const getCurrentInput = useCallback(() => {
+    // Always get the most current value from the DOM element
+    return textInputRef.current?.value || "";
+  }, []);
+
+  // FIXED: Handle auto-submit with current value (prevents stale closure)
+  const handleAutoSubmit = useCallback(() => {
+    const currentValue = getCurrentInput();
+    console.log("Auto-submitting Dictation - Time expired. User input:", currentValue);
+    // Submit whatever is currently in the text field
+    onSubmit(currentValue.trim());
+  }, [getCurrentInput, onSubmit]);
 
   // Start timer when question loads
   useEffect(() => {
@@ -26,25 +39,17 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
     startTimer({
       responseTime: totalTime,
-      onTimeExpired: () => {
-        console.log("Time expired, auto-submitting Dictation");
-        handleAutoSubmit();
-      },
+      onTimeExpired: handleAutoSubmit, // Use the stable callback
     });
-  }, [question.audio_ref]);
 
-  // Handle auto-submit
-  const handleAutoSubmit = () => {
-    console.log("Auto-submitting Dictation:", userInput);
-    if (userInput.trim()) {
-      onSubmit(userInput.trim());
-    } else {
-      onSubmit(""); // Submit empty if no input
-    }
-  };
+    // Cleanup function to prevent stale timer callbacks
+    return () => {
+      stopTimer();
+    };
+  }, [question.audio_ref, handleAutoSubmit, startTimer, stopTimer]);
 
+  // Reset state when question changes
   useEffect(() => {
-    // Reset state when question changes
     setUserInput("");
     setIsPlaying(false);
     setPlayCount(0);
@@ -61,6 +66,17 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     }
   }, [question.audio_ref]);
 
+  // FIXED: Handle input changes - keep both state and ref in sync
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setUserInput(value);
+    // Ensure the ref always has the current value
+    if (textInputRef.current) {
+      textInputRef.current.value = value;
+    }
+  };
+
+  // Audio play handling
   const handleAudioPlay = async () => {
     if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
       return;
@@ -86,10 +102,13 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
     setIsLoading(false);
   };
 
+  // FIXED: Manual submit function
   const handleSubmit = () => {
-    if (userInput.trim() && !disabled) {
+    if (!disabled) {
+      const currentValue = getCurrentInput();
+      console.log("Manual submit - User input:", currentValue);
       stopTimer(); // Stop the global timer
-      onSubmit(userInput.trim());
+      onSubmit(currentValue.trim());
     }
   };
 
@@ -176,13 +195,13 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
                 !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
               }
               className={`
-      w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center
-      ${
-        canPlay && !isLoading && audioUrl
-          ? "bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
-          : "bg-gray-300 text-gray-500 cursor-not-allowed"
-      }
-    `}
+                w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center
+                ${
+                  canPlay && !isLoading && audioUrl
+                    ? "bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }
+              `}
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -199,7 +218,7 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         <TextInput
           ref={textInputRef}
           value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
+          onChange={handleInputChange} // FIXED: Use new handler
           onKeyPress={handleKeyPress}
           placeholder="Type the sentence you heard here..."
           disabled={disabled}
@@ -210,19 +229,19 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
         />
       </div>
 
-      {/* Submit Button */}
-<div className="flex justify-center">
+      {/* Submit Button - FIXED: Allow empty submissions */}
+      <div className="flex justify-center">
         <button
           onClick={handleSubmit}
-          disabled={disabled || !userInput.trim()}
+          disabled={disabled} // Only disable if processing, allow empty submissions
           className={`
-    px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
-    ${
-      disabled || !userInput.trim()
-        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-        : "bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800"
-    }
-  `}
+            px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
+            ${
+              disabled
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800"
+            }
+          `}
         >
           <Send className="w-4 h-4" />
           <span>Submit Answer</span>
