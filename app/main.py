@@ -1161,3 +1161,192 @@ async def debug_platform_issues():
             "Test with actual devices, not just browser dev tools"
         ]
     }
+
+
+# Add this endpoint to your main.py file
+
+@app.post("/api/debug/test-duration-penalty")
+async def test_duration_penalty(
+    audio: UploadFile = File(...),
+    question_type: str = Form("open_response"),
+    expected_duration: int = Form(120),
+    simulate_scores: str = Form("high")  # high, medium, low
+):
+    """Test duration-based fluency penalty with real audio files"""
+    try:
+        if exam_manager is None:
+            raise HTTPException(status_code=500, detail="Exam manager not initialized")
+        
+        # Save uploaded audio temporarily
+        audio_data = await audio.read()
+        temp_filename = f"test_{uuid.uuid4().hex}.webm"
+        temp_path = uploads_dir / "debug" / temp_filename
+        temp_path.parent.mkdir(exist_ok=True)
+        
+        with open(temp_path, "wb") as f:
+            f.write(audio_data)
+        
+        logger.info(f"Testing duration penalty with {temp_path}")
+        
+        # Calculate actual duration
+        actual_duration = exam_manager._calculate_audio_duration(str(temp_path))
+        
+        # Create mock question info
+        question_info = {
+            "original_type": question_type,
+            "timing": {
+                "response_time_sec": expected_duration
+            },
+            "metadata": {
+                "context": {
+                    "question": "Test question for duration penalty analysis"
+                }
+            }
+        }
+        
+        # Simulate Language Confidence scores
+        score_scenarios = {
+            "high": {"pronunciation": 85, "fluency": 88, "grammar": 82, "vocabulary": 80},
+            "medium": {"pronunciation": 70, "fluency": 72, "grammar": 68, "vocabulary": 65},
+            "low": {"pronunciation": 55, "fluency": 58, "grammar": 50, "vocabulary": 48}
+        }
+        simulated_scores = score_scenarios.get(simulate_scores, score_scenarios["high"])
+        
+        # Calculate penalty
+        penalty_multiplier = exam_manager._calculate_fluency_penalty_multiplier(actual_duration, expected_duration)
+        duration_percentage = (actual_duration / expected_duration * 100) if expected_duration > 0 else 100
+        
+        # Apply penalty to fluency
+        original_fluency = simulated_scores["fluency"]
+        penalized_fluency = original_fluency * penalty_multiplier if question_type in ["open_response", "image_description", "listen_answer"] else original_fluency
+        
+        # Get scoring profile
+        profile_name = exam_manager.config["type_to_profile"].get(question_type, "unscripted_mixed")
+        scoring_profile = exam_manager.config["scoring_profiles"][profile_name]
+        
+        # Calculate weighted scores (before penalty)
+        original_weighted = {}
+        for skill, weight in scoring_profile.items():
+            original_weighted[skill] = simulated_scores[skill] * weight
+        original_overall = sum(original_weighted.values()) / sum(scoring_profile.values())
+        
+        # Calculate weighted scores (after penalty)
+        penalized_scores = simulated_scores.copy()
+        penalized_scores["fluency"] = penalized_fluency
+        
+        penalized_weighted = {}
+        for skill, weight in scoring_profile.items():
+            penalized_weighted[skill] = penalized_scores[skill] * weight
+        penalized_overall = sum(penalized_weighted.values()) / sum(scoring_profile.values())
+        
+        # Determine penalty status
+        if duration_percentage < 25:
+            penalty_status = "SEVERE PENALTY (1/4 fluency)"
+        elif duration_percentage < 50:
+            penalty_status = "HIGH PENALTY (2/4 fluency)"
+        elif duration_percentage < 75:
+            penalty_status = "MODERATE PENALTY (3/4 fluency)"
+        else:
+            penalty_status = "NO PENALTY"
+        
+        result = {
+            "test_info": {
+                "audio_filename": audio.filename,
+                "audio_size_bytes": len(audio_data),
+                "question_type": question_type,
+                "expected_duration": expected_duration,
+                "simulated_quality": simulate_scores
+            },
+            "duration_analysis": {
+                "actual_duration": round(actual_duration, 1),
+                "expected_duration": expected_duration,
+                "duration_percentage": round(duration_percentage, 1),
+                "penalty_applies": question_type in ["open_response", "image_description", "listen_answer"],
+                "penalty_multiplier": penalty_multiplier,
+                "penalty_status": penalty_status
+            },
+            "score_comparison": {
+                "original_scores": simulated_scores,
+                "penalized_scores": penalized_scores,
+                "fluency_change": {
+                    "before": original_fluency,
+                    "after": penalized_fluency,
+                    "difference": round(original_fluency - penalized_fluency, 1)
+                }
+            },
+            "weighted_scores": {
+                "scoring_profile": scoring_profile,
+                "before_penalty": {
+                    "scores": {k: round(v, 2) for k, v in original_weighted.items()},
+                    "overall": round(original_overall, 1)
+                },
+                "after_penalty": {
+                    "scores": {k: round(v, 2) for k, v in penalized_weighted.items()},
+                    "overall": round(penalized_overall, 1)
+                },
+                "overall_difference": round(original_overall - penalized_overall, 1)
+            }
+        }
+        
+        # Clean up temp file
+        try:
+            temp_path.unlink()
+        except:
+            pass
+        
+        return {
+            "success": True,
+            "result": result
+        }
+        
+    except Exception as e:
+        logger.error(f"Error testing duration penalty: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/debug/penalty-examples")
+async def get_penalty_examples():
+    """Get examples of how penalty affects different scenarios"""
+    
+    scenarios = []
+    
+    # Test different durations for a 120-second open response
+    test_durations = [10, 30, 60, 90, 120, 150]
+    expected_duration = 120
+    base_scores = {"pronunciation": 85, "fluency": 88, "grammar": 82, "vocabulary": 80}
+    
+    for actual_duration in test_durations:
+        if exam_manager:
+            penalty = exam_manager._calculate_fluency_penalty_multiplier(actual_duration, expected_duration)
+        else:
+            # Fallback calculation
+            duration_pct = (actual_duration / expected_duration) * 100
+            if duration_pct < 25:
+                penalty = 0.25
+            elif duration_pct < 50:
+                penalty = 0.5
+            elif duration_pct < 75:
+                penalty = 0.75
+            else:
+                penalty = 1.0
+        
+        penalized_fluency = base_scores["fluency"] * penalty
+        
+        scenarios.append({
+            "actual_duration": actual_duration,
+            "duration_percentage": round((actual_duration / expected_duration) * 100, 1),
+            "penalty_multiplier": penalty,
+            "original_fluency": base_scores["fluency"],
+            "penalized_fluency": round(penalized_fluency, 1),
+            "penalty_status": "SEVERE" if penalty == 0.25 else "HIGH" if penalty == 0.5 else "MODERATE" if penalty == 0.75 else "NONE"
+        })
+    
+    return {
+        "success": True,
+        "test_setup": {
+            "question_type": "open_response",
+            "expected_duration": expected_duration,
+            "base_scores": base_scores
+        },
+        "scenarios": scenarios,
+        "instructions": "Upload an audio file to /api/debug/test-duration-penalty to test with real audio"
+    }

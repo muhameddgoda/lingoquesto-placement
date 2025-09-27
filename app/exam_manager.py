@@ -20,10 +20,14 @@ class ExamManager:
         try:
             # Load configuration
             self.config = self._load_configuration()
+            # Validate level weights
+            self._validate_level_weights()
             # Load questions
             self.questions_db = self._load_questions_database()
             # Setup directories
             self._setup_directories()
+            # Initialize caches
+            self._level_weights_cache = {}
             
             logger.info("ExamManager initialized successfully")
             
@@ -87,9 +91,24 @@ class ExamManager:
                     "response_time_sec": 15,
                     "total_estimated_sec": 17
                 }
-            }
+            },
+            "level_scoring_weights": {
+                "A1": {"pronunciation": 0.35, "fluency": 0.35, "grammar": 0.15, "vocabulary": 0.15},
+                "A2": {"pronunciation": 0.30, "fluency": 0.30, "grammar": 0.20, "vocabulary": 0.20},
+                "B1": {"pronunciation": 0.20, "fluency": 0.30, "grammar": 0.25, "vocabulary": 0.25},
+                "B2": {"pronunciation": 0.15, "fluency": 0.25, "grammar": 0.30, "vocabulary": 0.30},
+                "C1": {"pronunciation": 0.10, "fluency": 0.20, "grammar": 0.35, "vocabulary": 0.35},
+                "C2": {"pronunciation": 0.10, "fluency": 0.15, "grammar": 0.375, "vocabulary": 0.375}
+            },
         }
-    
+
+    def _validate_level_weights(self):
+        """Validate that level weights sum to 1.0"""
+        for level, weights in self.config.get("level_scoring_weights", {}).items():
+            total = sum(weights.values())
+            if abs(total - 1.0) > 0.001:  # Allow small floating point errors
+                logger.warning(f"Level {level} weights sum to {total:.3f}, not 1.0")
+
     def _load_questions_database(self) -> Dict:
         """Load questions with simple error handling"""
         questions_db = {}
@@ -174,6 +193,9 @@ class ExamManager:
                     "response_time_sec": 120,
                     "total_estimated_sec": 150
                 }
+            },
+            "level_scoring_weights": {
+                "A1": {"pronunciation": 0.35, "fluency": 0.35, "grammar": 0.15, "vocabulary": 0.15}
             }
         }
         self.questions_db = self._create_fallback_questions()
@@ -397,6 +419,7 @@ class ExamManager:
             question_info = self._get_current_question_info(session_id)
             
             # Evaluate response
+            response_data["level"] = session["current_level"]
             evaluation_result = self._evaluate_response(response_data, question_info)
             
             # Store evaluation
@@ -448,17 +471,18 @@ class ExamManager:
         except:
             return {}
     
+    # Enhanced method with duration-based fluency penalty
     def _evaluate_response(self, response_data: Dict, question_info: Dict) -> Dict:
-        """Evaluate response with Language Confidence API"""
+        """Evaluate response with Language Confidence API and duration-based fluency penalty"""
         try:
             q_type = question_info.get("original_type", "open_response")
             profile_name = self.config["type_to_profile"].get(q_type, "unscripted_mixed")
             scoring_profile = self.config["scoring_profiles"][profile_name]
             
+            # Handle non-audio question types first (unchanged)
             if q_type == "minimal_pair":
                 logger.info(f"Processing minimal pair question")
                 
-                # Get correct answer and user input
                 correct_answer = question_info.get("metadata", {}).get("correctAnswer", "")
                 user_answer = response_data.get("response_data", "").strip()
                 is_correct = user_answer == correct_answer
@@ -467,9 +491,18 @@ class ExamManager:
                 
                 logger.info(f"Minimal pair evaluation: Expected '{correct_answer}', Got '{user_answer}', Correct: {is_correct}")
                 
+                # Get current level
+                current_level = response_data.get("level", "A1")
+
+                # Apply weights using helper function
+                weighted_result = self._apply_level_and_profile_weights(
+                    {"pronunciation": score, "fluency": score, "grammar": score, "vocabulary": score},
+                    scoring_profile,
+                    current_level
+                )
+
                 return {
-                    "scores": {skill: score * weight for skill, weight in scoring_profile.items()},
-                    "overall_weighted": score,
+                    **weighted_result,
                     "is_mock_data": False,
                     "minimal_pair_result": {
                         "user_answer": user_answer,
@@ -481,7 +514,6 @@ class ExamManager:
             elif q_type == "dictation":
                 logger.info(f"Processing dictation question")
                 
-                # Get expected text and user input - DICTATION IS TEXT-BASED
                 expected_text = (
                     question_info.get("metadata", {}).get("expectedText") or
                     question_info.get("expected_text") or
@@ -492,19 +524,15 @@ class ExamManager:
                 
                 logger.info(f"Dictation inputs - Expected: '{expected_text}', User: '{user_input}'")
 
-                # FIXED: Check if we have expected text, and handle empty user input properly
-                if expected_text:  # Only need expected text to exist
-                    if user_input:  # User provided some input
-                        # Remove punctuation for fairer comparison
+                if expected_text:
+                    if user_input:
                         import re
                         expected_clean = re.sub(r'[^\w\s]', '', expected_text).strip()
                         user_clean = re.sub(r'[^\w\s]', '', user_input).strip()
                         
-                        # Calculate word-level accuracy
                         expected_words = expected_clean.split()
                         user_words = user_clean.split()
                         
-                        # Simple word matching
                         correct_words = 0
                         total_words = len(expected_words)
                         
@@ -512,30 +540,35 @@ class ExamManager:
                             if i < len(user_words) and user_words[i] == expected_word:
                                 correct_words += 1
                         
-                        # Calculate accuracy percentage
                         accuracy = (correct_words / total_words * 100) if total_words > 0 else 0
                         
-                    else:  # FIXED: User provided no input (empty string or timeout)
-                        accuracy = 0.0  # No input = 0% accuracy
+                    else:
+                        accuracy = 0.0
                         correct_words = 0
                         total_words = len(expected_text.split())
                         logger.info(f"Dictation: No user input provided - giving 0% accuracy")
                     
-                    # For dictation, focus on vocabulary (listening comprehension + spelling)
                     scores = {
-                        "pronunciation": 0,  # Not applicable for dictation
-                        "fluency": 0,  # Not applicable for dictation  
-                        "grammar": 0,  # Not the focus for dictation
-                        "vocabulary": accuracy  # Full score goes to vocabulary
+                        "pronunciation": 0,
+                        "fluency": 0,
+                        "grammar": 0,
+                        "vocabulary": accuracy
                     }
-                    
-                    overall = accuracy  # Overall score is just the accuracy
                     
                     logger.info(f"Dictation evaluation: Expected '{expected_text}', Got '{user_input}', Accuracy: {accuracy:.1f}%")
                     
+                    # Get current level
+                    current_level = response_data.get("level", "A1")
+
+                    # Apply weights using helper function
+                    weighted_result = self._apply_level_and_profile_weights(
+                        {"pronunciation": 0, "fluency": 0, "grammar": 0, "vocabulary": accuracy},
+                        scoring_profile,
+                        current_level
+                    )
+
                     return {
-                        "scores": scores,
-                        "overall_weighted": overall,
+                        **weighted_result,
                         "is_mock_data": False,
                         "dictation_result": {
                             "expected_text": expected_text,
@@ -547,35 +580,50 @@ class ExamManager:
                     }
                 else:
                     logger.warning(f"No expected text available for dictation question")
-                    return self._get_mock_evaluation(scoring_profile, "No expected text available")
+                    return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), "No expected text available")
                     
             elif q_type in ["listen_mcq", "best_response_mcq"] or response_data.get("response_type") == "text":
-                        # MCQ evaluation (including listen_mcq)
-                        correct_answer = question_info.get("correct_answer", "")
-                        user_answer = response_data.get("response_data", "").strip()
-                        is_correct = user_answer == correct_answer
-                        
-                        score = 100 if is_correct else 0
-                        return {
-                            "scores": {skill: score * weight for skill, weight in scoring_profile.items()},
-                            "overall_weighted": score,
-                            "is_mock_data": False,
-                            "mcq_result": {
-                                "user_answer": user_answer,
-                                "correct_answer": correct_answer,
-                                "is_correct": is_correct
-                            }
-                        }
+                # MCQ evaluation
+                correct_answer = question_info.get("correct_answer", "")
+                user_answer = response_data.get("response_data", "").strip()
+                is_correct = user_answer == correct_answer
+                
+                score = 100 if is_correct else 0
+                # Get current level
+                current_level = response_data.get("level", "A1")
 
+                # Apply weights using helper function
+                weighted_result = self._apply_level_and_profile_weights(
+                    {"pronunciation": score, "fluency": score, "grammar": score, "vocabulary": score},
+                    scoring_profile,
+                    current_level
+                )
+
+                return {
+                    **weighted_result,
+                    "is_mock_data": False,
+                    "mcq_result": {
+                        "user_answer": user_answer,
+                        "correct_answer": correct_answer,
+                        "is_correct": is_correct
+                    }
+                }
+
+            # ENHANCED AUDIO PROCESSING WITH DURATION-BASED FLUENCY PENALTY
             if response_data.get("response_type") == "audio":
-                # Try Language Confidence API
                 try:
                     from .speech_ace_service import lc_pronunciation_sync, lc_unscripted_sync
                     
                     audio_file_path = response_data.get("audio_file_path")
                     if not audio_file_path or not Path(audio_file_path).exists():
                         logger.warning(f"Audio file not found: {audio_file_path}")
-                        return self._get_mock_evaluation(scoring_profile, "Audio file not found")
+                        return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), "Audio file not found")
+                    
+                    # Calculate expected response duration and actual duration
+                    expected_duration = self._get_expected_response_duration(question_info, q_type)
+                    actual_duration = self._calculate_audio_duration(audio_file_path)
+                    
+                    logger.info(f"Duration analysis - Expected: {expected_duration}s, Actual: {actual_duration}s")
                     
                     # For repeat_sentence questions, use pronunciation API
                     if q_type == "repeat_sentence":
@@ -601,13 +649,12 @@ class ExamManager:
                             )
                         else:
                             logger.warning(f"No expected text for repeat_sentence question")
-                            return self._get_mock_evaluation(scoring_profile, "No expected text provided")
+                            return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), "No expected text provided")
                     
                     # For open_response and other unscripted questions, use unscripted API
                     elif q_type in ["open_response", "image_description", "listen_answer"]:
                         logger.info(f"Calling Language Confidence unscripted API for {q_type}")
                         
-                        # Get context from question metadata
                         context = question_info.get("metadata", {}).get("context", {})
                         question_text = context.get("question", question_info.get("prompt", ""))
                         context_description = context.get("context_description", f"{q_type} assessment")
@@ -617,11 +664,9 @@ class ExamManager:
                             question=question_text,
                             context_description=context_description,
                             accent=self.config["accent"]
-                            # Note: user_metadata not supported for unscripted API
                         )
 
                     else:
-                        # For other question types, use mock for now
                         logger.info(f"Question type {q_type} - using mock evaluation")
                         return self._get_mock_evaluation(scoring_profile, f"Question type {q_type} not yet supported")
                     
@@ -632,77 +677,165 @@ class ExamManager:
                         logger.error(f"Language Confidence API error: {result}")
                         return self._get_mock_evaluation(scoring_profile, f"API Error: {result.get('error')}")
                     
-                    # Parse the result
-                    parsed_result = self._parse_language_confidence_result(result, scoring_profile)
+                    # Parse the result WITH DURATION-BASED FLUENCY PENALTY
+                    parsed_result = self._parse_language_confidence_result_with_duration_penalty(
+                        result, scoring_profile, actual_duration, expected_duration, q_type, response_data
+                    )
                     parsed_result["question_type"] = q_type
                     parsed_result["scoring_profile"] = profile_name
+                    parsed_result["duration_analysis"] = {
+                        "expected_duration": expected_duration,
+                        "actual_duration": actual_duration,
+                        "duration_percentage": (actual_duration / expected_duration * 100) if expected_duration > 0 else 100,
+                        "fluency_penalty_applied": q_type in ["open_response", "image_description", "listen_answer"]
+                    }
                     
                     return parsed_result
                         
                 except ImportError as e:
                     logger.error(f"Language Confidence service import error: {e}")
-                    return self._get_mock_evaluation(scoring_profile, "Language Confidence service not available")
+                    return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), "Language Confidence service not available")
+
                 except Exception as e:
                     logger.error(f"Error calling Language Confidence API: {e}")
-                    return self._get_mock_evaluation(scoring_profile, f"API Error: {str(e)}")
-            
-            elif response_data.get("response_type") == "text":
-                # MCQ evaluation
-                correct_answer = question_info.get("correct_answer", "Option A")
-                user_answer = response_data.get("response_data", "").strip()
-                is_correct = user_answer == correct_answer
-                
-                score = 100 if is_correct else 0
-                return {
-                    "scores": {skill: score * weight for skill, weight in scoring_profile.items()},
-                    "overall_weighted": score,
-                    "is_mock_data": False,
-                    "mcq_result": {
-                        "user_answer": user_answer,
-                        "correct_answer": correct_answer,
-                        "is_correct": is_correct
-                    }
-                }
-            
+                    return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), f"API Error: {str(e)}")
+
             # Default fallback
-            return self._get_mock_evaluation(scoring_profile, "Unknown response type")
+            return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), "Unknown response type")
             
         except Exception as e:
             logger.error(f"Error in evaluation: {e}")
-            return self._get_mock_evaluation(scoring_profile, f"Evaluation error: {str(e)}")
-    
-    def _get_mock_evaluation(self, scoring_profile: Dict, note: str="Mock data") -> Dict:
-        """Generate mock evaluation with clear marking"""
-        import random
-        base_score = random.uniform(60, 90)
-        
-        scores = {}
-        for skill, weight in scoring_profile.items():
-            if weight > 0:
-                variation = random.uniform(-10, 10)
-                scores[skill] = max(0, min(100, (base_score + variation) * weight))
-            else:
-                scores[skill] = 0
-        
-        overall = sum(scores.values()) / sum(scoring_profile.values()) if sum(scoring_profile.values()) > 0 else base_score
-        
-        logger.warning(f"Using mock evaluation: {note}")
-        
-        return {
-            "scores": scores,
-            "overall_weighted": overall,
-            "is_mock_data": True,  # CLEARLY MARK AS MOCK
-            "transcription": "Mock data - no real transcription available",
-            "word_phoneme_data": [],
-            "evaluation_note": note
-        }
-    
-    def _parse_language_confidence_result(self, result: Dict, scoring_profile: Dict) -> Dict:
-        """Parse Language Confidence API response (both pronunciation and unscripted)"""
+            return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), f"Evaluation error: {str(e)}")
+
+    def _get_expected_response_duration(self, question_info: Dict, q_type: str) -> int:
+        """Get expected response duration from question timing configuration"""
         try:
-            logger.info(f"Parsing Language Confidence result")
+            # Get from question timing if available
+            timing = question_info.get("timing", {})
+            if "response_time_sec" in timing:
+                return timing["response_time_sec"]
             
-            # Extract transcription and word data
+            # Fallback to configuration
+            if q_type in self.config.get("question_timing", {}):
+                return self.config["question_timing"][q_type].get("response_time_sec", 60)
+            
+            # Default durations by question type
+            defaults = {
+                "open_response": 120,
+                "image_description": 80,
+                "listen_answer": 25,
+                "repeat_sentence": 15
+            }
+            
+            return defaults.get(q_type, 60)
+            
+        except Exception as e:
+            logger.warning(f"Error getting expected duration: {e}")
+            return 60  # Default fallback
+
+    def _calculate_audio_duration(self, audio_file_path: str) -> float:
+        """Calculate actual audio duration in seconds"""
+        try:
+            import wave
+            import contextlib
+            
+            # Try to get duration from wave file
+            try:
+                with contextlib.closing(wave.open(audio_file_path, 'r')) as f:
+                    frames = f.getnframes()
+                    rate = f.getframerate()
+                    duration = frames / float(rate)
+                    return duration
+            except:
+                pass
+            
+            # Try using file size estimation (rough approximation)
+            try:
+                file_size = Path(audio_file_path).stat().st_size
+                # Rough estimate: WebM audio is approximately 16KB per second
+                estimated_duration = file_size / 16000
+                return max(1.0, estimated_duration)  # Minimum 1 second
+            except:
+                pass
+            
+            # If all else fails, try to use the response timestamp (if available)
+            logger.warning(f"Could not determine audio duration for {audio_file_path}, using default")
+            return 30.0  # Default assumption
+            
+        except Exception as e:
+            logger.error(f"Error calculating audio duration: {e}")
+            return 30.0  # Default fallback
+
+    def _calculate_fluency_penalty_multiplier(self, actual_duration: float, expected_duration: float) -> float:
+        """Calculate fluency penalty multiplier based on response duration"""
+        if expected_duration <= 0:
+            return 1.0  # No penalty if we can't determine expected duration
+        
+        duration_percentage = (actual_duration / expected_duration) * 100
+        
+        # Apply your specified penalty scale
+        if duration_percentage < 25:
+            return 0.25  # 1/4 score
+        elif duration_percentage < 50:
+            return 0.5  # 2/4 score
+        elif duration_percentage < 75:
+            return 0.75  # 3/4 score
+        else:
+            return 1.0  # Full score (75-100%+ of expected duration)
+
+    def _apply_level_and_profile_weights(self, raw_scores: Dict, scoring_profile: Dict, current_level: str) -> Dict:
+        """Apply both profile and level-specific weights to raw scores"""
+        if not isinstance(raw_scores, dict) or not isinstance(scoring_profile, dict):
+            logger.error("Invalid input types for weight application")
+            return {"scores": {}, "overall_weighted": 0}
+        try:
+            # Apply profile weights first
+            profile_weighted_scores = {}
+            for skill, weight in scoring_profile.items():
+                if weight > 0 and skill in raw_scores:
+                    profile_weighted_scores[skill] = raw_scores[skill] * weight
+                else:
+                    profile_weighted_scores[skill] = 0
+
+            # Cache level weights to avoid repeated dict lookups
+            if current_level not in self._level_weights_cache:
+                self._level_weights_cache[current_level] = self.config.get("level_scoring_weights", {}).get(current_level, {
+                    "pronunciation": 0.25, "fluency": 0.25, "grammar": 0.25, "vocabulary": 0.25
+                })
+            level_weights = self._level_weights_cache[current_level]
+
+            # Apply level weights
+            final_weighted_scores = {}
+            for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+                final_weighted_scores[skill] = profile_weighted_scores[skill] * level_weights.get(skill, 0.25)
+
+            # Calculate overall score
+            overall_score = sum(final_weighted_scores.values())
+
+            # Debug logging
+            logger.debug(f"Applied level weights for {current_level}: {level_weights}")
+            logger.debug(f"Final weighted scores: {final_weighted_scores}")
+
+            return {
+                "scores": final_weighted_scores,
+                "overall_weighted": overall_score
+            }
+
+        except Exception as e:
+            logger.error(f"Error applying weights: {e}")
+            # Fallback to profile weights only
+            fallback_scores = {skill: raw_scores.get(skill, 0) * weight for skill, weight in scoring_profile.items()}
+            return {
+                "scores": fallback_scores,
+                "overall_weighted": sum(fallback_scores.values())
+            }
+
+    def _parse_language_confidence_result_with_duration_penalty(self, result: Dict, scoring_profile: Dict, actual_duration: float, expected_duration: float, q_type: str, response_data: Dict) -> Dict:
+        """Parse Language Confidence API response with duration-based fluency penalty"""
+        try:
+            logger.info(f"Parsing Language Confidence result with duration penalty")
+            
+            # Extract transcription and word data (unchanged from original method)
             transcription_words = []
             word_phoneme_data = []
             
@@ -711,15 +844,12 @@ class ExamManager:
                 logger.info("Processing unscripted API response")
                 words_data = result["pronunciation"]["words"]
                 
-                # Get the transcription from metadata
                 transcription = result.get("metadata", {}).get("predicted_text", "")
                 logger.info(f"Transcription from unscripted API: '{transcription}'")
                 
-                # Process each word - FIX THIS SECTION
                 for word_index, word_obj in enumerate(words_data):
                     word_text = word_obj.get("word_text", f"word_{word_index}")
                     
-                    # Extract phonemes - ENSURE CONSISTENT STRUCTURE
                     phonemes_list = []
                     phonemes_data = word_obj.get("phonemes", [])
                     
@@ -728,15 +858,14 @@ class ExamManager:
                             phoneme_data = {
                                 "ipa": phoneme_obj.get("ipa_label", "?"),
                                 "score": round(float(phoneme_obj.get("phoneme_score", 0))),
-                                "expected_ipa": phoneme_obj.get("expected_ipa"),  # ADD THIS
-                                "actual_ipa": phoneme_obj.get("actual_ipa"),  # ADD THIS
-                                "confidence": phoneme_obj.get("confidence"),  # ADD THIS
+                                "expected_ipa": phoneme_obj.get("expected_ipa"),
+                                "actual_ipa": phoneme_obj.get("actual_ipa"),
+                                "confidence": phoneme_obj.get("confidence"),
                                 "start_time": phoneme_obj.get("start_time"),
                                 "end_time": phoneme_obj.get("end_time")
                             }
                             phonemes_list.append(phoneme_data)
                     
-                    # ENSURE word_phoneme_data IS POPULATED
                     if phonemes_list:
                         word_phoneme_data.append({
                             "word": word_text,
@@ -751,7 +880,7 @@ class ExamManager:
                     "vocabulary": result.get("vocabulary", {}).get("overall_score", 0)
                 }
                 
-            # Handle pronunciation API response structure (original code)
+            # Handle pronunciation API response structure
             elif "words" in result and isinstance(result["words"], list):
                 logger.info("Processing pronunciation API response")
                 words_data = result["words"]
@@ -760,7 +889,6 @@ class ExamManager:
                 for word_index, word_obj in enumerate(words_data):
                     word_text = word_obj.get("word_text", word_obj.get("text", f"word_{word_index}"))
                     
-                    # Detect pauses for pronunciation API
                     word_start_time = word_obj.get("start_time", 0)
                     if word_index > 0 and word_start_time > previous_end_time:
                         pause_duration = word_start_time - previous_end_time
@@ -770,7 +898,6 @@ class ExamManager:
                     transcription_words.append(word_text)
                     previous_end_time = word_obj.get("end_time", word_start_time + 0.5)
                     
-                    # Extract phonemes - THIS IS THE KEY FIX
                     phonemes_list = []
                     phonemes_data = word_obj.get("phonemes", [])
                     
@@ -794,7 +921,6 @@ class ExamManager:
                             }
                             phonemes_list.append(phoneme_data)
                     
-                    # MAKE SURE THIS RUNS - ADD DEBUG LOG
                     if phonemes_list:
                         word_phoneme_data.append({
                             "word": word_text,
@@ -804,7 +930,7 @@ class ExamManager:
                 
                 transcription = " ".join(transcription_words)
                 
-                # Extract scores from pronunciation response - FIX THE SCORE EXTRACTION
+                # Extract scores from pronunciation response
                 raw_scores = {}
                 if "overall_score" in result:
                     raw_scores["pronunciation"] = result["overall_score"]
@@ -812,39 +938,54 @@ class ExamManager:
                     raw_scores["grammar"] = max(0, result["overall_score"] - 10)  
                     raw_scores["vocabulary"] = max(0, result["overall_score"] - 8)
                 else:
-                    # If no overall_score, try to extract from individual metrics
                     raw_scores["pronunciation"] = result.get("pronunciation", {}).get("overall_score", 0)
                     raw_scores["fluency"] = result.get("fluency", {}).get("overall_score", 0) 
                     raw_scores["grammar"] = result.get("grammar", {}).get("overall_score", 0)
                     raw_scores["vocabulary"] = result.get("vocabulary", {}).get("overall_score", 0)
             
             logger.info(f"Extracted raw scores: {raw_scores}")
-            logger.info(f"Total words with phoneme data: {len(word_phoneme_data)}")
             
-            # Apply scoring profile weights
-            weighted_scores = {}
-            for skill, weight in scoring_profile.items():
-                if weight > 0 and skill in raw_scores:
-                    weighted_scores[skill] = raw_scores[skill] * weight
+            # APPLY DURATION-BASED FLUENCY PENALTY FOR OPEN-ENDED QUESTIONS
+            fluency_penalty_multiplier = 1.0
+            if q_type in ["open_response", "image_description", "listen_answer"]:
+                fluency_penalty_multiplier = self._calculate_fluency_penalty_multiplier(actual_duration, expected_duration)
+                logger.info(f"Applying fluency penalty: {fluency_penalty_multiplier:.2f}x for {actual_duration:.1f}s/{expected_duration:.1f}s duration")
+                
+                # Apply penalty to fluency score
+                if "fluency" in raw_scores:
+                    original_fluency = raw_scores["fluency"]
+                    raw_scores["fluency"] = original_fluency * fluency_penalty_multiplier
+                    logger.info(f"Fluency score adjusted: {original_fluency:.1f} -> {raw_scores['fluency']:.1f}")
+            
+            # Get the current level for this question
+            current_level = response_data.get("level", "A1")
+            if not current_level:
+                # Fallback to session level - need session_id parameter
+                if hasattr(self, 'sessions') and len(self.sessions) > 0:
+                    # Get the most recent session (for this context)
+                    session_id = list(self.sessions.keys())[-1]  # This is a workaround
+                    current_level = self.sessions[session_id]["current_level"]
                 else:
-                    weighted_scores[skill] = 0
+                    current_level = "A1"
             
-            overall = sum(weighted_scores.values()) / sum(scoring_profile.values()) if sum(scoring_profile.values()) > 0 else 0
+            logger.info(f"Language Confidence parsed successfully - Raw scores: {raw_scores}, Fluency penalty: {fluency_penalty_multiplier:.2f}x")
             
-            logger.info(f"Language Confidence parsed successfully - Raw scores: {raw_scores}, Weighted: {weighted_scores}, Overall: {overall:.1f}, Words with phonemes: {len(word_phoneme_data)}")
-            
-            logger.info(f"Final word_phoneme_data count: {len(word_phoneme_data)}")
-            for i, word_data in enumerate(word_phoneme_data[:3]):  # Log first 3 words
-                logger.info(f"  Word {i+1}: '{word_data['word']}' with {len(word_data['phonemes'])} phonemes")
+            # Apply weights using helper function
+            weighted_result = self._apply_level_and_profile_weights(raw_scores, scoring_profile, current_level)
 
             return {
-                "scores": weighted_scores,
-                "overall_weighted": overall,
+                **weighted_result,
                 "raw_scores": raw_scores,
                 "transcription": transcription,
                 "word_phoneme_data": word_phoneme_data,
                 "language_confidence_response": result,
                 "is_mock_data": False,
+                "fluency_penalty_multiplier": fluency_penalty_multiplier,
+                "duration_analysis": {
+                    "actual_duration": actual_duration,
+                    "expected_duration": expected_duration,
+                    "duration_percentage": (actual_duration / expected_duration * 100) if expected_duration > 0 else 100
+                },
                 # Add extra data from unscripted API
                 "english_proficiency": result.get("overall", {}).get("english_proficiency_scores", {}),
                 "content_relevance": result.get("metadata", {}).get("content_relevance"),
@@ -853,8 +994,190 @@ class ExamManager:
             }
             
         except Exception as e:
-            logger.error(f"Error parsing Language Confidence result: {e}")
+            logger.error(f"Error parsing Language Confidence result with duration penalty: {e}")
             return self._get_mock_evaluation(scoring_profile, f"Failed to parse API response: {str(e)}")
+    
+    def _get_mock_evaluation(self, scoring_profile: Dict, current_level: str="A1", note: str="Mock data") -> Dict:
+        """Generate mock evaluation with level-specific weights"""
+        import random
+        base_score = random.uniform(60, 90)
+        
+        raw_scores = {}
+        for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+            variation = random.uniform(-10, 10)
+            raw_scores[skill] = max(0, min(100, base_score + variation))
+        
+        # Use the same weighting logic as real evaluations
+        weighted_result = self._apply_level_and_profile_weights(raw_scores, scoring_profile, current_level)
+        
+        logger.warning(f"Using mock evaluation: {note}")
+        
+        return {
+            **weighted_result,
+            "is_mock_data": True,
+            "transcription": "Mock data - no real transcription available",
+            "word_phoneme_data": [],
+            "evaluation_note": note
+        }
+    
+    # def _parse_language_confidence_result(self, result: Dict, scoring_profile: Dict) -> Dict:
+    #     """Parse Language Confidence API response (both pronunciation and unscripted)"""
+    #     try:
+    #         logger.info(f"Parsing Language Confidence result")
+            
+    #         # Extract transcription and word data
+    #         transcription_words = []
+    #         word_phoneme_data = []
+            
+    #         # Handle unscripted API response structure
+    #         if "pronunciation" in result and "words" in result["pronunciation"]:
+    #             logger.info("Processing unscripted API response")
+    #             words_data = result["pronunciation"]["words"]
+                
+    #             # Get the transcription from metadata
+    #             transcription = result.get("metadata", {}).get("predicted_text", "")
+    #             logger.info(f"Transcription from unscripted API: '{transcription}'")
+                
+    #             # Process each word - FIX THIS SECTION
+    #             for word_index, word_obj in enumerate(words_data):
+    #                 word_text = word_obj.get("word_text", f"word_{word_index}")
+                    
+    #                 # Extract phonemes - ENSURE CONSISTENT STRUCTURE
+    #                 phonemes_list = []
+    #                 phonemes_data = word_obj.get("phonemes", [])
+                    
+    #                 if isinstance(phonemes_data, list) and phonemes_data:
+    #                     for phoneme_obj in phonemes_data:
+    #                         phoneme_data = {
+    #                             "ipa": phoneme_obj.get("ipa_label", "?"),
+    #                             "score": round(float(phoneme_obj.get("phoneme_score", 0))),
+    #                             "expected_ipa": phoneme_obj.get("expected_ipa"),  # ADD THIS
+    #                             "actual_ipa": phoneme_obj.get("actual_ipa"),  # ADD THIS
+    #                             "confidence": phoneme_obj.get("confidence"),  # ADD THIS
+    #                             "start_time": phoneme_obj.get("start_time"),
+    #                             "end_time": phoneme_obj.get("end_time")
+    #                         }
+    #                         phonemes_list.append(phoneme_data)
+                    
+    #                 # ENSURE word_phoneme_data IS POPULATED
+    #                 if phonemes_list:
+    #                     word_phoneme_data.append({
+    #                         "word": word_text,
+    #                         "phonemes": phonemes_list
+    #                     })
+                
+    #             # Extract scores from unscripted response
+    #             raw_scores = {
+    #                 "pronunciation": result.get("pronunciation", {}).get("overall_score", 0),
+    #                 "fluency": result.get("fluency", {}).get("overall_score", 0),
+    #                 "grammar": result.get("grammar", {}).get("overall_score", 0),
+    #                 "vocabulary": result.get("vocabulary", {}).get("overall_score", 0)
+    #             }
+                
+    #         # Handle pronunciation API response structure (original code)
+    #         elif "words" in result and isinstance(result["words"], list):
+    #             logger.info("Processing pronunciation API response")
+    #             words_data = result["words"]
+    #             previous_end_time = 0
+                
+    #             for word_index, word_obj in enumerate(words_data):
+    #                 word_text = word_obj.get("word_text", word_obj.get("text", f"word_{word_index}"))
+                    
+    #                 # Detect pauses for pronunciation API
+    #                 word_start_time = word_obj.get("start_time", 0)
+    #                 if word_index > 0 and word_start_time > previous_end_time:
+    #                     pause_duration = word_start_time - previous_end_time
+    #                     if pause_duration > 0.3:
+    #                         transcription_words.append(f"[pause {pause_duration:.1f}s]")
+                    
+    #                 transcription_words.append(word_text)
+    #                 previous_end_time = word_obj.get("end_time", word_start_time + 0.5)
+                    
+    #                 # Extract phonemes - THIS IS THE KEY FIX
+    #                 phonemes_list = []
+    #                 phonemes_data = word_obj.get("phonemes", [])
+                    
+    #                 if isinstance(phonemes_data, list) and phonemes_data:
+    #                     for phoneme_obj in phonemes_data:
+    #                         phoneme_data = {
+    #                             "ipa": (
+    #                                 phoneme_obj.get("ipa_label") or 
+    #                                 phoneme_obj.get("ipa") or 
+    #                                 "?"
+    #                             ),
+    #                             "score": round(float(
+    #                                 phoneme_obj.get("phoneme_score",
+    #                                 phoneme_obj.get("score", 0))
+    #                             )),
+    #                             "expected_ipa": phoneme_obj.get("expected_ipa"),
+    #                             "actual_ipa": phoneme_obj.get("actual_ipa"),
+    #                             "confidence": phoneme_obj.get("confidence"),
+    #                             "start_time": phoneme_obj.get("start_time"),
+    #                             "end_time": phoneme_obj.get("end_time")
+    #                         }
+    #                         phonemes_list.append(phoneme_data)
+                    
+    #                 # MAKE SURE THIS RUNS - ADD DEBUG LOG
+    #                 if phonemes_list:
+    #                     word_phoneme_data.append({
+    #                         "word": word_text,
+    #                         "phonemes": phonemes_list
+    #                     })
+    #                     logger.info(f"Added word '{word_text}' with {len(phonemes_list)} phonemes to word_phoneme_data")
+                
+    #             transcription = " ".join(transcription_words)
+                
+    #             # Extract scores from pronunciation response - FIX THE SCORE EXTRACTION
+    #             raw_scores = {}
+    #             if "overall_score" in result:
+    #                 raw_scores["pronunciation"] = result["overall_score"]
+    #                 raw_scores["fluency"] = max(0, result["overall_score"] - 5)
+    #                 raw_scores["grammar"] = max(0, result["overall_score"] - 10)  
+    #                 raw_scores["vocabulary"] = max(0, result["overall_score"] - 8)
+    #             else:
+    #                 # If no overall_score, try to extract from individual metrics
+    #                 raw_scores["pronunciation"] = result.get("pronunciation", {}).get("overall_score", 0)
+    #                 raw_scores["fluency"] = result.get("fluency", {}).get("overall_score", 0) 
+    #                 raw_scores["grammar"] = result.get("grammar", {}).get("overall_score", 0)
+    #                 raw_scores["vocabulary"] = result.get("vocabulary", {}).get("overall_score", 0)
+            
+    #         logger.info(f"Extracted raw scores: {raw_scores}")
+    #         logger.info(f"Total words with phoneme data: {len(word_phoneme_data)}")
+            
+    #         # Apply scoring profile weights
+    #         weighted_scores = {}
+    #         for skill, weight in scoring_profile.items():
+    #             if weight > 0 and skill in raw_scores:
+    #                 weighted_scores[skill] = raw_scores[skill] * weight
+    #             else:
+    #                 weighted_scores[skill] = 0
+            
+    #         overall = sum(weighted_scores.values()) / sum(scoring_profile.values()) if sum(scoring_profile.values()) > 0 else 0
+            
+    #         logger.info(f"Language Confidence parsed successfully - Raw scores: {raw_scores}, Weighted: {weighted_scores}, Overall: {overall:.1f}, Words with phonemes: {len(word_phoneme_data)}")
+            
+    #         logger.info(f"Final word_phoneme_data count: {len(word_phoneme_data)}")
+    #         for i, word_data in enumerate(word_phoneme_data[:3]):  # Log first 3 words
+    #             logger.info(f"  Word {i+1}: '{word_data['word']}' with {len(word_data['phonemes'])} phonemes")
+
+    #         return {
+    #             "scores": weighted_scores,
+    #             "overall_weighted": overall,
+    #             "raw_scores": raw_scores,
+    #             "transcription": transcription,
+    #             "word_phoneme_data": word_phoneme_data,
+    #             "language_confidence_response": result,
+    #             "is_mock_data": False,
+    #             # Add extra data from unscripted API
+    #             "english_proficiency": result.get("overall", {}).get("english_proficiency_scores", {}),
+    #             "content_relevance": result.get("metadata", {}).get("content_relevance"),
+    #             "grammar_feedback": result.get("grammar", {}).get("feedback", {}),
+    #             "fluency_feedback": result.get("fluency", {}).get("feedback", {})
+    #         }
+            
+    #     except Exception as e:
+    #         logger.error(f"Error parsing Language Confidence result: {e}")
+    #         return self._get_mock_evaluation(scoring_profile, f"Failed to parse API response: {str(e)}")
     
     def _handle_level_complete(self, session_id: str) -> Dict:
         """Handle level completion"""
@@ -1124,9 +1447,15 @@ class ExamManager:
                             profile_name = self.config["type_to_profile"].get(q_type, "unscripted_mixed")
                             scoring_profile = self.config["scoring_profiles"][profile_name]
                             
-                            # Each question is worth 100 points, distributed by profile weights
-                            for skill, weight in scoring_profile.items():
-                                skill_points = count * 100 * weight
+                            # Get level-specific weights
+                            level_weights = self.config.get("level_scoring_weights", {}).get(level, {
+                                "pronunciation": 0.25, "fluency": 0.25, "grammar": 0.25, "vocabulary": 0.25
+                            })
+                            
+                            # Each question is worth 100 points, distributed by profile AND level weights
+                            for skill, profile_weight in scoring_profile.items():
+                                level_weight = level_weights.get(skill, 0.25)
+                                skill_points = count * 100 * profile_weight * level_weight
                                 total_points[skill] += skill_points
                                 total_points["total"] += skill_points
             

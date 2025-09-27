@@ -386,3 +386,4 @@ __pycache__/
 *.patch
 questions\generate_audio.py
 exam_results/
+app/duration_test.html
