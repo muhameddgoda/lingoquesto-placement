@@ -28,7 +28,7 @@ class ExamManager:
             self._setup_directories()
             # Initialize caches
             self._level_weights_cache = {}
-            
+            self.total_exam_points = self._calculate_total_exam_points_normalized()
             logger.info("ExamManager initialized successfully")
             
         except Exception as e:
@@ -767,21 +767,22 @@ class ExamManager:
             return 30.0  # Default fallback
 
     def _calculate_fluency_penalty_multiplier(self, actual_duration: float, expected_duration: float) -> float:
-        """Calculate fluency penalty multiplier based on response duration"""
         if expected_duration <= 0:
-            return 1.0  # No penalty if we can't determine expected duration
+            return 1.0
         
         duration_percentage = (actual_duration / expected_duration) * 100
         
-        # Apply your specified penalty scale
-        if duration_percentage < 25:
-            return 0.25  # 1/4 score
+        # More gradual penalty
+        if duration_percentage < 10:
+            return 0.1  # Very short
+        elif duration_percentage < 25:
+            return 0.4  # Short
         elif duration_percentage < 50:
-            return 0.5  # 2/4 score
+            return 0.7  # Moderate
         elif duration_percentage < 75:
-            return 0.75  # 3/4 score
+            return 0.85  # Good
         else:
-            return 1.0  # Full score (75-100%+ of expected duration)
+            return 1.0  # Full score
 
     def _apply_level_and_profile_weights(self, raw_scores: Dict, scoring_profile: Dict, current_level: str) -> Dict:
         """Apply both profile and level-specific weights to raw scores"""
@@ -789,14 +790,6 @@ class ExamManager:
             logger.error("Invalid input types for weight application")
             return {"scores": {}, "overall_weighted": 0}
         try:
-            # Apply profile weights first
-            profile_weighted_scores = {}
-            for skill, weight in scoring_profile.items():
-                if weight > 0 and skill in raw_scores:
-                    profile_weighted_scores[skill] = raw_scores[skill] * weight
-                else:
-                    profile_weighted_scores[skill] = 0
-
             # Cache level weights to avoid repeated dict lookups
             if current_level not in self._level_weights_cache:
                 self._level_weights_cache[current_level] = self.config.get("level_scoring_weights", {}).get(current_level, {
@@ -804,16 +797,21 @@ class ExamManager:
                 })
             level_weights = self._level_weights_cache[current_level]
 
-            # Apply level weights
+            # Apply profile weights first, then level weights
+            # IMPORTANT: Raw scores are 0-100, we need to scale by (profile_weight * level_weight)
             final_weighted_scores = {}
             for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
-                final_weighted_scores[skill] = profile_weighted_scores[skill] * level_weights.get(skill, 0.25)
+                profile_weight = scoring_profile.get(skill, 0)
+                level_weight = level_weights.get(skill, 0.25)
+                
+                # Scale the 0-100 score by the combined weights
+                final_weighted_scores[skill] = raw_scores.get(skill, 0) * profile_weight * level_weight
 
             # Calculate overall score
             overall_score = sum(final_weighted_scores.values())
 
             # Debug logging
-            logger.debug(f"Applied level weights for {current_level}: {level_weights}")
+            logger.debug(f"Applied weights for {current_level}: profile={scoring_profile}, level={level_weights}")
             logger.debug(f"Final weighted scores: {final_weighted_scores}")
 
             return {
@@ -829,6 +827,53 @@ class ExamManager:
                 "scores": fallback_scores,
                 "overall_weighted": sum(fallback_scores.values())
             }
+
+    def _calculate_level_max_points(self, level: str) -> Dict[str, float]:
+        """Calculate maximum possible points for a specific level based on configured questions"""
+        try:
+            max_points = {
+                "pronunciation": 0,
+                "fluency": 0,
+                "grammar": 0,
+                "vocabulary": 0,
+                "total": 0
+            }
+            
+            if level not in self.config["exam"]["per_level"]:
+                return max_points
+                
+            level_config = self.config["exam"]["per_level"][level]
+            type_counts = level_config["type_counts"]
+            
+            # Get level weights
+            level_weights = self.config.get("level_scoring_weights", {}).get(level, {
+                "pronunciation": 0.25, "fluency": 0.25, "grammar": 0.25, "vocabulary": 0.25
+            })
+            
+            # Calculate max points using same logic as scoring
+            for q_type, count in type_counts.items():
+                if count > 0:
+                    profile_name = self.config["type_to_profile"].get(q_type, "unscripted_mixed")
+                    scoring_profile = self.config["scoring_profiles"][profile_name]
+                    
+                    # For each question of this type
+                    for _ in range(count):
+                        # Each question can score 100 in each skill, apply same weighting as scoring
+                        for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+                            profile_weight = scoring_profile.get(skill, 0)
+                            level_weight = level_weights.get(skill, 0.25)
+                            
+                            # Same calculation as in _apply_level_and_profile_weights
+                            skill_max = 100 * profile_weight * level_weight
+                            max_points[skill] += skill_max
+                            max_points["total"] += skill_max
+            
+            logger.info(f"Level {level} max points: {max_points}")
+            return max_points
+            
+        except Exception as e:
+            logger.error(f"Error calculating level max points: {e}")
+            return {"pronunciation": 100, "fluency": 100, "grammar": 100, "vocabulary": 100, "total": 400}
 
     def _parse_language_confidence_result_with_duration_penalty(self, result: Dict, scoring_profile: Dict, actual_duration: float, expected_duration: float, q_type: str, response_data: Dict) -> Dict:
         """Parse Language Confidence API response with duration-based fluency penalty"""
@@ -947,15 +992,17 @@ class ExamManager:
             
             # APPLY DURATION-BASED FLUENCY PENALTY FOR OPEN-ENDED QUESTIONS
             fluency_penalty_multiplier = 1.0
-            if q_type in ["open_response", "image_description", "listen_answer"]:
+            if q_type in ["open_response", "image_description"]:  # ONLY these two types
                 fluency_penalty_multiplier = self._calculate_fluency_penalty_multiplier(actual_duration, expected_duration)
                 logger.info(f"Applying fluency penalty: {fluency_penalty_multiplier:.2f}x for {actual_duration:.1f}s/{expected_duration:.1f}s duration")
                 
-                # Apply penalty to fluency score
+                # Apply penalty ONLY to fluency score
                 if "fluency" in raw_scores:
                     original_fluency = raw_scores["fluency"]
                     raw_scores["fluency"] = original_fluency * fluency_penalty_multiplier
                     logger.info(f"Fluency score adjusted: {original_fluency:.1f} -> {raw_scores['fluency']:.1f}")
+            else:
+                logger.info(f"No duration penalty applied for question type: {q_type}")
             
             # Get the current level for this question
             current_level = response_data.get("level", "A1")
@@ -1020,187 +1067,44 @@ class ExamManager:
             "evaluation_note": note
         }
     
-    # def _parse_language_confidence_result(self, result: Dict, scoring_profile: Dict) -> Dict:
-    #     """Parse Language Confidence API response (both pronunciation and unscripted)"""
-    #     try:
-    #         logger.info(f"Parsing Language Confidence result")
-            
-    #         # Extract transcription and word data
-    #         transcription_words = []
-    #         word_phoneme_data = []
-            
-    #         # Handle unscripted API response structure
-    #         if "pronunciation" in result and "words" in result["pronunciation"]:
-    #             logger.info("Processing unscripted API response")
-    #             words_data = result["pronunciation"]["words"]
-                
-    #             # Get the transcription from metadata
-    #             transcription = result.get("metadata", {}).get("predicted_text", "")
-    #             logger.info(f"Transcription from unscripted API: '{transcription}'")
-                
-    #             # Process each word - FIX THIS SECTION
-    #             for word_index, word_obj in enumerate(words_data):
-    #                 word_text = word_obj.get("word_text", f"word_{word_index}")
-                    
-    #                 # Extract phonemes - ENSURE CONSISTENT STRUCTURE
-    #                 phonemes_list = []
-    #                 phonemes_data = word_obj.get("phonemes", [])
-                    
-    #                 if isinstance(phonemes_data, list) and phonemes_data:
-    #                     for phoneme_obj in phonemes_data:
-    #                         phoneme_data = {
-    #                             "ipa": phoneme_obj.get("ipa_label", "?"),
-    #                             "score": round(float(phoneme_obj.get("phoneme_score", 0))),
-    #                             "expected_ipa": phoneme_obj.get("expected_ipa"),  # ADD THIS
-    #                             "actual_ipa": phoneme_obj.get("actual_ipa"),  # ADD THIS
-    #                             "confidence": phoneme_obj.get("confidence"),  # ADD THIS
-    #                             "start_time": phoneme_obj.get("start_time"),
-    #                             "end_time": phoneme_obj.get("end_time")
-    #                         }
-    #                         phonemes_list.append(phoneme_data)
-                    
-    #                 # ENSURE word_phoneme_data IS POPULATED
-    #                 if phonemes_list:
-    #                     word_phoneme_data.append({
-    #                         "word": word_text,
-    #                         "phonemes": phonemes_list
-    #                     })
-                
-    #             # Extract scores from unscripted response
-    #             raw_scores = {
-    #                 "pronunciation": result.get("pronunciation", {}).get("overall_score", 0),
-    #                 "fluency": result.get("fluency", {}).get("overall_score", 0),
-    #                 "grammar": result.get("grammar", {}).get("overall_score", 0),
-    #                 "vocabulary": result.get("vocabulary", {}).get("overall_score", 0)
-    #             }
-                
-    #         # Handle pronunciation API response structure (original code)
-    #         elif "words" in result and isinstance(result["words"], list):
-    #             logger.info("Processing pronunciation API response")
-    #             words_data = result["words"]
-    #             previous_end_time = 0
-                
-    #             for word_index, word_obj in enumerate(words_data):
-    #                 word_text = word_obj.get("word_text", word_obj.get("text", f"word_{word_index}"))
-                    
-    #                 # Detect pauses for pronunciation API
-    #                 word_start_time = word_obj.get("start_time", 0)
-    #                 if word_index > 0 and word_start_time > previous_end_time:
-    #                     pause_duration = word_start_time - previous_end_time
-    #                     if pause_duration > 0.3:
-    #                         transcription_words.append(f"[pause {pause_duration:.1f}s]")
-                    
-    #                 transcription_words.append(word_text)
-    #                 previous_end_time = word_obj.get("end_time", word_start_time + 0.5)
-                    
-    #                 # Extract phonemes - THIS IS THE KEY FIX
-    #                 phonemes_list = []
-    #                 phonemes_data = word_obj.get("phonemes", [])
-                    
-    #                 if isinstance(phonemes_data, list) and phonemes_data:
-    #                     for phoneme_obj in phonemes_data:
-    #                         phoneme_data = {
-    #                             "ipa": (
-    #                                 phoneme_obj.get("ipa_label") or 
-    #                                 phoneme_obj.get("ipa") or 
-    #                                 "?"
-    #                             ),
-    #                             "score": round(float(
-    #                                 phoneme_obj.get("phoneme_score",
-    #                                 phoneme_obj.get("score", 0))
-    #                             )),
-    #                             "expected_ipa": phoneme_obj.get("expected_ipa"),
-    #                             "actual_ipa": phoneme_obj.get("actual_ipa"),
-    #                             "confidence": phoneme_obj.get("confidence"),
-    #                             "start_time": phoneme_obj.get("start_time"),
-    #                             "end_time": phoneme_obj.get("end_time")
-    #                         }
-    #                         phonemes_list.append(phoneme_data)
-                    
-    #                 # MAKE SURE THIS RUNS - ADD DEBUG LOG
-    #                 if phonemes_list:
-    #                     word_phoneme_data.append({
-    #                         "word": word_text,
-    #                         "phonemes": phonemes_list
-    #                     })
-    #                     logger.info(f"Added word '{word_text}' with {len(phonemes_list)} phonemes to word_phoneme_data")
-                
-    #             transcription = " ".join(transcription_words)
-                
-    #             # Extract scores from pronunciation response - FIX THE SCORE EXTRACTION
-    #             raw_scores = {}
-    #             if "overall_score" in result:
-    #                 raw_scores["pronunciation"] = result["overall_score"]
-    #                 raw_scores["fluency"] = max(0, result["overall_score"] - 5)
-    #                 raw_scores["grammar"] = max(0, result["overall_score"] - 10)  
-    #                 raw_scores["vocabulary"] = max(0, result["overall_score"] - 8)
-    #             else:
-    #                 # If no overall_score, try to extract from individual metrics
-    #                 raw_scores["pronunciation"] = result.get("pronunciation", {}).get("overall_score", 0)
-    #                 raw_scores["fluency"] = result.get("fluency", {}).get("overall_score", 0) 
-    #                 raw_scores["grammar"] = result.get("grammar", {}).get("overall_score", 0)
-    #                 raw_scores["vocabulary"] = result.get("vocabulary", {}).get("overall_score", 0)
-            
-    #         logger.info(f"Extracted raw scores: {raw_scores}")
-    #         logger.info(f"Total words with phoneme data: {len(word_phoneme_data)}")
-            
-    #         # Apply scoring profile weights
-    #         weighted_scores = {}
-    #         for skill, weight in scoring_profile.items():
-    #             if weight > 0 and skill in raw_scores:
-    #                 weighted_scores[skill] = raw_scores[skill] * weight
-    #             else:
-    #                 weighted_scores[skill] = 0
-            
-    #         overall = sum(weighted_scores.values()) / sum(scoring_profile.values()) if sum(scoring_profile.values()) > 0 else 0
-            
-    #         logger.info(f"Language Confidence parsed successfully - Raw scores: {raw_scores}, Weighted: {weighted_scores}, Overall: {overall:.1f}, Words with phonemes: {len(word_phoneme_data)}")
-            
-    #         logger.info(f"Final word_phoneme_data count: {len(word_phoneme_data)}")
-    #         for i, word_data in enumerate(word_phoneme_data[:3]):  # Log first 3 words
-    #             logger.info(f"  Word {i+1}: '{word_data['word']}' with {len(word_data['phonemes'])} phonemes")
-
-    #         return {
-    #             "scores": weighted_scores,
-    #             "overall_weighted": overall,
-    #             "raw_scores": raw_scores,
-    #             "transcription": transcription,
-    #             "word_phoneme_data": word_phoneme_data,
-    #             "language_confidence_response": result,
-    #             "is_mock_data": False,
-    #             # Add extra data from unscripted API
-    #             "english_proficiency": result.get("overall", {}).get("english_proficiency_scores", {}),
-    #             "content_relevance": result.get("metadata", {}).get("content_relevance"),
-    #             "grammar_feedback": result.get("grammar", {}).get("feedback", {}),
-    #             "fluency_feedback": result.get("fluency", {}).get("feedback", {})
-    #         }
-            
-    #     except Exception as e:
-    #         logger.error(f"Error parsing Language Confidence result: {e}")
-    #         return self._get_mock_evaluation(scoring_profile, f"Failed to parse API response: {str(e)}")
-    
     def _handle_level_complete(self, session_id: str) -> Dict:
-        """Handle level completion"""
+        """Handle level completion with per-level scoring"""
         try:
             session = self.sessions[session_id]
             current_level = session["current_level"]
             
-            # Calculate level average
+            # Calculate level score as percentage of that level only
+            level_max_points = self._calculate_level_max_points(current_level)
             level_data = session["level_scores"][current_level]
             questions = level_data["questions"]
             
-            if questions:
-                avg_score = sum(q["weighted_score"] for q in questions) / len(questions)
-            else:
-                avg_score = 0
+            # Sum actual points earned for this level
+            level_earned_points = {"pronunciation": 0, "fluency": 0, "grammar": 0, "vocabulary": 0, "total": 0}
             
-            level_data["average_score"] = avg_score
-            level_data["passed"] = avg_score >= self.LEVEL_THRESHOLD
+            for question in questions:
+                scores = question.get("scores", {})
+                for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+                    if skill in scores:
+                        level_earned_points[skill] += scores[skill]
+                        level_earned_points["total"] += scores[skill]
+            
+            # Calculate level percentage
+            if level_max_points["total"] > 0:
+                level_percentage = (level_earned_points["total"] / level_max_points["total"]) * 100
+            else:
+                level_percentage = 0
+            
+            level_data["earned_points"] = level_earned_points
+            level_data["max_points"] = level_max_points
+            level_data["level_percentage"] = level_percentage
+            level_data["passed"] = level_percentage >= self.LEVEL_THRESHOLD
             
             session["completed_levels"].append(current_level)
             
+            logger.info(f"Level {current_level} completed: {level_percentage:.1f}% ({level_earned_points['total']:.1f}/{level_max_points['total']:.1f})")
+            
             # Check if passed and has next level
-            if avg_score >= self.LEVEL_THRESHOLD:
+            if level_percentage >= self.LEVEL_THRESHOLD:
                 next_level = self._get_next_level(current_level)
                 if next_level:
                     # Move to next level
@@ -1215,7 +1119,7 @@ class ExamManager:
                             "status": "level_complete",
                             "level_result": {
                                 "level": current_level,
-                                "average_score": avg_score,
+                                "level_percentage": level_percentage,
                                 "passed": True,
                                 "next_level": next_level
                             },
@@ -1252,6 +1156,13 @@ class ExamManager:
             # Generate cumulative report (this will calculate everything automatically)
             report = self._generate_final_report(session_id)
 
+            # DEBUG: Log the report structure to see what's being sent to frontend
+            logger.info(f"Generated final report structure: {list(report.keys())}")
+            if "cumulative_skills" in report:
+                logger.info(f"Cumulative skills data: {report['cumulative_skills']}")
+            else:
+                logger.warning("cumulative_skills not found in report!")
+
             # Store final scores in session for backward compatibility
             session["final_score"] = report.get("overall_performance", {}).get("overall_score", 0)
             session["final_level"] = report.get("exam_progress", {}).get("highest_level_attempted", "A1")
@@ -1271,41 +1182,65 @@ class ExamManager:
             }
     
     def _generate_final_report(self, session_id: str) -> Dict:
-        """Generate final report with cumulative scoring against entire exam"""
+        """Generate final report with per-level scores and cumulative skill scores"""
         try:
             session = self.sessions[session_id]
             
-            # Calculate total possible and earned points
-            total_possible = self._calculate_total_exam_points()
-            earned_points = self._calculate_earned_points(session_id)
+            # Calculate per-level scores
+            level_scores = {}
+            level_details = []  # Add this for frontend compatibility
             
-            # Calculate percentages for each skill
-            skill_percentages = {}
+            for level in session.get("completed_levels", []):
+                if level in session.get("level_scores", {}):
+                    level_data = session["level_scores"][level]
+                    level_scores[level] = {
+                        "percentage": level_data.get("level_percentage", 0),
+                        "earned_points": level_data.get("earned_points", {}),
+                        "max_points": level_data.get("max_points", {}),
+                        "passed": level_data.get("passed", False),
+                        "questions_completed": len(level_data.get("questions", []))
+                    }
+                    
+                    # Add level_details for frontend compatibility
+                    level_details.append({
+                        "level": level,
+                        "average_score": level_data.get("level_percentage", 0),  # Frontend expects this field
+                        "level_percentage": level_data.get("level_percentage", 0),
+                        "passed": level_data.get("passed", False),
+                        "questions": level_data.get("questions", []),
+                        "skill_breakdown": {
+                            "pronunciation": 0,  # You can calculate these if needed
+                            "fluency": 0,
+                            "grammar": 0,
+                            "vocabulary": 0
+                        }
+                    })
+            
+            # Calculate normalized cumulative scores (earned/total possible)
+            earned_points = {"pronunciation": 0, "fluency": 0, "grammar": 0, "vocabulary": 0, "total": 0}
+            
+            # Sum up all earned points from completed questions
+            for level_data in session["level_scores"].values():
+                for question in level_data["questions"]:
+                    scores = question.get("scores", {})
+                    for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+                        if skill in scores and isinstance(scores[skill], (int, float)):
+                            earned_points[skill] += scores[skill]
+                            earned_points["total"] += scores[skill]
+            
+            # Calculate normalized percentages
+            cumulative_percentages = {}
             for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
-                if total_possible[skill] > 0:
-                    percentage = (earned_points[skill] / total_possible[skill]) * 100
-                    skill_percentages[skill] = round(percentage, 1)
+                if self.total_exam_points[skill] > 0:
+                    cumulative_percentages[skill] = (earned_points[skill] / self.total_exam_points[skill]) * 100
                 else:
-                    skill_percentages[skill] = 0.0
+                    cumulative_percentages[skill] = 0
             
-            # Calculate overall percentage
-            overall_percentage = 0.0
-            if total_possible["total"] > 0:
-                overall_percentage = (earned_points["total"] / total_possible["total"]) * 100
-            
-            # Count questions attempted vs total possible
-            questions_attempted = sum(
-                len(level_data["questions"]) 
-                for level_data in session["level_scores"].values()
-            )
-            
-            total_questions_available = sum(
-                sum(type_counts.values())
-                for level_config in self.config["exam"]["per_level"].values()
-                for type_counts in [level_config["type_counts"]]
-            )
-            
-            # Determine where they stopped (highest level attempted)
+            logger.info(f"Earned points: {earned_points}")
+            logger.info(f"Total possible points: {self.total_exam_points}")
+            logger.info(f"Normalized cumulative percentages: {cumulative_percentages}")
+                        
+            # Overall performance based on completed levels
             attempted_levels = list(session.get("level_scores", {}).keys())
             highest_level_attempted = "A1"
             if attempted_levels:
@@ -1315,69 +1250,40 @@ class ExamManager:
                     key=lambda x: level_order.index(x) if x in level_order else 0
                 )
             
-            # Generate the report
-            report = {
-                "session_id": session_id,
-                "user_id": session["user_id"],
-                "exam_date": session["started_at"],
-                "completion_date": session.get("completed_at"),
-                "scoring_method": "cumulative_against_full_exam",
-                
-                # Cumulative Performance Against Full Exam
-                "overall_performance": {
-                    "overall_score": round(overall_percentage, 1),
-                    "points_earned": round(earned_points["total"], 1),
-                    "points_possible": round(total_possible["total"], 1)
-                },
-                
-                # Skill Breakdown Against Full Exam
-                "skill_breakdown": {
-                    "pronunciation": {
-                        "percentage": skill_percentages["pronunciation"],
-                        "points_earned": round(earned_points["pronunciation"], 1),
-                        "points_possible": round(total_possible["pronunciation"], 1)
-                    },
-                    "fluency": {
-                        "percentage": skill_percentages["fluency"],
-                        "points_earned": round(earned_points["fluency"], 1),
-                        "points_possible": round(total_possible["fluency"], 1)
-                    },
-                    "grammar": {
-                        "percentage": skill_percentages["grammar"],
-                        "points_earned": round(earned_points["grammar"], 1),
-                        "points_possible": round(total_possible["grammar"], 1)
-                    },
-                    "vocabulary": {
-                        "percentage": skill_percentages["vocabulary"],
-                        "points_earned": round(earned_points["vocabulary"], 1),
-                        "points_possible": round(total_possible["vocabulary"], 1)
-                    }
-                },
-                
-                # Exam Progress Information
-                "exam_progress": {
-                    "questions_attempted": questions_attempted,
-                    "total_questions_available": total_questions_available,
-                    "completion_percentage": round((questions_attempted / total_questions_available) * 100, 1),
-                    "highest_level_attempted": highest_level_attempted,
-                    "levels_attempted": attempted_levels
-                },
-                
-                # Level-by-level details (for diagnostic purposes)
-                "level_details": self._generate_level_details(session),
-                
-                # Certificate eligibility (you can adjust this threshold)
-                "certificate_eligible": overall_percentage >= 50.0  # 50% of total exam
-            }
+            return {
+            "session_id": session_id,
+            "user_id": session["user_id"],
+            "exam_date": session["started_at"],
+            "completion_date": session.get("completed_at"),
             
-            return report
+            # Per-level performance
+            "level_performance": level_scores,
+            
+            # Add level_details for frontend compatibility
+            "level_details": level_details,
+            
+            # Cumulative skill performance across all levels
+            "cumulative_skills": {
+                "pronunciation": round(cumulative_percentages["pronunciation"], 1),
+                "fluency": round(cumulative_percentages["fluency"], 1),
+                "grammar": round(cumulative_percentages["grammar"], 1),
+                "vocabulary": round(cumulative_percentages["vocabulary"], 1)
+            },
+            
+            # Exam progress
+            "exam_progress": {
+                "highest_level_attempted": highest_level_attempted,
+                "levels_attempted": attempted_levels,
+                "total_questions_completed": sum(
+                    len(level_data["questions"]) 
+                    for level_data in session["level_scores"].values()
+                )
+            }
+        }
             
         except Exception as e:
-            logger.error(f"Error generating cumulative final report: {e}")
-            return {
-                "error": f"Failed to generate report: {str(e)}",
-                "session_id": session_id
-            }
+            logger.error(f"Error generating final report: {e}")
+            return {"error": f"Failed to generate report: {str(e)}", "session_id": session_id}
 
     def _generate_level_details(self, session: Dict) -> List[Dict]:
         """Generate detailed breakdown by level for diagnostic purposes"""
@@ -1508,3 +1414,48 @@ class ExamManager:
                 "vocabulary": 0,
                 "total": 0
             }
+
+    def _calculate_total_exam_points_normalized(self) -> Dict[str, float]:
+        """Calculate total possible points for each skill across entire exam"""
+        try:
+            total_points = {
+                "pronunciation": 0,
+                "fluency": 0, 
+                "grammar": 0,
+                "vocabulary": 0,
+                "total": 0
+            }
+            
+            # Iterate through all levels in exam order
+            for level in self.config["exam"]["order"]:
+                if level not in self.config["exam"]["per_level"]:
+                    continue
+                    
+                level_config = self.config["exam"]["per_level"][level]
+                type_counts = level_config["type_counts"]
+                level_weights = self.config.get("level_scoring_weights", {}).get(level, {
+                    "pronunciation": 0.25, "fluency": 0.25, "grammar": 0.25, "vocabulary": 0.25
+                })
+                
+                # For each question type in this level
+                for q_type, count in type_counts.items():
+                    if count > 0:
+                        profile_name = self.config["type_to_profile"].get(q_type, "unscripted_mixed")
+                        scoring_profile = self.config["scoring_profiles"][profile_name]
+                        
+                        # Each question can score max 100 points, apply profile weights then level weights
+                        for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+                            profile_weight = scoring_profile.get(skill, 0)
+                            level_weight = level_weights.get(skill, 0.25)
+                            
+                            # Points for this skill from these questions
+                            skill_points = count * 100 * profile_weight * level_weight
+                            total_points[skill] += skill_points
+                            total_points["total"] += skill_points
+            
+            logger.info(f"Total exam points breakdown: {total_points}")
+            return total_points
+            
+        except Exception as e:
+            logger.error(f"Error calculating total exam points: {e}")
+            return {"pronunciation": 1000, "fluency": 1000, "grammar": 500, "vocabulary": 500, "total": 3000}
