@@ -1,6 +1,13 @@
 // DictationQuestion.jsx - Complete Fixed Version
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Volume2, Play, Send } from "lucide-react";
+import {
+  Volume2,
+  Play,
+  Send,
+  Clock,
+  Headphones,
+  AlertTriangle,
+} from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
 import { useGlobalTimer } from "../hooks/useGlobalTimer";
@@ -17,7 +24,8 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const MAX_PLAYS = 3;
 
   // Use global timer
-  const { timeLeft, phase, startTimer, stopTimer, formatTime } = useGlobalTimer();
+  const { timeLeft, phase, startTimer, stopTimer, formatTime } =
+    useGlobalTimer();
 
   // FIXED: Create a stable reference to get current input value
   const getCurrentInput = useCallback(() => {
@@ -28,7 +36,10 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   // FIXED: Handle auto-submit with current value (prevents stale closure)
   const handleAutoSubmit = useCallback(() => {
     const currentValue = getCurrentInput();
-    console.log("Auto-submitting Dictation - Time expired. User input:", currentValue);
+    console.log(
+      "Auto-submitting Dictation - Time expired. User input:",
+      currentValue
+    );
     // Submit whatever is currently in the text field
     onSubmit(currentValue.trim());
   }, [getCurrentInput, onSubmit]);
@@ -75,7 +86,40 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
       textInputRef.current.value = value;
     }
   };
+  // Add this helper function similar to AudioRecorder
+  const getInstructions = (timeLeft, playCount, maxPlays) => {
+    if (timeLeft <= 10) {
+      return {
+        title: "Time Almost Up!",
+        instruction:
+          "Your answer will be automatically submitted when time expires.",
+        color: "red",
+        icon: AlertTriangle,
+        urgent: true,
+      };
+    }
 
+    if (playCount === 0) {
+      return {
+        title: "Listen and Type",
+        instruction:
+          "Play the audio and type exactly what you hear. You have 3 plays maximum.",
+        color: "blue",
+        icon: Headphones,
+        urgent: false,
+      };
+    }
+
+    return {
+      title: "Type What You Heard",
+      instruction: `You have ${maxPlays - playCount} play${
+        maxPlays - playCount !== 1 ? "s" : ""
+      } remaining. Type the sentence exactly as spoken.`,
+      color: "blue",
+      icon: Volume2,
+      urgent: false,
+    };
+  };
   // Audio play handling
   const handleAudioPlay = async () => {
     if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
@@ -132,11 +176,35 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
 
   return (
     <div className="space-y-4">
-      {/* Question Prompt Display */}
-      <div className="text-center">
-        {question.metadata?.question && (
-          <p className="text-gray-600">{question.metadata.question}</p>
-        )}
+      {/* Instruction Panel */}
+      <div
+        className={`rounded-xl border-2 p-4 mb-4 ${
+          getInstructions(timeLeft, playCount, MAX_PLAYS).urgent
+            ? "bg-red-50 border-red-200 text-red-800 animate-pulse"
+            : "bg-blue-50 border-blue-200 text-blue-800"
+        }`}
+      >
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0 mt-1">
+            {React.createElement(
+              getInstructions(timeLeft, playCount, MAX_PLAYS).icon,
+              { className: "w-6 h-6" }
+            )}
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg mb-2">
+              {getInstructions(timeLeft, playCount, MAX_PLAYS).title}
+            </h3>
+            <p className="text-base">
+              {getInstructions(timeLeft, playCount, MAX_PLAYS).instruction}
+            </p>
+            {question.metadata?.question && (
+              <p className="text-sm mt-2 opacity-80">
+                {question.metadata.question}
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Audio Player Section */}
@@ -152,13 +220,20 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
               </h3>
             </div>
 
-            {/* Timer on the right side */}
-            <TimerDisplay
-              timeLeft={timeLeft}
-              formatTime={formatTime}
-              phase={phase}
-              size="large"
-            />
+            {/* Enhanced Timer Display */}
+            <div className="flex flex-col items-end">
+              <TimerDisplay
+                timeLeft={timeLeft}
+                formatTime={formatTime}
+                phase={phase}
+                size="large"
+              />
+              {timeLeft <= 30 && (
+                <p className="text-xs text-amber-600 font-medium mt-1">
+                  Auto-submit when time expires
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center justify-center">

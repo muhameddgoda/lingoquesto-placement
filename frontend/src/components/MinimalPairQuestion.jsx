@@ -1,6 +1,12 @@
 // MinimalPairQuestion.jsx - Listening pronunciation test component
-import React, { useState, useRef, useEffect } from "react";
-import { Volume2, Play, CheckCircle } from "lucide-react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import {
+  Volume2,
+  Play,
+  CheckCircle,
+  AlertTriangle,
+  Headphones,
+} from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import { useGlobalTimer } from "../hooks/useGlobalTimer";
 import TimerDisplay from "./TimerDisplay";
@@ -18,6 +24,21 @@ const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
   // Use global timer
   const { timeLeft, formatTime, startTimer, stopTimer } = useGlobalTimer();
 
+  // Create a stable reference to get current selected value
+  const getCurrentSelection = useCallback(() => {
+    return selectedAnswer;
+  }, [selectedAnswer]);
+
+  // Handle auto-submit function
+  const handleAutoSubmit = useCallback(() => {
+    const currentSelection = getCurrentSelection();
+    console.log(
+      "Auto-submitting MinimalPair - Time expired. Selected:",
+      currentSelection
+    );
+    onSubmit(currentSelection || "");
+  }, [getCurrentSelection, onSubmit]);
+
   // Start timer when question loads
   useEffect(() => {
     const totalTime = question.timing?.total_estimated_sec || 30;
@@ -29,17 +50,10 @@ const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
 
     startTimer({
       responseTime: totalTime,
-      onTimeExpired: () => {
-        console.log(
-          "MinimalPairQuestion: Time expired, auto-submitting for:",
-          question.q_id
-        );
-        handleAutoSubmit();
-      },
+      onTimeExpired: handleAutoSubmit, // Use the stable callback
     });
 
     // Reset state when question changes
-    setSelectedAnswer("");
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
@@ -51,7 +65,7 @@ const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
       audioRef.current.load();
     }
 
-    // Cleanup function to prevent stale submissions
+    // Cleanup function to prevent stale timer callbacks
     return () => {
       console.log(
         "MinimalPairQuestion: Cleaning up for question:",
@@ -59,29 +73,7 @@ const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
       );
       stopTimer();
     };
-  }, [question.q_id]);
-
-  // Handle auto-submit
-  const handleAutoSubmit = () => {
-    console.log(
-      "MinimalPairQuestion: Auto-submitting for question:",
-      question.q_id,
-      "Selected:",
-      selectedAnswer
-    );
-
-    // Prevent double submission
-    if (disabled) {
-      console.log("MinimalPairQuestion: Already disabled, skipping submission");
-      return;
-    }
-
-    if (selectedAnswer) {
-      onSubmit(selectedAnswer);
-    } else {
-      onSubmit(""); // Submit empty if no selection
-    }
-  };
+  }, [question.q_id, handleAutoSubmit, startTimer, stopTimer]);
 
   const handleAudioPlay = async () => {
     if (
@@ -104,6 +96,40 @@ const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getInstructions = (timeLeft, playCount, maxPlays) => {
+    if (timeLeft <= 10) {
+      return {
+        title: "Time Almost Up!",
+        instruction:
+          "Your answer will be automatically submitted when time expires.",
+        color: "red",
+        icon: AlertTriangle,
+        urgent: true,
+      };
+    }
+
+    if (playCount === 0) {
+      return {
+        title: "Listen for Pronunciation",
+        instruction:
+          "Play the audio and choose which word or phrase you hear. Focus on the pronunciation differences.",
+        color: "amber",
+        icon: Headphones,
+        urgent: false,
+      };
+    }
+
+    return {
+      title: "Choose What You Heard",
+      instruction: `Listen carefully to the pronunciation. ${
+        maxPlays - playCount
+      } play${maxPlays - playCount !== 1 ? "s" : ""} remaining.`,
+      color: "amber",
+      icon: Volume2,
+      urgent: false,
+    };
   };
 
   const handleAudioEnded = () => {
@@ -150,11 +176,30 @@ const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
 
   return (
     <div className="space-y-3">
-      {/* Question Prompt */}
-      <div className="mb-2">
-        <p className="text-md font-semibold text-gray-600">
-          Listen carefully and choose which word or phrase you hear.
-        </p>
+      {/* Instruction Panel */}
+      <div
+        className={`rounded-xl border-2 p-4 mb-4 ${
+          getInstructions(timeLeft, playCount, MAX_PLAYS).urgent
+            ? "bg-red-50 border-red-200 text-red-800 animate-pulse"
+            : "bg-amber-50 border-amber-200 text-amber-800"
+        }`}
+      >
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0 mt-1">
+            {React.createElement(
+              getInstructions(timeLeft, playCount, MAX_PLAYS).icon,
+              { className: "w-6 h-6" }
+            )}
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg mb-2">
+              {getInstructions(timeLeft, playCount, MAX_PLAYS).title}
+            </h3>
+            <p className="text-base">
+              {getInstructions(timeLeft, playCount, MAX_PLAYS).instruction}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Audio Player Section */}

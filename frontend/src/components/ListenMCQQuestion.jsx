@@ -1,6 +1,12 @@
 // ListenMCQQuestion.jsx - Complete version with consistent styling
-import React, { useState, useRef, useEffect } from "react";
-import { Volume2, Play, CheckCircle } from "lucide-react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import {
+  Volume2,
+  Play,
+  CheckCircle,
+  AlertTriangle,
+  Headphones,
+} from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import { useGlobalTimer } from "../hooks/useGlobalTimer";
 import TimerDisplay from "./TimerDisplay";
@@ -18,7 +24,22 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   // Use global timer
   const { timeLeft, formatTime, startTimer, stopTimer } = useGlobalTimer();
 
-  // Start timer when question loads
+  // Create a stable reference to get current selected value
+  const getCurrentSelection = useCallback(() => {
+    return selectedAnswer;
+  }, [selectedAnswer]);
+
+  // Handle auto-submit function
+  const handleAutoSubmit = useCallback(() => {
+    const currentSelection = getCurrentSelection();
+    console.log(
+      "Auto-submitting MinimalPair - Time expired. Selected:",
+      currentSelection
+    );
+    onSubmit(currentSelection || "");
+  }, [getCurrentSelection, onSubmit]);
+
+
   useEffect(() => {
     const totalTime = question.timing?.total_estimated_sec || 45;
 
@@ -29,17 +50,10 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
     startTimer({
       responseTime: totalTime,
-      onTimeExpired: () => {
-        console.log(
-          "ListenMCQQuestion: Time expired, auto-submitting for:",
-          question.q_id
-        );
-        handleAutoSubmit();
-      },
+      onTimeExpired: handleAutoSubmit,
     });
 
     // Reset state when question changes
-    setSelectedAnswer("");
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
@@ -59,28 +73,42 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
       );
       stopTimer();
     };
-  }, [question.q_id]);
+  }, [question.q_id, handleAutoSubmit, startTimer, stopTimer]);
 
-  // Handle auto-submit
-  const handleAutoSubmit = () => {
-    console.log(
-      "ListenMCQQuestion: Auto-submitting for question:",
-      question.q_id,
-      "Selected:",
-      selectedAnswer
-    );
-
-    // Prevent double submission
-    if (disabled) {
-      console.log("ListenMCQQuestion: Already disabled, skipping submission");
-      return;
+  const getInstructions = (timeLeft, playCount, maxPlays, hasAudio) => {
+    if (timeLeft <= 10) {
+      return {
+        title: "Time Almost Up!",
+        instruction:
+          "Your answer will be automatically submitted when time expires.",
+        color: "red",
+        icon: AlertTriangle,
+        urgent: true,
+      };
     }
 
-    if (selectedAnswer) {
-      onSubmit(selectedAnswer);
-    } else {
-      onSubmit(""); // Submit empty if no selection
+    if (hasAudio && playCount === 0) {
+      return {
+        title: "Listen and Choose",
+        instruction:
+          "Play the audio and select the correct answer. You have 3 plays maximum.",
+        color: "blue",
+        icon: Headphones,
+        urgent: false,
+      };
     }
+
+    return {
+      title: "Choose Your Answer",
+      instruction: hasAudio
+        ? `Listen carefully and select the best answer. ${
+            maxPlays - playCount
+          } play${maxPlays - playCount !== 1 ? "s" : ""} remaining.`
+        : "Read the question and select the best answer.",
+      color: "blue",
+      icon: CheckCircle,
+      urgent: false,
+    };
   };
 
   const handleAudioPlay = async () => {
@@ -150,6 +178,37 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
 
   return (
     <div className="space-y-4">
+      {/* Instruction Panel */}
+      <div
+        className={`rounded-xl border-2 p-4 mb-4 ${
+          getInstructions(timeLeft, playCount, MAX_PLAYS, !!audioUrl).urgent
+            ? "bg-red-50 border-red-200 text-red-800 animate-pulse"
+            : "bg-blue-50 border-blue-200 text-blue-800"
+        }`}
+      >
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0 mt-1">
+            {React.createElement(
+              getInstructions(timeLeft, playCount, MAX_PLAYS, !!audioUrl).icon,
+              { className: "w-6 h-6" }
+            )}
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg mb-2">
+              {
+                getInstructions(timeLeft, playCount, MAX_PLAYS, !!audioUrl)
+                  .title
+              }
+            </h3>
+            <p className="text-base">
+              {
+                getInstructions(timeLeft, playCount, MAX_PLAYS, !!audioUrl)
+                  .instruction
+              }
+            </p>
+          </div>
+        </div>
+      </div>
       {/* Audio Player Section with Timer */}
       <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-3 border border-gray-200/50 mb-6">
         <div className="text-center space-y-4">
