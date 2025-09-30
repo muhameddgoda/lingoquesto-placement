@@ -875,10 +875,97 @@ class ExamManager:
             logger.error(f"Error calculating level max points: {e}")
             return {"pronunciation": 100, "fluency": 100, "grammar": 100, "vocabulary": 100, "total": 400}
 
+    def _extract_relevance_from_lc_result(self, lc_result: Dict) -> str:
+        """
+        Extract relevance label from LC result using the same comprehensive approach as streamlined_speech_assessment.py
+        
+        Returns: One of "relevant", "partially_relevant", "not_relevant"
+        """
+        # Check multiple possible locations for relevance data (same as ConversationScorer)
+        relevance_locations = [
+            ("metadata", "content_relevance"),
+            ("content_relevance",),
+            ("relevance",),
+            ("metadata", "relevance"),
+            ("assessment", "relevance"),
+            ("scores", "relevance")
+        ]
+        
+        for location in relevance_locations:
+            current_data = lc_result
+            try:
+                for key in location:
+                    current_data = current_data[key]
+                
+                if isinstance(current_data, str):
+                    label = current_data.lower()  # Convert to lowercase for consistency
+                    
+                    # Normalize variations to our standard format
+                    if "partial" in label:
+                        return "partially_relevant"
+                    elif "not" in label or "irrelevant" in label:
+                        return "not_relevant"
+                    elif "relevant" in label:
+                        return "relevant"
+                        
+            except (KeyError, TypeError):
+                continue
+        
+        # Default to relevant if no relevance data found
+        logger.info("No relevance label found in LC result, defaulting to relevant")
+        return "relevant"
+
+    def _apply_relevancy_multiplier(self, scores: Dict, content_relevance: str) -> tuple[Dict, float]:
+        """
+        Apply relevancy multiplier to scores based on content relevance from LC API
+        
+        Args:
+            scores: Dict with pronunciation, fluency, grammar, vocabulary scores
+            content_relevance: String from LC API - "relevant", "partially_relevant", or "not_relevant"
+        
+        Returns:
+            Tuple of (modified_scores, relevancy_multiplier)
+        """
+        # Normalize the relevance value to lowercase
+        relevance_normalized = content_relevance.lower() if content_relevance else "relevant"
+        
+        # Determine multiplier based on relevance
+        relevancy_multiplier = 1.0
+        
+        if relevance_normalized == "not_relevant" or "not" in relevance_normalized:
+            relevancy_multiplier = 0.0
+            logger.info(f"Content not relevant - applying 0x multiplier (zeroing all scores)")
+        elif relevance_normalized == "partially_relevant" or "partial" in relevance_normalized:
+            relevancy_multiplier = 0.5
+            logger.info(f"Content partially relevant - applying 0.5x multiplier")
+        elif relevance_normalized == "relevant" or relevance_normalized == "":
+            relevancy_multiplier = 1.0
+            logger.info(f"Content relevant - applying 1.0x multiplier (no penalty)")
+        else:
+            # Unknown relevance value - log warning but don't penalize
+            logger.warning(f"Unknown content_relevance value: {content_relevance}, defaulting to 1.0x")
+            relevancy_multiplier = 1.0
+        
+        # Apply multiplier to all scores
+        modified_scores = {}
+        for skill in ["pronunciation", "fluency", "grammar", "vocabulary"]:
+            if skill in scores:
+                original_score = scores[skill]
+                modified_scores[skill] = original_score * relevancy_multiplier
+                if relevancy_multiplier != 1.0:
+                    logger.info(f"{skill} score adjusted for relevancy: {original_score:.1f} -> {modified_scores[skill]:.1f}")
+        
+        return modified_scores, relevancy_multiplier
+
+
     def _parse_language_confidence_result_with_duration_penalty(self, result: Dict, scoring_profile: Dict, actual_duration: float, expected_duration: float, q_type: str, response_data: Dict) -> Dict:
-        """Parse Language Confidence API response with duration-based fluency penalty"""
+        """Parse Language Confidence API response with duration-based fluency penalty AND relevancy scoring"""
         try:
-            logger.info(f"Parsing Language Confidence result with duration penalty")
+            logger.info(f"Parsing Language Confidence result with duration penalty and relevancy check")
+            
+            # Extract content relevance from the API response using comprehensive search
+            content_relevance = self._extract_relevance_from_lc_result(result)
+            logger.info(f"Content relevance extracted from API: {content_relevance}")
             
             # Extract transcription and word data (unchanged from original method)
             transcription_words = []
@@ -988,11 +1075,15 @@ class ExamManager:
                     raw_scores["grammar"] = result.get("grammar", {}).get("overall_score", 0)
                     raw_scores["vocabulary"] = result.get("vocabulary", {}).get("overall_score", 0)
             
-            logger.info(f"Extracted raw scores: {raw_scores}")
+            logger.info(f"Extracted raw scores before adjustments: {raw_scores}")
             
-            # APPLY DURATION-BASED FLUENCY PENALTY FOR OPEN-ENDED QUESTIONS
+            # STEP 1: Apply relevancy multiplier FIRST (before any other adjustments)
+            raw_scores, relevancy_multiplier = self._apply_relevancy_multiplier(raw_scores, content_relevance)
+            logger.info(f"Scores after relevancy adjustment: {raw_scores}")
+            
+            # STEP 2: Apply duration-based fluency penalty (only if content is relevant)
             fluency_penalty_multiplier = 1.0
-            if q_type in ["open_response", "image_description"]:  # ONLY these two types
+            if q_type in ["open_response", "image_description"] and relevancy_multiplier > 0:
                 fluency_penalty_multiplier = self._calculate_fluency_penalty_multiplier(actual_duration, expected_duration)
                 logger.info(f"Applying fluency penalty: {fluency_penalty_multiplier:.2f}x for {actual_duration:.1f}s/{expected_duration:.1f}s duration")
                 
@@ -1000,9 +1091,12 @@ class ExamManager:
                 if "fluency" in raw_scores:
                     original_fluency = raw_scores["fluency"]
                     raw_scores["fluency"] = original_fluency * fluency_penalty_multiplier
-                    logger.info(f"Fluency score adjusted: {original_fluency:.1f} -> {raw_scores['fluency']:.1f}")
+                    logger.info(f"Fluency score adjusted for duration: {original_fluency:.1f} -> {raw_scores['fluency']:.1f}")
             else:
-                logger.info(f"No duration penalty applied for question type: {q_type}")
+                if relevancy_multiplier == 0:
+                    logger.info(f"No duration penalty applied due to irrelevant content")
+                else:
+                    logger.info(f"No duration penalty applied for question type: {q_type}")
             
             # Get the current level for this question
             current_level = response_data.get("level", "A1")
@@ -1015,7 +1109,7 @@ class ExamManager:
                 else:
                     current_level = "A1"
             
-            logger.info(f"Language Confidence parsed successfully - Raw scores: {raw_scores}, Fluency penalty: {fluency_penalty_multiplier:.2f}x")
+            logger.info(f"Language Confidence parsed successfully - Final scores: {raw_scores}, Relevancy: {relevancy_multiplier:.1f}x, Fluency penalty: {fluency_penalty_multiplier:.2f}x")
             
             # Apply weights using helper function
             weighted_result = self._apply_level_and_profile_weights(raw_scores, scoring_profile, current_level)
@@ -1027,6 +1121,8 @@ class ExamManager:
                 "word_phoneme_data": word_phoneme_data,
                 "language_confidence_response": result,
                 "is_mock_data": False,
+                "relevancy_multiplier": relevancy_multiplier,
+                "content_relevance": content_relevance,
                 "fluency_penalty_multiplier": fluency_penalty_multiplier,
                 "duration_analysis": {
                     "actual_duration": actual_duration,
@@ -1035,14 +1131,14 @@ class ExamManager:
                 },
                 # Add extra data from unscripted API
                 "english_proficiency": result.get("overall", {}).get("english_proficiency_scores", {}),
-                "content_relevance": result.get("metadata", {}).get("content_relevance"),
+                "content_relevance": content_relevance,  # Include for reporting
                 "grammar_feedback": result.get("grammar", {}).get("feedback", {}),
                 "fluency_feedback": result.get("fluency", {}).get("feedback", {})
             }
             
         except Exception as e:
-            logger.error(f"Error parsing Language Confidence result with duration penalty: {e}")
-            return self._get_mock_evaluation(scoring_profile, f"Failed to parse API response: {str(e)}")
+            logger.error(f"Error parsing Language Confidence result with duration penalty and relevancy: {e}")
+            return self._get_mock_evaluation(scoring_profile, response_data.get("level", "A1"), f"Failed to parse API response: {str(e)}")
     
     def _get_mock_evaluation(self, scoring_profile: Dict, current_level: str="A1", note: str="Mock data") -> Dict:
         """Generate mock evaluation with level-specific weights"""

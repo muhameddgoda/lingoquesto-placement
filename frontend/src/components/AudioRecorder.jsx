@@ -1,6 +1,16 @@
 // AudioRecorder.jsx - Clean rewrite with clear phase guidance
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Mic, Square, Play, Pause, Send, FastForward, Brain, Clock, CheckCircle } from "lucide-react";
+import {
+  Mic,
+  Square,
+  Play,
+  Pause,
+  Send,
+  FastForward,
+  Brain,
+  Clock,
+  CheckCircle,
+} from "lucide-react";
 import { useGlobalTimer } from "../hooks/useGlobalTimer";
 
 const AudioRecorder = ({
@@ -25,7 +35,8 @@ const AudioRecorder = ({
   const streamRef = useRef(null);
 
   // Timer
-  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } = useGlobalTimer();
+  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
+    useGlobalTimer();
 
   // Initialize on question change
   useEffect(() => {
@@ -74,7 +85,7 @@ const AudioRecorder = ({
     }
 
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
 
@@ -91,9 +102,9 @@ const AudioRecorder = ({
 
     try {
       cleanupResources();
-      
+
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: { channelCount: 1, echoCancellation: true }
+        audio: { channelCount: 1, echoCancellation: true },
       });
 
       streamRef.current = stream;
@@ -138,7 +149,7 @@ const AudioRecorder = ({
     if (chunksRef.current.length === 0) return;
 
     const blob = new Blob(chunksRef.current, { type: "audio/webm" });
-    
+
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
     }
@@ -148,7 +159,7 @@ const AudioRecorder = ({
     setAudioUrl(url);
 
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
   }, [audioUrl]);
@@ -166,14 +177,21 @@ const AudioRecorder = ({
 
   // Submit response
   const performSubmission = useCallback(() => {
+    if (audioRef.current && isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
     setRecordingState("submitting");
     stopTimer();
 
-    const submissionBlob = audioBlob || 
-      (chunksRef.current.length > 0 ? new Blob(chunksRef.current, { type: "audio/webm" }) : null);
+    const submissionBlob =
+      audioBlob ||
+      (chunksRef.current.length > 0
+        ? new Blob(chunksRef.current, { type: "audio/webm" })
+        : null);
 
     setTimeout(() => onSubmit(submissionBlob), 100);
-  }, [audioBlob, stopTimer, onSubmit]);
+  }, [audioBlob, stopTimer, onSubmit, isPlaying]);
 
   // Manual submit
   const handleManualSubmit = useCallback(() => {
@@ -216,79 +234,93 @@ const AudioRecorder = ({
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     if (minutes > 0 && remainingSeconds > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} and ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+      return `${minutes} minute${
+        minutes > 1 ? "s" : ""
+      } and ${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''}`;
+      return `${minutes} minute${minutes > 1 ? "s" : ""}`;
     } else {
-      return `${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+      return `${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`;
     }
   };
 
   // Get phase instructions
   const getPhaseInstructions = () => {
-    switch(phase) {
-      case 'thinking':
+    switch (phase) {
+      case "thinking":
         return {
           title: "Preparation Time",
-          instruction: questionContext ? 
-            `${questionContext} You will have ${formatTimeLimit(responseTime)} to record your response.` :
-            `Think about your response. Take your time to organize your thoughts. You have ${formatTimeLimit(responseTime)} to record your response.`,
-          action: "Recording will start automatically when preparation time ends.",
+          instruction: questionContext
+            ? `${questionContext} You will have ${formatTimeLimit(
+                responseTime
+              )} to record your response.`
+            : `Think about your response. Take your time to organize your thoughts. You have ${formatTimeLimit(
+                responseTime
+              )} to record your response.`,
+          action:
+            "Recording will start automatically when preparation time ends.",
           icon: Brain,
           color: "blue",
-          showTimer: true
+          showTimer: true,
         };
-      
-      case 'responding':
-        if (recordingState === 'recording') {
+
+      case "responding":
+        if (recordingState === "recording") {
           return {
             title: "Recording Your Response",
-            instruction: questionContext || "Speak clearly and at a natural pace. You can stop early if you finish your answer.",
-            action: "Click 'Stop Recording' when you're done, or let the timer run out.",
+            instruction:
+              questionContext ||
+              "Speak clearly and at a natural pace. You can stop early if you finish your answer.",
+            action:
+              "Click 'Stop Recording' when you're done, or let the timer run out.",
             icon: Mic,
             color: "red",
-            showTimer: true
+            showTimer: true,
           };
-        } else if (recordingState === 'complete') {
+        } else if (recordingState === "complete") {
           return {
             title: "Review Your Recording",
-            instruction: "You can listen to your recording, record again, or submit your final answer.",
+            instruction:
+              "You can listen to your recording, record again, or submit your final answer.",
             action: "Choose 'Submit' when you're satisfied with your response.",
             icon: CheckCircle,
             color: "green",
-            showTimer: true
+            showTimer: true,
           };
         } else {
           return {
             title: "Ready to Record",
-            instruction: questionContext || "Recording will start automatically. Speak your answer when it begins.",
+            instruction:
+              questionContext ||
+              "Recording will start automatically. Speak your answer when it begins.",
             action: "Get ready to speak your response.",
             icon: Mic,
             color: "orange",
-            showTimer: true
+            showTimer: true,
           };
         }
-      
-      case 'expired':
+
+      case "expired":
         return {
           title: "Time Complete",
-          instruction: "Recording time has ended. Your response is being processed.",
+          instruction:
+            "Recording time has ended. Your response is being processed.",
           action: "Please wait while we submit your answer.",
           icon: Clock,
           color: "gray",
-          showTimer: false
+          showTimer: false,
         };
-      
-      case 'stopped':
+
+      case "stopped":
         return {
           title: "Response Submitted",
           instruction: "Your answer has been submitted successfully.",
           action: "Moving to the next question...",
           icon: CheckCircle,
           color: "green",
-          showTimer: false
+          showTimer: false,
         };
-      
+
       default:
         return {
           title: "Preparing Question",
@@ -296,7 +328,7 @@ const AudioRecorder = ({
           action: "Please wait.",
           icon: Clock,
           color: "gray",
-          showTimer: false
+          showTimer: false,
         };
     }
   };
@@ -304,32 +336,36 @@ const AudioRecorder = ({
   // Timer display component
   const TimerDisplay = () => {
     const instructions = getPhaseInstructions();
-    
+
     if (!instructions.showTimer || timeLeft <= 0) {
       return null;
     }
 
     const getTimerState = () => {
-      if (timeLeft <= 10) return 'critical';
-      if (timeLeft <= 30) return 'warning';
-      return 'normal';
+      if (timeLeft <= 10) return "critical";
+      if (timeLeft <= 30) return "warning";
+      return "normal";
     };
 
     const timerState = getTimerState();
     const stateColors = {
-      normal: 'bg-blue-50 border-blue-200 text-blue-700',
-      warning: 'bg-amber-50 border-amber-200 text-amber-700',
-      critical: 'bg-red-50 border-red-200 text-red-700 animate-pulse'
+      normal: "bg-blue-50 border-blue-200 text-blue-700",
+      warning: "bg-amber-50 border-amber-200 text-amber-700",
+      critical: "bg-red-50 border-red-200 text-red-700 animate-pulse",
     };
 
     return (
       <div className="flex justify-center mb-4">
-        <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl border-2 font-medium ${stateColors[timerState]}`}>
+        <div
+          className={`flex items-center space-x-3 px-6 py-3 rounded-xl border-2 font-medium ${stateColors[timerState]}`}
+        >
           <Clock className="w-5 h-5" />
           <div className="text-center">
             <div className="text-lg font-bold">{formatTime(timeLeft)}</div>
             <div className="text-xs opacity-75">
-              {phase === 'thinking' ? 'Prep time remaining' : 'Recording time remaining'}
+              {phase === "thinking"
+                ? "Prep time remaining"
+                : "Recording time remaining"}
             </div>
           </div>
         </div>
@@ -341,17 +377,21 @@ const AudioRecorder = ({
   const InstructionPanel = () => {
     const instructions = getPhaseInstructions();
     const IconComponent = instructions.icon;
-    
+
     const colorClasses = {
-      blue: 'bg-blue-50 border-blue-200 text-blue-800',
-      red: 'bg-red-50 border-red-200 text-red-800',
-      green: 'bg-green-50 border-green-200 text-green-800',
-      orange: 'bg-orange-50 border-orange-200 text-orange-800',
-      gray: 'bg-gray-50 border-gray-200 text-gray-800'
+      blue: "bg-blue-50 border-blue-200 text-blue-800",
+      red: "bg-red-50 border-red-200 text-red-800",
+      green: "bg-green-50 border-green-200 text-green-800",
+      orange: "bg-orange-50 border-orange-200 text-orange-800",
+      gray: "bg-gray-50 border-gray-200 text-gray-800",
     };
 
     return (
-      <div className={`rounded-xl border-2 p-4 mb-6 ${colorClasses[instructions.color]}`}>
+      <div
+        className={`rounded-xl border-2 p-4 mb-6 ${
+          colorClasses[instructions.color]
+        }`}
+      >
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0 mt-1">
             <IconComponent className="w-6 h-6" />
@@ -359,7 +399,9 @@ const AudioRecorder = ({
           <div className="flex-1">
             <h3 className="font-bold text-lg mb-2">{instructions.title}</h3>
             <p className="text-base mb-2">{instructions.instruction}</p>
-            <p className="text-sm font-medium opacity-80">{instructions.action}</p>
+            <p className="text-sm font-medium opacity-80">
+              {instructions.action}
+            </p>
           </div>
         </div>
       </div>
@@ -392,7 +434,9 @@ const AudioRecorder = ({
         {recordingState === "recording" && phase === "responding" && (
           <div className="flex items-center justify-center space-x-3 bg-red-50 border border-red-200 rounded-xl p-4">
             <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse"></div>
-            <span className="font-semibold text-red-700">Recording in progress...</span>
+            <span className="font-semibold text-red-700">
+              Recording in progress...
+            </span>
           </div>
         )}
 
@@ -445,7 +489,8 @@ const AudioRecorder = ({
             )}
 
             {/* Submit */}
-            {((audioBlob && recordingState === "complete") || recordingState === "recording") && (
+            {((audioBlob && recordingState === "complete") ||
+              recordingState === "recording") && (
               <button
                 onClick={handleManualSubmit}
                 disabled={disabled}

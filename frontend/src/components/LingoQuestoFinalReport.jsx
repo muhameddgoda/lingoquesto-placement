@@ -18,7 +18,6 @@ import {
 
 const LingoQuestoFinalReport = ({ report }) => {
   const [expandedSections, setExpandedSections] = useState({});
-  const [animatedScore, setAnimatedScore] = useState(0);
 
   // Mock report data for demonstration
   const mockReport = report || {
@@ -202,16 +201,15 @@ const LingoQuestoFinalReport = ({ report }) => {
 
   const actualReport = mockReport;
 
-  // Calculate level-based score and classification
   const calculateLevelClassification = (levelScore, levelName) => {
     if (levelName === "A1") {
       if (levelScore < 30)
         return {
-          label: "Needs Support",
-          level: "A1-",
-          color: "bg-red-100 text-red-800 border-red-200",
+          label: "No Qualifications",
+          level: "A0",
+          color: "bg-gray-100 text-gray-800 border-gray-200",
         };
-      if (levelScore < 55)
+      if (levelScore < 50)
         return {
           label: "A1 Emerging",
           level: "A1",
@@ -219,7 +217,7 @@ const LingoQuestoFinalReport = ({ report }) => {
         };
       if (levelScore < 75)
         return {
-          label: "A1",
+          label: "A1 Proficient",
           level: "A1",
           color: "bg-yellow-100 text-yellow-800 border-yellow-200",
         };
@@ -236,7 +234,7 @@ const LingoQuestoFinalReport = ({ report }) => {
           level: prevLevel,
           color: "bg-orange-100 text-orange-800 border-orange-200",
         };
-      if (levelScore < 55)
+      if (levelScore < 50)
         return {
           label: `${levelName} Emerging`,
           level: levelName,
@@ -244,13 +242,13 @@ const LingoQuestoFinalReport = ({ report }) => {
         };
       if (levelScore < 75)
         return {
-          label: levelName,
+          label: `${levelName} Proficient`,
           level: levelName,
           color: "bg-blue-100 text-blue-800 border-blue-200",
         };
       if (levelName === "C2")
         return {
-          label: "Mastery",
+          label: "C2 Mastery",
           level: "C2+",
           color: "bg-purple-100 text-purple-800 border-purple-200",
         };
@@ -262,39 +260,17 @@ const LingoQuestoFinalReport = ({ report }) => {
     }
   };
 
-  const getPreviousLevel = (level) => {
+  const getPreviousLevel = (levelName) => {
     const levels = ["A1", "A2", "B1", "B2", "C1", "C2"];
-    const index = levels.indexOf(level);
+    const index = levels.indexOf(levelName);
     return index > 0 ? levels[index - 1] : "A1";
   };
-
   // Get level score and classification
   const currentLevelData =
     actualReport.level_details?.[actualReport.level_details.length - 1];
   const levelScore = currentLevelData?.average_score || 0;
   const levelName = currentLevelData?.level || "A1";
   const classification = calculateLevelClassification(levelScore, levelName);
-
-  // Animate the level score on mount
-  useEffect(() => {
-    const targetScore = Math.round(levelScore);
-    const duration = 2000;
-    const steps = 60;
-    const increment = targetScore / steps;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= targetScore) {
-        setAnimatedScore(targetScore);
-        clearInterval(timer);
-      } else {
-        setAnimatedScore(Math.round(current));
-      }
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, [levelScore]);
 
   const toggleSection = (sectionId) => {
     setExpandedSections((prev) => ({
@@ -384,6 +360,36 @@ const LingoQuestoFinalReport = ({ report }) => {
     return { transcription, wordPhonemes, isRealData: true, overallScores };
   };
 
+  const getLowestPhonemeAverages = () => {
+    const phonemeMap = {};
+
+    actualReport.level_details?.forEach((level) => {
+      level.questions?.forEach((question) => {
+        const speechData = extractSpeechAcePhonemes(question);
+        if (speechData.isRealData && speechData.wordPhonemes) {
+          speechData.wordPhonemes.forEach((wordData) => {
+            wordData.phonemes.forEach((phoneme) => {
+              if (!phonemeMap[phoneme.ipa]) {
+                phonemeMap[phoneme.ipa] = [];
+              }
+              phonemeMap[phoneme.ipa].push(phoneme.score);
+            });
+          });
+        }
+      });
+    });
+
+    // Calculate averages
+    const phonemeAverages = Object.entries(phonemeMap).map(([ipa, scores]) => ({
+      ipa,
+      avgScore: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
+      count: scores.length,
+    }));
+
+    // Sort by average score and get 5 lowest
+    return phonemeAverages.sort((a, b) => a.avgScore - b.avgScore).slice(0, 5);
+  };
+
   const handlePrint = () => window.print();
   const handleRestart = () => window.location.reload();
 
@@ -436,12 +442,21 @@ const LingoQuestoFinalReport = ({ report }) => {
         {/* Header Section */}
         <div className="text-center space-y-6 py-8">
           <div className="flex items-center justify-center space-x-4 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
+            <img
+              src="/lingoquesto.png"
+              alt="LingoQuesto Logo"
+              className="h-20 w-auto"
+              onError={(e) => {
+                e.target.style.display = "none";
+                e.target.nextElementSibling.style.display = "flex";
+              }}
+            />
+            <div
+              style={{ display: "none" }}
+              className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center"
+            >
               <Award className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              LingoQuesto
-            </h1>
           </div>
 
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -458,64 +473,29 @@ const LingoQuestoFinalReport = ({ report }) => {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Overall Score Circle - Now shows level-based score */}
             <div className="flex flex-col items-center space-y-6">
-              <div className="relative w-64 h-64">
-                <svg
-                  className="w-64 h-64 transform -rotate-90"
-                  viewBox="0 0 120 120"
+              <div className="flex flex-col items-center space-y-4">
+                <div
+                  className={`px-8 py-6 rounded-2xl shadow-lg transform hover:scale-105 transition-all ${
+                    classification.label.includes("No Qualifications")
+                      ? "bg-gradient-to-r from-gray-400 to-gray-500"
+                      : classification.label.includes("Emerging")
+                      ? "border-gradient-to-r from-[#967AFE] to-[#17B26A]"
+                      : classification.label.includes("Proficient")
+                      ? "bg-gradient-to-r from-blue-400 to-indigo-500"
+                      : "bg-gradient-to-r from-green-400 to-emerald-500"
+                  }`}
                 >
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="45"
-                    stroke="#f3f4f6"
-                    strokeWidth="8"
-                    fill="none"
-                  />
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="45"
-                    stroke="url(#scoreGradient)"
-                    strokeWidth="8"
-                    fill="none"
-                    strokeDasharray={`${(animatedScore / 100) * 282.74} 282.74`}
-                    strokeLinecap="round"
-                    className="transition-all duration-1000 ease-out"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="scoreGradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop offset="0%" stopColor="#8B5CF6" />
-                      <stop offset="100%" stopColor="#3B82F6" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-5xl font-bold text-gray-800">
-                      {animatedScore}%
-                    </div>
-                    <div className="text-lg text-gray-500">
-                      {levelName} Level Score
+                  {/* OUTER = gradient border */}
+                  <div className="p-[3px] rounded-2xl bg-gradient-to-r from-[#967AFE] to-[#FFAF54] shadow-lg">
+                    {/* INNER = must have a fill (NOT transparent) */}
+                    <div className="rounded-[14px] px-8 py-6 bg-[#FAF9F9]">
+                      <h2 className="text-4xl font-bold text-[#967AFE] text-center">
+                        {classification.label}
+                      </h2>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Level Badge with new classification */}
-              <div
-                className={`px-4 py-2 rounded-full border-2 ${classification.color}`}
-              >
-                <div className="text-center">
-                  <div className="text-lg font-bold">
-                    {classification.label}
-                  </div>
-                </div>
+                <div className="flex items-center space-x-2"></div>
               </div>
             </div>
 
@@ -549,180 +529,6 @@ const LingoQuestoFinalReport = ({ report }) => {
             </div>
           </div>
         </div>
-
-        {/* Detailed Analysis Sections - Keep phoneme analysis */}
-        {actualReport.level_details?.map((level, levelIndex) => {
-          const speakingQuestions =
-            level.questions?.filter(
-              (q) =>
-                q.question_info?.original_type === "open_response" ||
-                q.question_info?.original_type === "repeat_sentence" ||
-                q.q_id?.includes("-OR-") ||
-                q.q_id?.includes("-RS-")
-            ) || [];
-
-          if (speakingQuestions.length === 0) return null;
-
-          return (
-            <div
-              key={levelIndex}
-              className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
-            >
-              <div className="p-6 border-b border-gray-100">
-                <button
-                  onClick={() => toggleSection(`level-${levelIndex}`)}
-                  className="flex items-center justify-between w-full text-left group hover:bg-gray-50 rounded-lg p-4 transition-colors"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div
-                      className={`px-3 py-1 rounded-full ${classification.color} font-semibold`}
-                    >
-                      {level.level}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-800">
-                        Speaking Analysis - {level.level} Level
-                      </h3>
-                      <p className="text-gray-600">
-                        {speakingQuestions.length} speaking question(s)
-                      </p>
-                    </div>
-                  </div>
-                  {expandedSections[`level-${levelIndex}`] ? (
-                    <ChevronUp className="w-5 h-5 text-gray-400" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
-                  )}
-                </button>
-              </div>
-
-              {expandedSections[`level-${levelIndex}`] && (
-                <div className="p-6 space-y-8">
-                  {speakingQuestions.map((questionData, qIndex) => {
-                    const speechData = extractSpeechAcePhonemes(questionData);
-
-                    return (
-                      <div
-                        key={qIndex}
-                        className="bg-gray-50 rounded-lg p-6 border border-gray-200"
-                      >
-                        <div className="flex items-center mb-6">
-                          <Volume2 className="w-5 h-5 text-purple-600 mr-2" />
-                          <h4 className="text-lg font-medium text-gray-800">
-                            Speaking Question {qIndex + 1}
-                          </h4>
-                          {speechData.isRealData ? (
-                            <span className="ml-3 text-xs bg-green-100 text-green-800 px-2 py-1 rounded border border-green-200">
-                              Language Confidence Analysis
-                            </span>
-                          ) : (
-                            <span className="ml-3 text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">
-                              No Real Data Available
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Full Response */}
-                        {speechData.transcription && (
-                          <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                            <h6 className="font-medium text-blue-900 mb-2 flex items-center">
-                              <BookOpen className="w-4 h-4 mr-2" />
-                              Full Response:
-                            </h6>
-                            <p className="text-blue-800 italic">
-                              "
-                              {speechData.transcription
-                                .split(" ")
-                                .map((word, index) => {
-                                  if (word.startsWith("[pause")) {
-                                    return (
-                                      <span
-                                        key={index}
-                                        className="bg-yellow-200 text-yellow-800 px-1 rounded mx-1 text-xs font-mono"
-                                      >
-                                        {word}
-                                      </span>
-                                    );
-                                  }
-                                  return <span key={index}>{word} </span>;
-                                })}
-                              "
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Phoneme Analysis - Restored and Enhanced */}
-                        {speechData.isRealData &&
-                        speechData.wordPhonemes.length > 0 ? (
-                          <div className="space-y-6">
-                            <h5 className="text-base font-medium mb-3 text-gray-700 flex items-center">
-                              <Target className="w-4 h-4 mr-2" />
-                              Phoneme Analysis
-                            </h5>
-
-                            <div className="flex flex-wrap gap-4">
-                              {speechData.wordPhonemes.map(
-                                (wordData, wordIndex) => (
-                                  <div
-                                    key={wordIndex}
-                                    className="bg-white p-4 rounded-lg border border-gray-200 inline-block"
-                                  >
-                                    <div className="text-lg font-medium text-gray-800 mb-3 text-center">
-                                      {wordData.word}
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-2 justify-center">
-                                      {wordData.phonemes.map(
-                                        (phoneme, pIndex) => (
-                                          <div
-                                            key={pIndex}
-                                            className="text-center"
-                                          >
-                                            <div
-                                              className={`w-12 h-12 rounded-lg border-2 font-bold flex items-center justify-center text-sm mb-1 hover:scale-105 transition-transform cursor-pointer ${getPhonemeScoreColor(
-                                                phoneme.score
-                                              )}`}
-                                              title={`Expected: ${
-                                                phoneme.expected_ipa || "N/A"
-                                              }, Actual: ${
-                                                phoneme.actual_ipa || "N/A"
-                                              }, Confidence: ${
-                                                phoneme.confidence || "N/A"
-                                              }`}
-                                            >
-                                              {phoneme.ipa}
-                                            </div>
-                                            <div className="text-xs font-medium text-gray-600">
-                                              {phoneme.score}%
-                                            </div>
-                                          </div>
-                                        )
-                                      )}
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                            <p className="text-yellow-800">
-                              <strong>No phoneme data available.</strong>
-                              {speechData.isRealData
-                                ? " The Language Confidence API response may not contain detailed phoneme information."
-                                : " This appears to be mock/demo data."}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
-
         {/* Recommendations */}
         {actualReport.recommendations &&
           actualReport.recommendations.length > 0 && (
@@ -746,6 +552,167 @@ const LingoQuestoFinalReport = ({ report }) => {
               </div>
             </div>
           )}
+
+        {getLowestPhonemeAverages().length > 0 && (
+          <div className="p-[3px] rounded-xl bg-gradient-to-r from-[#967AFE] to-[#9AD0F0] shadow-lg">
+            <div className="rounded-lg bg-white p-6 border border-transparent">
+              <h3 className="text-2xl font-bold mb-6 flex items-center text-gray-800">
+                <Target className="w-6 h-6 mr-2 text-red-600 animate-pulse" />
+                Phonemes Needing Improvement
+              </h3>
+              <div className="flex flex-wrap gap-4 justify-center">
+                {getLowestPhonemeAverages().map((phoneme, index) => (
+                  <div
+                    key={index}
+                    className={`p-[3px] rounded-xl bg-gradient-to-r ${
+                      phoneme.avgScore < 30
+                        ? "from-[#B42318] to-[#F04438]"
+                        : phoneme.avgScore < 50
+                        ? "from-[#fCA23A] to-[#FFAF54]"
+                        : "from-[#067647] to-[#17B26A]"
+                    } transform hover:scale-105 transition-all shadow-md`}
+                  >
+                    {/* INNER MUST BE FILLED */}
+                    <div className="rounded-[10px] bg-[#FAF9F9] text-center p-5">
+                      <div className="text-3xl font-bold text-black mb-2">
+                        /{phoneme.ipa}/
+                      </div>
+                      <div className="text-lg font-semibold text-black/90">
+                        {phoneme.avgScore}%
+                      </div>
+                      <div className="text-xs text-black/70 mt-1">
+                        avg from {phoneme.count} instance
+                        {phoneme.count > 1 ? "s" : ""}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600 mt-4 text-center italic">
+                Focus on these sounds to improve your pronunciation clarity
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Level Classification Guide */}
+        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+          <h3 className="text-xl font-bold mb-6 flex items-center text-gray-800">
+            <Star className="w-6 h-6 mr-2 text-blue-600" />
+            Score Classification Guide
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="font-semibold text-gray-700 mb-3">
+                Score Ranges:
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between p-2 bg-gray-50 rounded">
+                  <span className="font-medium">0-29%:</span>
+                  <span>No Qualifications (A1 only) / Previous Level+</span>
+                </div>
+                <div className="flex justify-between p-2 bg-orange-50 rounded">
+                  <span className="font-medium">30-49%:</span>
+                  <span>Emerging</span>
+                </div>
+                <div className="flex justify-between p-2 bg-yellow-50 rounded">
+                  <span className="font-medium">50-74%:</span>
+                  <span>Proficient</span>
+                </div>
+                <div className="flex justify-between p-2 bg-green-50 rounded">
+                  <span className="font-medium">75-100%:</span>
+                  <span>Mastery</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-700 mb-3">
+                What They Mean:
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="p-2 bg-gray-50 rounded">
+                  <strong>No Qualifications:</strong> Below minimum threshold
+                  for A1
+                </div>
+                <div className="p-2 bg-orange-50 rounded">
+                  <strong>Emerging:</strong> Basic understanding, needs practice
+                </div>
+                <div className="p-2 bg-yellow-50 rounded">
+                  <strong>Proficient:</strong> Good command, minor improvements
+                  needed
+                </div>
+                <div className="p-2 bg-green-50 rounded">
+                  <strong>Mastery:</strong> Excellent command, ready for next
+                  level
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Grammar Focus Areas by Level */}
+        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+          <h3 className="text-xl font-bold mb-6 flex items-center text-gray-800">
+            <BookOpen className="w-6 h-6 mr-2 text-purple-600" />
+            Grammar Focus Areas by Level
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-700 mb-2">A1</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li>• Present Simple (to be, have)</li>
+                <li>• Articles (a/an/the)</li>
+                <li>• Basic pronouns</li>
+                <li>• Singular/plural nouns</li>
+              </ul>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-700 mb-2">A2</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li>• Past Simple</li>
+                <li>• Present Continuous</li>
+                <li>• Basic modals (can/can't)</li>
+                <li>• Comparatives</li>
+              </ul>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-700 mb-2">B1</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li>• Present Perfect</li>
+                <li>• Future forms</li>
+                <li>• Conditionals (1st, 2nd)</li>
+                <li>• Passive voice basics</li>
+              </ul>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-700 mb-2">B2</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li>• Past Perfect</li>
+                <li>• Mixed conditionals</li>
+                <li>• Reported speech</li>
+                <li>• Advanced passive</li>
+              </ul>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-700 mb-2">C1</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li>• Advanced modals</li>
+                <li>• Inversion</li>
+                <li>• Subjunctive mood</li>
+                <li>• Complex clauses</li>
+              </ul>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-700 mb-2">C2</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li>• Subtle distinctions</li>
+                <li>• Idiomatic structures</li>
+                <li>• Academic register</li>
+                <li>• Stylistic variation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4 pt-6">
