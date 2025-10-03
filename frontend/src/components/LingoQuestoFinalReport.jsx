@@ -474,29 +474,17 @@ const LingoQuestoFinalReport = ({ report }) => {
             {/* Overall Score Circle - Now shows level-based score */}
             <div className="flex flex-col items-center space-y-6">
               <div className="flex flex-col items-center space-y-4">
-                <div
-                  className={`px-8 py-6 rounded-2xl shadow-lg transform hover:scale-105 transition-all ${
-                    classification.label.includes("No Qualifications")
-                      ? "bg-gradient-to-r from-gray-400 to-gray-500"
-                      : classification.label.includes("Emerging")
-                      ? "border-gradient-to-r from-[#967AFE] to-[#17B26A]"
-                      : classification.label.includes("Proficient")
-                      ? "bg-gradient-to-r from-blue-400 to-indigo-500"
-                      : "bg-gradient-to-r from-green-400 to-emerald-500"
-                  }`}
-                >
-                  {/* OUTER = gradient border */}
-                  <div className="p-[3px] rounded-2xl bg-gradient-to-r from-[#967AFE] to-[#FFAF54] shadow-lg">
-                    {/* INNER = must have a fill (NOT transparent) */}
-                    <div className="rounded-[14px] px-8 py-6 bg-[#FAF9F9]">
-                      <h2 className="text-4xl font-bold text-[#967AFE] text-center">
-                        {classification.label}
-                      </h2>
-                    </div>
+                {/* OUTER = gradient border */}
+                <div className="p-[3px] rounded-2xl bg-gradient-to-r from-[#967AFE] to-[#FFAF54] shadow-lg">
+                  {/* INNER = must have a fill (NOT transparent) */}
+                  <div className="rounded-[14px] px-8 py-6 bg-[#FAF9F9]">
+                    <h2 className="text-4xl font-bold text-[#967AFE] text-center">
+                      {classification.label}
+                    </h2>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2"></div>
               </div>
+              <div className="flex items-center space-x-2"></div>
             </div>
 
             {/* Skills Breakdown - Cumulative across all questions */}

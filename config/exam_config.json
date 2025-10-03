@@ -21,13 +21,13 @@
       },
       "A2": {
         "type_counts": {
-          "repeat_sentence": 2,
+          "repeat_sentence": 0,
           "dictation": 1,
-          "listen_mcq": 1,
-          "minimal_pair": 1,
+          "listen_mcq": 0,
+          "minimal_pair": 0,
           "sequence": 0,
           "best_response_mcq": 0,
-          "open_response": 1,
+          "open_response": 0,
           "image_description": 0,
           "listen_answer": 0
         },
@@ -36,13 +36,13 @@
       },
       "B1": {
         "type_counts": {
-          "open_response": 1,
-          "image_description": 0,
-          "best_response_mcq": 1,
+          "open_response": 0,
+          "image_description": 1,
+          "best_response_mcq": 0,
           "repeat_sentence": 0,
           "minimal_pair": 0,
-          "dictation": 1,
-          "listen_mcq": 1,
+          "dictation": 0,
+          "listen_mcq": 0,
           "listen_answer": 0,
           "sequence": 0
         },
