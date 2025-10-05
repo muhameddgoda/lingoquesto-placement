@@ -300,21 +300,38 @@ class ExamManager:
             "metadata": question.get("metadata", {})
         }
         
-        # Add timing information from configuration
-        if q_type in self.config.get("question_timing", {}):
+        # Get timing information with level-specific overrides
+        timing_found = False
+        
+        # Step 1: Check for level-specific override first
+        level_overrides = self.config.get("level_timing_overrides", {}).get(level, {})
+        if q_type in level_overrides:
+            timing_config = level_overrides[q_type]
+            formatted["timing"] = {
+                "think_time_sec": timing_config.get("think_time_sec", 5),
+                "response_time_sec": timing_config.get("response_time_sec", 30),
+                "total_estimated_sec": timing_config.get("total_estimated_sec", 35)
+            }
+            logger.info(f"Using level-specific timing for {level} {q_type}: {formatted['timing']}")
+            timing_found = True
+        
+        # Step 2: Fall back to base timing configuration
+        elif q_type in self.config.get("question_timing", {}):
             timing_config = self.config["question_timing"][q_type]
             formatted["timing"] = {
                 "think_time_sec": timing_config.get("think_time_sec", 5),
                 "response_time_sec": timing_config.get("response_time_sec", 30),
                 "total_estimated_sec": timing_config.get("total_estimated_sec", 35)
             }
-            logger.info(f"Added timing config to {q_type}: {formatted['timing']}")
-        else:
-            # Default timing if not configured
+            logger.info(f"Using base timing config for {q_type}: {formatted['timing']}")
+            timing_found = True
+        
+        # Step 3: Use hardcoded defaults as last resort
+        if not timing_found:
             default_timings = {
                 "repeat_sentence": {"think_time_sec": 3, "response_time_sec": 15, "total_estimated_sec": 18},
                 "minimal_pair": {"think_time_sec": 2, "response_time_sec": 15, "total_estimated_sec": 17},
-                "dictation": {"think_time_sec": 3, "response_time_sec": 12, "total_estimated_sec": 15},
+                "dictation": {"think_time_sec": 3, "response_time_sec": 30, "total_estimated_sec": 33},
                 "listen_mcq": {"think_time_sec": 5, "response_time_sec": 25, "total_estimated_sec": 30},
                 "image_description": {"think_time_sec": 10, "response_time_sec": 80, "total_estimated_sec": 90},
                 "open_response": {"think_time_sec": 30, "response_time_sec": 120, "total_estimated_sec": 150},
@@ -325,7 +342,7 @@ class ExamManager:
             
             if q_type in default_timings:
                 formatted["timing"] = default_timings[q_type]
-                logger.info(f"Added default timing to {q_type}: {formatted['timing']}")
+                logger.warning(f"Using hardcoded default timing for {q_type}: {formatted['timing']}")
             else:
                 formatted["timing"] = {"think_time_sec": 5, "response_time_sec": 30, "total_estimated_sec": 35}
                 logger.warning(f"Using fallback timing for unknown question type {q_type}")
@@ -364,14 +381,23 @@ class ExamManager:
                 formatted["expected_text"] = expected_text
         
         elif q_type in ["listen_mcq", "best_response_mcq"]:
-            # Add MCQ options
-            formatted["options"] = question.get("metadata", {}).get("options", [])
-            formatted["correct_answer"] = question.get("metadata", {}).get("correctAnswer")
+            # SHUFFLE MCQ OPTIONS
+            original_options = question.get("metadata", {}).get("options", [])
+            correct_answer = question.get("metadata", {}).get("correctAnswer")
+            
+            # Shuffle the options
+            shuffled_options = original_options.copy()
+            random.shuffle(shuffled_options)
+            
+            formatted["options"] = shuffled_options
+            formatted["correct_answer"] = correct_answer
             
             # Add audio reference if present
             audio_ref = question.get("metadata", {}).get("audioRef")
             if audio_ref:
                 formatted["audio_ref"] = audio_ref
+            
+            logger.info(f"Shuffled {q_type} options: {shuffled_options}")
             
         return formatted
     

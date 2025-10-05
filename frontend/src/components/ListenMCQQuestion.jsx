@@ -8,8 +8,7 @@ import {
   Headphones,
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
-import { useGlobalTimer } from "../hooks/useGlobalTimer";
-import TimerDisplay from "./TimerDisplay";
+import { useTimer } from "../contexts/TimerContext";
 
 const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -22,7 +21,8 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
   const MAX_PLAYS = 3;
 
   // Use global timer
-  const { timeLeft, formatTime, startTimer, stopTimer } = useGlobalTimer();
+  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
+    useTimer();
 
   // Create a stable reference to get current selected value
   const getCurrentSelection = useCallback(() => {
@@ -39,41 +39,27 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
     onSubmit(currentSelection || "");
   }, [getCurrentSelection, onSubmit]);
 
+// Add a ref to track if timer is already started
+const timerStartedRef = useRef(false);
 
-  useEffect(() => {
-    const totalTime = question.timing?.total_estimated_sec || 45;
+useEffect(() => {
+  // Only start timer once per question
+  if (timerStartedRef.current) return;
+  
+  const totalTime = question.timing?.total_estimated_sec || 30;
 
-    console.log(
-      "ListenMCQQuestion: Starting timer for question:",
-      question.q_id
-    );
+  startTimer({
+    responseTime: totalTime,
+    onTimeExpired: handleAutoSubmit,
+  });
 
-    startTimer({
-      responseTime: totalTime,
-      onTimeExpired: handleAutoSubmit,
-    });
+  timerStartedRef.current = true;
 
-    // Reset state when question changes
-    setIsPlaying(false);
-    setPlayCount(0);
-    setIsLoading(false);
-    setAudioError(false);
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current.load();
-    }
-
-    // Cleanup function to prevent stale submissions
-    return () => {
-      console.log(
-        "ListenMCQQuestion: Cleaning up for question:",
-        question.q_id
-      );
-      stopTimer();
-    };
-  }, [question.q_id, handleAutoSubmit, startTimer, stopTimer]);
+  return () => {
+    timerStartedRef.current = false;
+    stopTimer();
+  };
+}, [question.q_id]); // Only depend on question ID
 
   const getInstructions = (timeLeft, playCount, maxPlays, hasAudio) => {
     if (timeLeft <= 10) {
@@ -221,14 +207,6 @@ const ListenMCQQuestion = ({ question, onSubmit, disabled }) => {
                 Listen Carefully
               </h3>
             </div>
-
-            {/* Timer on the right side */}
-            <TimerDisplay
-              timeLeft={timeLeft}
-              formatTime={formatTime}
-              phase="active"
-              size="large"
-            />
           </div>
 
           <div className="flex items-center justify-center">

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
-import { useGlobalTimer } from "../hooks/useGlobalTimer";
+import { useTimer } from "../contexts/TimerContext";
 import TimerDisplay from "./TimerDisplay";
 
 const DictationQuestion = ({ question, onSubmit, disabled }) => {
@@ -24,8 +24,8 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const MAX_PLAYS = 3;
 
   // Use global timer
-  const { timeLeft, phase, startTimer, stopTimer, formatTime } =
-    useGlobalTimer();
+  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
+    useTimer();
 
   // FIXED: Create a stable reference to get current input value
   const getCurrentInput = useCallback(() => {
@@ -218,21 +218,6 @@ const DictationQuestion = ({ question, onSubmit, disabled }) => {
               <h3 className="text-lg font-semibold text-purple-800">
                 Listen Carefully
               </h3>
-            </div>
-
-            {/* Enhanced Timer Display */}
-            <div className="flex flex-col items-end">
-              <TimerDisplay
-                timeLeft={timeLeft}
-                formatTime={formatTime}
-                phase={phase}
-                size="large"
-              />
-              {timeLeft <= 30 && (
-                <p className="text-xs text-amber-600 font-medium mt-1">
-                  Auto-submit when time expires
-                </p>
-              )}
             </div>
           </div>
 

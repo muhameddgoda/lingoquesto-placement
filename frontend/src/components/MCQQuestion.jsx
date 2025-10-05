@@ -7,15 +7,14 @@ import {
   AlertTriangle,
   Headphones,
 } from "lucide-react";
-import { useGlobalTimer } from "../hooks/useGlobalTimer";
-import TimerDisplay from "./TimerDisplay";
+import { useTimer } from "../contexts/TimerContext";
 
 const MCQQuestion = ({ question, onSubmit, disabled }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   // Use global timer
-  const { timeLeft, phase, startTimer, stopTimer, formatTime } =
-    useGlobalTimer();
+  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
+    useTimer();
 
   // Create a stable reference to get current selected value
   const getCurrentSelection = useCallback(() => {
@@ -32,8 +31,13 @@ const MCQQuestion = ({ question, onSubmit, disabled }) => {
     onSubmit(currentSelection || "");
   }, [getCurrentSelection, onSubmit]);
 
-  // Start timer when question loads
+  // Add a ref to track if timer is already started
+  const timerStartedRef = useRef(false);
+
   useEffect(() => {
+    // Only start timer once per question
+    if (timerStartedRef.current) return;
+
     const totalTime = question.timing?.total_estimated_sec || 30;
 
     startTimer({
@@ -41,8 +45,13 @@ const MCQQuestion = ({ question, onSubmit, disabled }) => {
       onTimeExpired: handleAutoSubmit,
     });
 
-    return () => stopTimer();
-  }, [question.q_id, handleAutoSubmit, startTimer, stopTimer]);
+    timerStartedRef.current = true;
+
+    return () => {
+      timerStartedRef.current = false;
+      stopTimer();
+    };
+  }, [question.q_id]); // Only depend on question ID
 
   const getInstructions = (timeLeft) => {
     if (timeLeft <= 10) {
@@ -104,15 +113,6 @@ const MCQQuestion = ({ question, onSubmit, disabled }) => {
               </p>
             </div>
           </div>
-        </div>
-        {/* Timer Display */}
-        <div className="flex justify-center mb-6">
-          <TimerDisplay
-            timeLeft={timeLeft}
-            formatTime={formatTime}
-            phase={phase}
-            size="large"
-          />
         </div>
 
         {/* Options - 2x2 Grid with smaller boxes */}

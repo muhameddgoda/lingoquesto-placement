@@ -21,29 +21,29 @@
       },
       "A2": {
         "type_counts": {
-          "repeat_sentence": 0,
+          "repeat_sentence": 1,
           "dictation": 1,
-          "listen_mcq": 0,
+          "listen_mcq": 1,
           "minimal_pair": 0,
           "sequence": 0,
-          "best_response_mcq": 0,
-          "open_response": 0,
+          "best_response_mcq": 1,
+          "open_response": 1,
           "image_description": 0,
-          "listen_answer": 0
+          "listen_answer": 1
         },
         "estimated_duration_seconds": 240,
         "description": "A2 level assessment adding conversational sequences and expanded dictation tasks"
       },
       "B1": {
         "type_counts": {
-          "open_response": 0,
+          "open_response": 1,
           "image_description": 1,
-          "best_response_mcq": 0,
+          "best_response_mcq": 1,
           "repeat_sentence": 0,
           "minimal_pair": 0,
           "dictation": 0,
-          "listen_mcq": 0,
-          "listen_answer": 0,
+          "listen_mcq": 1,
+          "listen_answer": 1,
           "sequence": 0
         },
         "estimated_duration_seconds": 210,
@@ -52,12 +52,12 @@
       "B2": {
         "type_counts": {
           "open_response": 1,
-          "listen_answer": 0,
+          "listen_answer": 1,
           "dictation": 1,
-          "repeat_sentence": 2,
+          "repeat_sentence": 1,
           "minimal_pair": 0,
           "listen_mcq": 0,
-          "best_response_mcq": 0,
+          "best_response_mcq": 1,
           "image_description": 0,
           "sequence": 0
         },
@@ -67,10 +67,10 @@
       "C1": {
         "type_counts": {
           "open_response": 1,
-          "image_description": 0,
+          "image_description": 1,
           "best_response_mcq": 1,
           "minimal_pair": 0,
-          "repeat_sentence": 0,
+          "repeat_sentence": 1,
           "dictation": 0,
           "listen_mcq": 0,
           "listen_answer": 1,
@@ -82,10 +82,10 @@
       "C2": {
         "type_counts": {
           "open_response": 1,
-          "listen_answer": 0,
+          "listen_answer": 1,
           "sequence": 0,
-          "best_response_mcq": 2,
-          "repeat_sentence": 2,
+          "best_response_mcq": 1,
+          "repeat_sentence": 1,
           "minimal_pair": 0,
           "dictation": 0,
           "listen_mcq": 0,
@@ -116,36 +116,31 @@
       "vocabulary": 0.0
     },
     "scripted_mixed": {
-      "pronunciation": 0.3,
-      "fluency": 0.7,
+      "pronunciation": 0.35,
+      "fluency": 0.65,
       "grammar": 0.0,
       "vocabulary": 0.0
     },
     "unscripted_mixed": {
-      "pronunciation": 0.25,
-      "fluency": 0.55,
-      "grammar": 0.1,
-      "vocabulary": 0.1
+      "pronunciation": 0.3,
+      "fluency": 0.4,
+      "grammar": 0.15,
+      "vocabulary": 0.15
     },
     "comprehension_only": {
       "pronunciation": 0.0,
       "fluency": 0.0,
-      "grammar": 0.5,
-      "vocabulary": 0.5
+      "grammar": 0.4,
+      "vocabulary": 0.6
     },
     "dictation_vocab": {
       "pronunciation": 0.0,
       "fluency": 0.0,
-      "grammar": 0.0,
-      "vocabulary": 1.0
+      "grammar": 0.15,
+      "vocabulary": 0.85
     }
   },
   "question_timing": {
-    "repeat_sentence": {
-      "think_time_sec": 3,
-      "response_time_sec": 15,
-      "total_estimated_sec": 18
-    },
     "minimal_pair": {
       "think_time_sec": 2,
       "response_time_sec": 10,
@@ -161,16 +156,6 @@
       "response_time_sec": 25,
       "total_estimated_sec": 30
     },
-    "image_description": {
-      "think_time_sec": 10,
-      "response_time_sec": 80,
-      "total_estimated_sec": 90
-    },
-    "open_response": {
-      "think_time_sec": 30,
-      "response_time_sec": 90,
-      "total_estimated_sec": 120
-    },
     "best_response_mcq": {
       "think_time_sec": 5,
       "response_time_sec": 25,
@@ -182,9 +167,108 @@
       "total_estimated_sec": 20
     },
     "listen_answer": {
-      "think_time_sec": 5,
-      "response_time_sec": 25,
-      "total_estimated_sec": 30
+      "think_time_sec": 0,
+      "response_time_sec": 45,
+      "total_estimated_sec": 45
+    }
+  },
+  "level_timing_overrides": {
+    "A1": {
+      "open_response": {
+        "think_time_sec": 45,
+        "response_time_sec": 60,
+        "total_estimated_sec": 105
+      },
+      "repeat_sentence": {
+        "think_time_sec": 10,
+        "response_time_sec": 30,
+        "total_estimated_sec": 40
+      },
+      "image_description": {
+        "think_time_sec": 45,
+        "response_time_sec": 60,
+        "total_estimated_sec": 105
+      }
+    },
+    "A2": {
+      "open_response": {
+        "think_time_sec": 45,
+        "response_time_sec": 60,
+        "total_estimated_sec": 105
+      },
+      "repeat_sentence": {
+        "think_time_sec": 10,
+        "response_time_sec": 30,
+        "total_estimated_sec": 40
+      },
+      "image_description": {
+        "think_time_sec": 45,
+        "response_time_sec": 60,
+        "total_estimated_sec": 105
+      }
+    },
+    "B1": {
+      "open_response": {
+        "think_time_sec": 30,
+        "response_time_sec": 90,
+        "total_estimated_sec": 120
+      },
+      "image_description": {
+        "think_time_sec": 30,
+        "response_time_sec": 90,
+        "total_estimated_sec": 120
+      }
+    },
+    "B2": {
+      "open_response": {
+        "think_time_sec": 30,
+        "response_time_sec": 90,
+        "total_estimated_sec": 120
+      },
+      "repeat_sentence": {
+        "think_time_sec": 10,
+        "response_time_sec": 20,
+        "total_estimated_sec": 30
+      },
+      "image_description": {
+        "think_time_sec": 30,
+        "response_time_sec": 90,
+        "total_estimated_sec": 120
+      }
+    },
+    "C1": {
+      "open_response": {
+        "think_time_sec": 20,
+        "response_time_sec": 90,
+        "total_estimated_sec": 110
+      },
+      "repeat_sentence": {
+        "think_time_sec": 5,
+        "response_time_sec": 15,
+        "total_estimated_sec": 20
+      },
+      "image_description": {
+        "think_time_sec": 20,
+        "response_time_sec": 90,
+        "total_estimated_sec": 110
+      }
+    },
+    "C2": {
+      "open_response": {
+        "think_time_sec": 20,
+        "response_time_sec": 90,
+        "total_estimated_sec": 110
+      },
+      "repeat_sentence": {
+        "think_time_sec": 5,
+        "response_time_sec": 15,
+        "total_estimated_sec": 20
+      },
+      "image_description": {
+        "think_time_sec": 20,
+        "response_time_sec": 90,
+        "total_estimated_sec": 110
+      }
     }
   },
   "level_progression": {
