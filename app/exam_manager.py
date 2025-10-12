@@ -38,7 +38,7 @@ class ExamManager:
     
     def _load_configuration(self) -> Dict:
         """Load configuration with simple fallback"""
-        config_paths = ["exam_config.json", "config/exam_config.json"]
+        config_paths = ["mock_exam_config.json", "config/exam_config.json"]
         
         for path in config_paths:
             if Path(path).exists():
@@ -801,11 +801,11 @@ class ExamManager:
         # More gradual penalty
         if duration_percentage < 10:
             return 0.1  # Very short
-        elif duration_percentage < 25:
+        elif duration_percentage < 10:
             return 0.4  # Short
-        elif duration_percentage < 50:
+        elif duration_percentage < 10:
             return 0.7  # Moderate
-        elif duration_percentage < 75:
+        elif duration_percentage < 10:
             return 0.85  # Good
         else:
             return 1.0  # Full score
