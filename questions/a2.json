@@ -2,90 +2,100 @@
   {
     "id": "A2-RS-001",
     "type": "repeat_sentence",
-    "prompt": "Repeat: Could you tell me where the nearest supermarket is?",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "Could you tell me where the nearest supermarket is?",
       "expectedText": "Could you tell me where the nearest supermarket is?"
     }
   },
   {
     "id": "A2-RS-002",
     "type": "repeat_sentence",
-    "prompt": "Repeat: We usually go shopping every Saturday morning.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "We usually go shopping every Saturday morning.",
       "expectedText": "We usually go shopping every Saturday morning."
     }
   },
   {
     "id": "A2-RS-003",
     "type": "repeat_sentence",
-    "prompt": "Repeat: I have lived in this neighborhood for two years.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "I have lived in this neighborhood for two years.",
       "expectedText": "I have lived in this neighborhood for two years."
     }
   },
   {
     "id": "A2-RS-004",
     "type": "repeat_sentence",
-    "prompt": "Repeat: Can I try on this blue shirt in a size medium?",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "Can I try on this blue shirt in a size medium?",
       "expectedText": "Can I try on this blue shirt in a size medium?"
     }
   },
   {
     "id": "A2-RS-005",
     "type": "repeat_sentence",
-    "prompt": "Repeat: The market opens at eight o'clock and closes at five.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "The market opens at eight o'clock and closes at five.",
       "expectedText": "The market opens at eight o'clock and closes at five."
     }
   },
   {
     "id": "A2-RS-006",
     "type": "repeat_sentence",
-    "prompt": "Repeat: I work in a small office near the train station.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "I work in a small office near the train station.",
       "expectedText": "I work in a small office near the train station."
     }
   },
   {
     "id": "A2-RS-007",
     "type": "repeat_sentence",
-    "prompt": "Repeat: My sister is studying medicine at university.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "My sister is studying medicine at university.",
       "expectedText": "My sister is studying medicine at university."
     }
   },
   {
     "id": "A2-RS-008",
     "type": "repeat_sentence",
-    "prompt": "Repeat: Can I pay with a credit card, please?",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "Can I pay with a credit card, please?",
       "expectedText": "Can I pay with a credit card, please?"
     }
   },
   {
     "id": "A2-RS-009",
     "type": "repeat_sentence",
-    "prompt": "Repeat: He goes to the gym every Tuesday and Thursday.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "He goes to the gym every Tuesday and Thursday.",
       "expectedText": "He goes to the gym every Tuesday and Thursday."
     }
   },
   {
     "id": "A2-RS-010",
     "type": "repeat_sentence",
-    "prompt": "Repeat: We are planning a trip to the mountains this weekend.",
+    "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
+      "sentence": "We are planning a trip to the mountains this weekend.",
       "expectedText": "We are planning a trip to the mountains this weekend."
     }
   },
@@ -172,7 +182,7 @@
   {
     "id": "A2-LMQ-001",
     "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer.",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_lmq_001.wav",
@@ -191,7 +201,7 @@
   {
     "id": "A2-LMQ-002",
     "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer.",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_lmq_002.wav",
@@ -210,7 +220,7 @@
   {
     "id": "A2-LMQ-003",
     "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer.",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_lmq_003.wav",
@@ -229,7 +239,7 @@
   {
     "id": "A2-LMQ-004",
     "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer.",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_lmq_004.wav",
@@ -248,7 +258,7 @@
   {
     "id": "A2-LMQ-005",
     "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer.",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_lmq_005.wav",
@@ -377,7 +387,7 @@
   {
     "id": "A2-SEQ-001-001",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_001_001.wav",
@@ -398,7 +408,7 @@
   {
     "id": "A2-SEQ-001-002",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_001_002.wav",
@@ -419,7 +429,7 @@
   {
     "id": "A2-SEQ-001-003",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_001_003.wav",
@@ -440,7 +450,7 @@
   {
     "id": "A2-SEQ-001-004",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_001_004.wav",
@@ -461,7 +471,7 @@
   {
     "id": "A2-SEQ-001-005",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_001_005.wav",
@@ -482,7 +492,7 @@
   {
     "id": "A2-SEQ-002-001",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_002_001.wav",
@@ -503,7 +513,7 @@
   {
     "id": "A2-SEQ-002-002",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_002_002.wav",
@@ -524,7 +534,7 @@
   {
     "id": "A2-SEQ-002-003",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_002_003.wav",
@@ -545,7 +555,7 @@
   {
     "id": "A2-SEQ-003-001",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_003_001.wav",
@@ -566,7 +576,7 @@
   {
     "id": "A2-SEQ-003-002",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_003_002.wav",
@@ -587,7 +597,7 @@
   {
     "id": "A2-SEQ-004-001",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_004_001.wav",
@@ -608,7 +618,7 @@
   {
     "id": "A2-SEQ-004-002",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_004_002.wav",
@@ -629,7 +639,7 @@
   {
     "id": "A2-SEQ-005-001",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_005_001.wav",
@@ -650,7 +660,7 @@
   {
     "id": "A2-SEQ-005-002",
     "type": "sequence",
-    "prompt": "Listen and respond appropriately to continue the conversation.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/a2_seq_005_002.wav",
@@ -671,8 +681,9 @@
   {
     "id": "A2-BMQ-001",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Can you describe your daily routine?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Can you describe your daily routine?",
       "context": "Personal conversation about lifestyle",
       "situation": "Someone asking about your schedule",
       "options": [
@@ -687,8 +698,9 @@
   {
     "id": "A2-BMQ-002",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Where do you usually go shopping?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Where do you usually go shopping?",
       "context": "Personal conversation about shopping habits",
       "situation": "Someone asking about your preferences",
       "options": [
@@ -703,8 +715,9 @@
   {
     "id": "A2-BMQ-003",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What do you do on the weekend?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What do you do on the weekend?",
       "context": "Personal conversation about leisure activities",
       "situation": "Someone asking about weekend plans",
       "options": [
@@ -719,8 +732,9 @@
   {
     "id": "A2-BMQ-004",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Tell me about your job or school.'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Tell me about your job or school.",
       "context": "Personal conversation about work/education",
       "situation": "Someone asking about your occupation",
       "options": [
@@ -735,8 +749,9 @@
   {
     "id": "A2-BMQ-005",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Can you describe your neighborhood?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Can you describe your neighborhood?",
       "context": "Personal conversation about living situation",
       "situation": "Someone asking about where you live",
       "options": [
@@ -751,8 +766,9 @@
   {
     "id": "A2-BMQ-006",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Would you like breakfast included?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Would you like breakfast included?",
       "context": "Hotel booking conversation",
       "situation": "Hotel staff asking about breakfast option",
       "options": [
@@ -767,8 +783,9 @@
   {
     "id": "A2-BMQ-007",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Are you allergic to any medication?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Are you allergic to any medication?",
       "context": "Doctor's office consultation",
       "situation": "Doctor asking about medical history",
       "options": [
@@ -783,8 +800,9 @@
   {
     "id": "A2-BMQ-008",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Do you need to buy the ticket before you get on?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Do you need to buy the ticket before you get on?",
       "context": "Public transport information",
       "situation": "Someone asking about bus ticketing",
       "options": [
@@ -799,8 +817,9 @@
   {
     "id": "A2-BMQ-009",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'We have this style in medium. Do you want to try them on?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "We have this style in medium. Do you want to try them on?",
       "context": "Clothing store shopping",
       "situation": "Sales assistant offering to try clothes",
       "options": [
@@ -815,8 +834,9 @@
   {
     "id": "A2-BMQ-010",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Would you like to pay with cash or card?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Would you like to pay with cash or card?",
       "context": "Making a purchase",
       "situation": "Cashier asking about payment method",
       "options": [
@@ -831,61 +851,71 @@
   {
     "id": "A2-OR-011",
     "type": "open_response",
-    "prompt": "Talk about what you did last weekend.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about your last weekend. Where did you go? What activities did you do? Who did you spend time with? Did you enjoy it?",
-        "context_description": "Past experience narration and weekend activities"
-      }
+      "question": "Talk about what you did last weekend.",
+      "helpers": [
+        "Where did you go? What activities did you do?",
+        "Who did you spend time with?",
+        "Did you enjoy it? What was the best part?"
+      ]
     }
   },
   {
     "id": "A2-OR-012",
     "type": "open_response",
-    "prompt": "Describe your favorite place in your town.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about a place you really like in your town or city. What is this place? Why do you like it? How often do you go there?",
-        "context_description": "Place description and personal preferences"
-      }
+      "question": "Describe your favorite place in your town.",
+      "helpers": [
+        "What is this place? Why do you like it?",
+        "How often do you go there?",
+        "What do you usually do when you visit this place?"
+      ]
     }
   },
   {
     "id": "A2-OR-013",
     "type": "open_response",
-    "prompt": "Describe a meal you cooked recently.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about something you cooked recently. What did you make? How did you prepare it? Was it difficult? Did it taste good?",
-        "context_description": "Cooking experience and food preparation narrative"
-      }
+      "question": "Describe a meal you cooked recently.",
+      "helpers": [
+        "What did you make? How did you prepare it?",
+        "Was it difficult to make?",
+        "Did it taste good? Would you cook it again?"
+      ]
     }
   },
   {
     "id": "A2-OR-014",
     "type": "open_response",
-    "prompt": "Talk about how you get to school or work each day.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about your daily commute. How do you travel to school or work? How long does it take? Do you like your journey? What do you see on the way?",
-        "context_description": "Daily transportation and routine description"
-      }
+      "question": "Talk about how you get to school or work each day.",
+      "helpers": [
+        "How do you travel to school or work? How long does it take?",
+        "Do you like your journey?",
+        "What do you see or do on the way?"
+      ]
     }
   },
   {
     "id": "A2-OR-015",
     "type": "open_response",
-    "prompt": "Talk about your plans for the next holiday.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about your next holiday or vacation. Where do you want to go? What do you plan to do? Who will you travel with? Why did you choose this destination?",
-        "context_description": "Future travel plans and holiday expectations"
-      }
+      "question": "Talk about your plans for the next holiday.",
+      "helpers": [
+        "Where do you want to go? What do you plan to do?",
+        "Who will you travel with?",
+        "Why did you choose this destination?"
+      ]
     }
   }
 ]

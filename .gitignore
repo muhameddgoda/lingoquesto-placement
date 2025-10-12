@@ -387,3 +387,4 @@ __pycache__/
 questions\generate_audio.py
 exam_results/
 app/duration_test.html
+config/mock_exam_config.json

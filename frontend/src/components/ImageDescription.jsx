@@ -1,11 +1,12 @@
-// ImageDescription.jsx - Modified for side-by-side layout
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Image as ImageIcon } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import AudioRecorder from "./AudioRecorder";
+import AudioVisualizer from "./AudioVisualizer";
 
 const ImageDescription = ({ question, onSubmit, disabled }) => {
   const [imageError, setImageError] = useState(false);
+  const [audioLevel, setAudioLevel] = useState(0);
 
   // Get image URL
   const imageRef = question.metadata?.imageRef || question.image_ref;
@@ -19,45 +20,41 @@ const ImageDescription = ({ question, onSubmit, disabled }) => {
   const imageDescription = question.metadata?.imageDescription || "";
 
   return (
-    <div className="space-y-6">
-      {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* LEFT SIDE - Recording Controls */}
-        <div className="order-2 lg:order-1">
-          <AudioRecorder
-            onSubmit={onSubmit}
-            disabled={disabled}
-            thinkTime={question.timing?.think_time_sec || 10}
-            responseTime={question.timing?.response_time_sec || 80}
-            questionId={question.q_id}
-            questionContext={question.metadata?.context?.question}
-          />
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="w-full max-w-4xl px-6">
+        {/* Main Prompt */}
+        <h1 className="text-center text-3xl font-extrabold text-gray-900 mb-2">
+          {question?.prompt || "Describe what you see!"}
+        </h1>
+
+        {/* Speaking Time */}
+        <div className="text-center mb-6">
+          <p className="text-sm text-gray-600">
+            You have{" "}
+            {Math.floor((question.timing?.response_time_sec || 80) / 60)} minute
+            {Math.floor((question.timing?.response_time_sec || 80) / 60) !== 1
+              ? "s"
+              : ""}{" "}
+            to speak
+          </p>
         </div>
 
-        {/* RIGHT SIDE - Image Display */}
-        <div className="order-1 lg:order-2">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-4 border border-indigo-200/50 h-full">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                <ImageIcon className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800">
-                Look at this image
-              </h3>
-            </div>
-
+        {/* Single White Box Container */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-200/50">
+          {/* Image Display - Centered and Smaller */}
+          <div className="mb-6 flex justify-center">
             {imageUrl && !imageError ? (
-              <div className="relative rounded-lg overflow-hidden bg-gray-100">
+              <div className="relative rounded-lg overflow-hidden bg-gray-100 max-w-md">
                 <img
                   src={imageUrl}
                   alt={imageDescription || "Question image"}
-                  className="w-full h-auto max-h-[500px] object-contain"
+                  className="w-full h-auto max-h-[280px] object-contain"
                   onError={() => setImageError(true)}
                 />
               </div>
             ) : (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center max-w-md">
+                <ImageIcon className="w-12 h-12 text-yellow-600 mx-auto mb-3" />
                 <p className="text-yellow-800 font-medium">
                   Image could not be loaded. Please contact support.
                 </p>
@@ -69,8 +66,26 @@ const ImageDescription = ({ question, onSubmit, disabled }) => {
               </div>
             )}
           </div>
-        </div>
 
+          {/* Visualizer and Submit Button Row */}
+          <div className="flex items-center justify-between gap-4 mb-4">
+            {/* Audio Visualizer */}
+            <div className="flex-1">
+              <AudioVisualizer audioLevel={audioLevel} />
+            </div>
+          </div>
+
+          {/* Audio Recorder Controls */}
+          <AudioRecorder
+            onSubmit={onSubmit}
+            disabled={disabled}
+            thinkTime={question.timing?.think_time_sec || 10}
+            responseTime={question.timing?.response_time_sec || 80}
+            questionId={question.q_id}
+            forceSubmitting={disabled}
+            onAudioLevelChange={setAudioLevel}
+          />
+        </div>
       </div>
     </div>
   );

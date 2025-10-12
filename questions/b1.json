@@ -2,198 +2,229 @@
   {
     "id": "B1-OR-001",
     "type": "open_response",
-    "prompt": "Talk about a challenge you overcame and how you did it.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing a personal or professional challenge you faced, explaining the steps you took to overcome it and what you learned from the experience.",
-        "context_description": "Personal development and problem-solving assessment"
-      }
+      "question": "Talk about a challenge you overcame and how you did it.",
+      "helpers": [
+        "What was the challenge you faced? Was it personal or professional?",
+        "What steps did you take to overcome it?",
+        "What did you learn from this experience?"
+      ]
     }
   },
   {
     "id": "B1-OR-002",
     "type": "open_response",
-    "prompt": "Describe a memorable trip or vacation.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about a trip or vacation that was particularly memorable, including where you went, what you did, who you were with, and why it was special.",
-        "context_description": "Travel experience and narrative skills assessment"
-      }
+      "question": "Describe a memorable trip or vacation.",
+      "helpers": [
+        "Where did you go? What did you do there?",
+        "Who were you with during this trip?",
+        "Why was it so memorable and special for you?"
+      ]
     }
   },
   {
     "id": "B1-OR-003",
     "type": "open_response",
-    "prompt": "Talk about the advantages and disadvantages of technology in education.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes discussing both the benefits and drawbacks of using technology in education, giving specific examples and your personal opinion.",
-        "context_description": "Opinion and argumentation skills assessment"
-      }
+      "question": "Talk about the advantages and disadvantages of technology in education.",
+      "helpers": [
+        "What are the main benefits of using technology in education?",
+        "What are the drawbacks or challenges?",
+        "What is your personal opinion on this topic?"
+      ]
     }
   },
   {
     "id": "B1-OR-004",
     "type": "open_response",
-    "prompt": "Talk about your future goals and how you plan to reach them.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about your main goals for the next 5-10 years, explaining your plans, potential obstacles, and the steps you're taking to achieve them.",
-        "context_description": "Future planning and goal-setting assessment"
-      }
+      "question": "Talk about your future goals and how you plan to reach them.",
+      "helpers": [
+        "What are your main goals for the next 5-10 years?",
+        "What steps are you taking to achieve them?",
+        "What obstacles might you face along the way?"
+      ]
     }
   },
   {
     "id": "B1-OR-005",
     "type": "open_response",
-    "prompt": "Describe an important decision you made and its outcome.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about a significant decision in your life, explaining why it was important, how you made it, and what the results were.",
-        "context_description": "Decision-making and reflection skills assessment"
-      }
+      "question": "Describe an important decision you made and its outcome.",
+      "helpers": [
+        "What was the decision and why was it important?",
+        "How did you make this decision?",
+        "What were the results? Are you happy with the outcome?"
+      ]
     }
   },
   {
     "id": "B1-OR-006",
     "type": "open_response",
-    "prompt": "Can you tell me about a trip you really enjoyed?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing a trip that you particularly enjoyed, including details about the destination, activities, and what made it special for you.",
-        "context_description": "Travel experience narration assessment"
-      }
+      "question": "Can you tell me about a trip you really enjoyed?",
+      "helpers": [
+        "Where did you go? What activities did you do?",
+        "Who did you travel with?",
+        "What made this trip special for you?"
+      ]
     }
   },
   {
     "id": "B1-OR-007",
     "type": "open_response",
-    "prompt": "What are your goals for the next five years?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about your personal and professional goals for the next five years, explaining how you plan to achieve them and what challenges you might face.",
-        "context_description": "Future planning and goal articulation assessment"
-      }
+      "question": "What are your goals for the next five years?",
+      "helpers": [
+        "What personal and professional goals do you have?",
+        "How do you plan to achieve them?",
+        "What challenges might you face in reaching these goals?"
+      ]
     }
   },
   {
     "id": "B1-OR-008",
     "type": "open_response",
-    "prompt": "Describe your favorite kind of weekend.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing what you consider to be an ideal weekend, including activities you enjoy, people you spend time with, and why these weekends are special to you.",
-        "context_description": "Lifestyle and preference expression assessment"
-      }
+      "question": "Describe your favorite kind of weekend.",
+      "helpers": [
+        "What activities do you enjoy doing on weekends?",
+        "Who do you spend time with?",
+        "Why are these weekends special to you?"
+      ]
     }
   },
   {
     "id": "B1-OR-009",
     "type": "open_response",
-    "prompt": "Do you prefer working in a team or alone? Why?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes explaining whether you prefer working individually or as part of a team, giving reasons for your preference and examples from your experience.",
-        "context_description": "Work preference and reasoning assessment"
-      }
+      "question": "Do you prefer working in a team or alone? Why?",
+      "helpers": [
+        "Which do you prefer: working individually or as part of a team?",
+        "What are the reasons for your preference?",
+        "Can you give examples from your experience?"
+      ]
     }
   },
   {
     "id": "B1-OR-010",
     "type": "open_response",
-    "prompt": "Tell me about a problem you had and how you solved it.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing a specific problem you encountered in your personal or professional life, explaining the steps you took to solve it and what you learned from the experience.",
-        "context_description": "Problem-solving and reflection skills assessment"
-      }
+      "question": "Tell me about a problem you had and how you solved it.",
+      "helpers": [
+        "What was the problem? When did it happen?",
+        "What steps did you take to solve it?",
+        "What did you learn from this experience?"
+      ]
     }
   },
   {
     "id": "B1-IMG-001",
     "type": "image_description",
-    "prompt": "Describe what you see in this image and what you think is happening.",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
       "imageRef": "b1_img_001.png",
       "imageDescription": "A traveler lifting a suitcase onto a hotel check-in desk",
-      "context": {
-        "question": "Look at this image and describe what you see. Talk about what the person is doing, the setting, and what you think might happen next. Speak for up to 2 minutes.",
-        "context_description": "Visual interpretation and narrative skills assessment"
-      }
+      "question": "Look at this image and describe what you see. Talk about what the person is doing, the setting, and what you think might happen next.",
+      "helpers": [
+        "What is the person doing in this image?",
+        "Describe the setting and atmosphere.",
+        "What do you think might happen next?"
+      ]
     }
   },
   {
     "id": "B1-IMG-002",
     "type": "image_description",
-    "prompt": "Describe what you see in this image and what you think is happening.",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
       "imageRef": "images/b1_img_002.png",
       "imageDescription": "A group of people having a picnic by a lake",
-      "context": {
-        "question": "Look at this image and describe the scene. Talk about the people, the activities, the location, and the atmosphere. Speak for up to 2 minutes.",
-        "context_description": "Visual interpretation and descriptive skills assessment"
-      }
+      "question": "Look at this image and describe the scene. Talk about the people, the activities, the location, and the atmosphere.",
+      "helpers": [
+        "Who are the people in the image? What are they doing?",
+        "Describe the location and setting.",
+        "What is the atmosphere or mood of the scene?"
+      ]
     }
   },
   {
     "id": "B1-IMG-003",
     "type": "image_description",
-    "prompt": "Describe what you see in this image and what you think is happening.",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
       "imageRef": "images/b1_img_003.png",
       "imageDescription": "A doctor speaking to a patient in an examination room",
-      "context": {
-        "question": "Look at this image and describe the medical consultation scene. Talk about what you observe about the interaction, the setting, and what might be discussed. Speak for up to 2 minutes.",
-        "context_description": "Visual interpretation and inference skills assessment"
-      }
+      "question": "Look at this image and describe the medical consultation scene. Talk about what you observe about the interaction, the setting, and what might be discussed.",
+      "helpers": [
+        "What is happening in this medical consultation?",
+        "Describe the interaction between the doctor and patient.",
+        "What do you think they might be discussing?"
+      ]
     }
   },
   {
     "id": "B1-IMG-004",
     "type": "image_description",
-    "prompt": "Describe what you see in this image and what you think is happening.",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
       "imageRef": "images/b1_img_004.png",
       "imageDescription": "A student presenting a project to classmates",
-      "context": {
-        "question": "Look at this image of a classroom presentation. Describe what you see happening, the people involved, and what you think the presentation might be about. Speak for up to 2 minutes.",
-        "context_description": "Visual interpretation and educational context assessment"
-      }
+      "question": "Look at this image of a classroom presentation. Describe what you see happening, the people involved, and what you think the presentation might be about.",
+      "helpers": [
+        "What is happening in this classroom scene?",
+        "Describe the people involved and their roles.",
+        "What do you think the presentation might be about?"
+      ]
     }
   },
   {
     "id": "B1-IMG-005",
     "type": "image_description",
-    "prompt": "Describe what you see in this image and what you think is happening.",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
       "imageRef": "images/b1_img_005.png",
       "imageDescription": "A worker assembling furniture in an apartment",
-      "context": {
-        "question": "Look at this image and describe the scene. Talk about what the person is doing, the environment, and what you think about this activity. Speak for up to 2 minutes.",
-        "context_description": "Visual interpretation and practical situation assessment"
-      }
+      "question": "Look at this image and describe the scene. Talk about what the person is doing, the environment, and what you think about this activity.",
+      "helpers": [
+        "What is the person doing in this image?",
+        "Describe the environment and setting.",
+        "What do you think about this activity?"
+      ]
     }
   },
   {
     "id": "B1-BMQ-001",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What do you usually do after work?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What do you usually do after work?",
       "context": "Personal conversation about daily routine",
       "situation": "Someone asking about your after-work activities",
       "options": [
@@ -209,8 +240,9 @@
   {
     "id": "B1-BMQ-002",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Why do you want to study abroad?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Why do you want to study abroad?",
       "context": "Academic or personal conversation about education plans",
       "situation": "Someone asking about your study abroad motivations",
       "options": [
@@ -226,8 +258,9 @@
   {
     "id": "B1-BMQ-003",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'How was your weekend?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "How was your weekend?",
       "context": "Casual conversation about recent activities",
       "situation": "Someone asking about your weekend",
       "options": [
@@ -243,8 +276,9 @@
   {
     "id": "B1-BMQ-004",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Can you describe your current job or studies?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Can you describe your current job or studies?",
       "context": "Professional or academic conversation",
       "situation": "Someone asking about your current occupation or education",
       "options": [
@@ -260,8 +294,9 @@
   {
     "id": "B1-BMQ-005",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What would you do if you had more free time?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What would you do if you had more free time?",
       "context": "Hypothetical conversation about time management",
       "situation": "Someone asking about your ideal use of extra time",
       "options": [
@@ -277,8 +312,9 @@
   {
     "id": "B1-BMQ-006",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What made you want to work in marketing?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What made you want to work in marketing?",
       "context": "Professional conversation about career choice",
       "situation": "Someone asking about your career motivation",
       "options": [
@@ -294,8 +330,9 @@
   {
     "id": "B1-BMQ-007",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'How are you learning guitar?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "How are you learning guitar?",
       "context": "Conversation about hobbies and learning methods",
       "situation": "Someone asking about your learning approach",
       "options": [
@@ -311,8 +348,9 @@
   {
     "id": "B1-BMQ-008",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What did you like most about your trip to Mexico?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What did you like most about your trip to Mexico?",
       "context": "Conversation about travel experiences",
       "situation": "Someone asking about highlights of your trip",
       "options": [
@@ -328,8 +366,9 @@
   {
     "id": "B1-BMQ-009",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Do you think it matches your skills and interests?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Do you think it matches your skills and interests?",
       "context": "Professional conversation about job fit",
       "situation": "Someone asking if a job suits you well",
       "options": [
@@ -345,8 +384,9 @@
   {
     "id": "B1-BMQ-010",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What's your goal with learning guitar?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What's your goal with learning guitar?",
       "context": "Conversation about hobby goals and aspirations",
       "situation": "Someone asking about your learning objectives",
       "options": [

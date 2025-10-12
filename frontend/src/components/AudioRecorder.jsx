@@ -1,16 +1,6 @@
 // AudioRecorder.jsx - Clean rewrite with clear phase guidance
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import {
-  Mic,
-  Square,
-  Play,
-  Pause,
-  Send,
-  FastForward,
-  Brain,
-  Clock,
-  CheckCircle,
-} from "lucide-react";
+import { Mic, Send, Brain, Clock, CheckCircle } from "lucide-react";
 import { useTimer } from "../contexts/TimerContext";
 
 const AudioRecorder = ({
@@ -20,7 +10,9 @@ const AudioRecorder = ({
   responseTime = 120,
   questionId,
   questionContext = null,
-  forceSubmitting = false, // NEW
+  forceSubmitting = false,
+  onAudioLevelChange,
+  noMinimumTime = false,
 }) => {
   // State
   const [recordingState, setRecordingState] = useState("idle");
@@ -28,6 +20,8 @@ const AudioRecorder = ({
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStartedRecording, setHasStartedRecording] = useState(false);
+  const [audioLevel, setAudioLevel] = useState(0);
+  const animationFrameRef = useRef(null);
 
   // Refs
   const mediaRecorderRef = useRef(null);
@@ -48,6 +42,19 @@ const AudioRecorder = ({
       onTimeExpired: handleTimeExpiry,
     });
   }, [questionId]);
+
+  useEffect(() => {
+    if (!navigator.mediaDevices) {
+      console.error("Microphone not supported");
+      setRecordingState("error");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (onAudioLevelChange) {
+      onAudioLevelChange(audioLevel);
+    }
+  }, [audioLevel, onAudioLevelChange]);
 
   // If parent says we're processing, reflect it immediately
   useEffect(() => {
@@ -73,6 +80,29 @@ const AudioRecorder = ({
     return () => cleanupResources();
   }, []);
 
+  const setupAudioAnalyzer = useCallback(() => {
+    if (!streamRef.current) return;
+
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const analyser = audioContext.createAnalyser();
+    const microphone = audioContext.createMediaStreamSource(streamRef.current);
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    analyser.smoothingTimeConstant = 0.8;
+    analyser.fftSize = 256;
+    microphone.connect(analyser);
+
+    const updateLevel = () => {
+      analyser.getByteFrequencyData(dataArray);
+      const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+      setAudioLevel(average);
+      animationFrameRef.current = requestAnimationFrame(updateLevel);
+    };
+
+    updateLevel();
+  }, []);
+
   // Reset state
   const resetComponent = useCallback(() => {
     cleanupResources();
@@ -87,8 +117,15 @@ const AudioRecorder = ({
 
   const submittingRef = useRef(false);
 
+const submitDisabled =
+  disabled || (!noMinimumTime && responseTime > 30 && timeLeft > responseTime - 30);
+
   // Cleanup media resources
   const cleanupResources = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
     if (mediaRecorderRef.current?.state !== "inactive") {
       try {
         mediaRecorderRef.current.stop();
@@ -145,6 +182,7 @@ const AudioRecorder = ({
       };
 
       recorder.start(1000);
+      setupAudioAnalyzer();
     } catch (error) {
       console.error("Recording error:", error);
       setRecordingState("idle");
@@ -227,336 +265,63 @@ const AudioRecorder = ({
     }
   }, [stopRecording, performSubmission]);
 
-  // Record again
-  const handleRecordAgain = useCallback(async () => {
-    if (audioUrl) {
-      URL.revokeObjectURL(audioUrl);
-      setAudioUrl(null);
-    }
-    setAudioBlob(null);
-    setIsPlaying(false);
-    setRecordingState("idle");
-    chunksRef.current = [];
-    await startRecording();
-  }, [audioUrl, startRecording]);
-
-  // Play/pause audio
-  const togglePlayback = useCallback(() => {
-    if (!audioRef.current || !audioUrl) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  }, [audioUrl, isPlaying]);
-
-  // Format time for display
-  const formatTimeLimit = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    if (minutes > 0 && remainingSeconds > 0) {
-      return `${minutes} minute${
-        minutes > 1 ? "s" : ""
-      } and ${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? "s" : ""}`;
-    } else {
-      return `${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`;
-    }
-  };
-
-  const getPhaseInstructions = () => {
-    // PRIORITY: Check if submitting first, regardless of phase
-    if (forceSubmitting || recordingState === "submitting") {
-      return {
-        title: "Response Submitted",
-        instruction: "We received your answer. Processing now…",
-        action: "Please wait while we save your response.",
-        icon: CheckCircle,
-        color: "green",
-        showTimer: false,
-      };
-    }
-    switch (phase) {
-      case "thinking":
-        return {
-          title: "Preparation Time",
-          instruction: questionContext
-            ? `${questionContext} You will have ${formatTimeLimit(
-                responseTime
-              )} to record your response.`
-            : `Think about your response. Take your time to organize your thoughts. You have ${formatTimeLimit(
-                responseTime
-              )} to record your response.`,
-          action:
-            "Recording will start automatically when preparation time ends.",
-          icon: Brain,
-          color: "blue",
-          showTimer: true,
-        };
-
-      case "responding":
-        if (recordingState === "recording") {
-          return {
-            title: "Recording Your Response",
-            instruction:
-              questionContext ||
-              "Speak clearly and at a natural pace. You can stop early if you finish your answer.",
-            action:
-              "Click 'Stop Recording' when you're done, or let the timer run out.",
-            icon: Mic,
-            color: "red",
-            showTimer: true,
-          };
-        } else if (recordingState === "complete") {
-          return {
-            title: "Review Your Recording",
-            instruction:
-              "You can listen to your recording, record again, or submit your final answer.",
-            action: "Choose 'Submit' when you're satisfied with your response.",
-            icon: CheckCircle,
-            color: "purple",
-            showTimer: true,
-          };
-        } else {
-          return {
-            title: "Ready to Record",
-            instruction:
-              questionContext ||
-              "Recording will start automatically. Speak your answer when it begins.",
-            action: "Get ready to speak your response.",
-            icon: Mic,
-            color: "orange",
-            showTimer: true,
-          };
-        }
-      case "expired":
-        return {
-          title: "Time Complete",
-          instruction:
-            "Recording time has ended. Your response is being processed.",
-          action: "Please wait while we submit your answer.",
-          icon: Clock,
-          color: "gray",
-          showTimer: false,
-        };
-
-      case "stopped":
-        return {
-          title: "Response Submitted",
-          instruction: "Your answer has been submitted successfully.",
-          action: "Moving to the next question...",
-          icon: CheckCircle,
-          color: "green",
-          showTimer: false,
-        };
-
-      default:
-        return {
-          title: "Preparing Question",
-          instruction: "Loading question...",
-          action: "Please wait.",
-          icon: Clock,
-          color: "gray",
-          showTimer: false,
-        };
-    }
-  };
-
-  // Timer display component
-  const TimerDisplay = () => {
-    const instructions = getPhaseInstructions();
-
-    if (!instructions.showTimer || timeLeft <= 0) {
-      return null;
-    }
-
-    const getTimerState = () => {
-      if (timeLeft <= 10) return "critical";
-      if (timeLeft <= 30) return "warning";
-      return "normal";
-    };
-
-    const timerState = getTimerState();
-    const stateColors = {
-      normal: "bg-blue-50 border-blue-200 text-blue-700",
-      warning: "bg-amber-50 border-amber-200 text-amber-700",
-      critical: "bg-red-50 border-red-200 text-red-700 animate-pulse",
-    };
-
-    return (
-      <div className="flex justify-center mb-4">
-        <div
-          className={`flex items-center space-x-3 px-6 py-3 rounded-xl border-2 font-medium ${stateColors[timerState]}`}
-        >
-          <Clock className="w-5 h-5" />
-          <div className="text-center">
-            <div className="text-lg font-bold">{formatTime(timeLeft)}</div>
-            <div className="text-xs opacity-75">
-              {phase === "thinking"
-                ? "Prep time remaining"
-                : "Recording time remaining"}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Instruction panel component
-  const InstructionPanel = () => {
-    const instructions = getPhaseInstructions();
-    const IconComponent = instructions.icon;
-
-    const colorClasses = {
-      blue: "bg-blue-50 border-blue-200 text-blue-800",
-      red: "bg-red-50 border-red-200 text-red-800",
-      green: "bg-green-50 border-green-200 text-green-800",
-      orange: "bg-orange-50 border-orange-200 text-orange-800",
-      gray: "bg-gray-50 border-gray-200 text-gray-800",
-      purple: "bg-purple-50 border-purple-200 text-purple-800",
-    };
-    return (
-      <div
-        className={`rounded-xl border-2 p-4 mb-6 ${
-          colorClasses[instructions.color]
-        }`}
-      >
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0 mt-1">
-            <IconComponent className="w-6 h-6" />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-lg mb-2">{instructions.title}</h3>
-            <p className="text-base mb-2">{instructions.instruction}</p>
-            <p className="text-sm font-medium opacity-80">
-              {instructions.action}
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-200/50">
-      <div className="space-y-6">
-        {/* Phase Instructions */}
-        <InstructionPanel />
+    <div>
+      {/* Single Action Button - THINKING PHASE */}
+      {phase === "thinking" && (
+        <div className="flex justify-end">
+          <button
+            onClick={skipThinking}
+            disabled={disabled}
+            className="inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] focus:outline-none bg-[#967AFE] disabled:opacity-50"
+          >
+            <Mic className="w-5 h-5" />
+            Record Now
+          </button>
+        </div>
+      )}
 
-        {/* Skip Thinking Button */}
-        {phase === "thinking" && (
-          <div className="flex justify-center">
-            <button
-              onClick={skipThinking}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center"
-            >
-              <FastForward className="w-4 h-4 mr-2" />
-              Skip to Recording
-            </button>
-          </div>
-        )}
+      {/* RESPONDING PHASE - Submit Button */}
+      {phase === "responding" && (
+        <>
+          {/* Single Submit Button - NO countdown, just stable message */}
+          {!forceSubmitting && recordingState !== "submitting" && (
+            <div className="flex justify-end">
+              <button
+                onClick={handleManualSubmit}
+                disabled={submitDisabled}
+                className={[
+                  "inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold text-white transition-all",
+                  "shadow-lg hover:shadow-xl hover:scale-[1.02] focus:outline-none",
+                  submitDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#967AFE]",
+                ].join(" ")}
+                title={
+                  timeLeft > responseTime - 30
+                    ? "You can submit after 30 seconds of recording"
+                    : ""
+                }
+              >
+                <Send className="w-5 h-5" />
+                {responseTime > 30 && timeLeft > responseTime - 30
+                  ? "You can submit after 30 seconds"
+                  : "Submit"}
+              </button>
+            </div>
+          )}
+        </>
+      )}
 
-        {/* Recording Indicator */}
-        {recordingState === "recording" && phase === "responding" && (
-          <div className="flex items-center justify-center space-x-3 bg-red-50 border border-red-200 rounded-xl p-4">
-            <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse"></div>
-            <span className="font-semibold text-red-700">
-              Recording in progress...
-            </span>
-          </div>
-        )}
-
-        {/* Control Buttons OR Processing Message */}
-
-        {phase === "responding" && (
-          <>
-            {forceSubmitting || recordingState === "submitting" ? (
-              // Show only processing message when submitting
-              <div className="flex items-center justify-center space-x-3 bg-purple-50 border border-purple-200 rounded-xl p-4">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
-                <span className="font-semibold text-purple-700">
-                  Processing your answer...
-                </span>
-              </div>
-            ) : (
-              // Show control buttons when NOT submitting
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                {/* Stop Recording */}
-                {recordingState === "recording" && (
-                  <button
-                    onClick={stopRecording}
-                    disabled={disabled}
-                    className="flex items-center space-x-2 px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50"
-                  >
-                    <Square className="w-4 h-4" />
-                    <span>Stop Recording</span>
-                  </button>
-                )}
-
-                {/* Record Again - Only show when complete (after stop) */}
-                {recordingState === "complete" && audioBlob && (
-                  <button
-                    onClick={handleRecordAgain}
-                    disabled={disabled}
-                    className="flex items-center space-x-2 px-4 py-3 rounded-lg font-medium text-sm border-2 border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors disabled:opacity-50"
-                  >
-                    <Mic className="w-4 h-4" />
-                    <span>Record Again</span>
-                  </button>
-                )}
-
-                {/* Play/Pause - Only show when complete (after stop) */}
-                {audioUrl && recordingState === "complete" && (
-                  <button
-                    onClick={togglePlayback}
-                    disabled={disabled}
-                    className="flex items-center space-x-2 px-4 py-3 rounded-lg font-medium text-sm border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
-                  >
-                    {isPlaying ? (
-                      <>
-                        <Pause className="w-4 h-4" />
-                        <span>Pause</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-4 h-4" />
-                        <span>Play</span>
-                      </>
-                    )}
-                  </button>
-                )}
-
-                {/* Submit - Show when recording OR when complete */}
-                {(recordingState === "recording" ||
-                  (audioBlob && recordingState === "complete")) && (
-                  <button
-                    onClick={handleManualSubmit}
-                    disabled={disabled}
-                    className="flex items-center space-x-2 px-8 py-4 rounded-xl font-bold text-sm bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50"
-                  >
-                    <Send className="w-4 h-4" />
-                    <span>Submit Response</span>
-                  </button>
-                )}
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Hidden Audio Element */}
-        {audioUrl && (
-          <audio
-            ref={audioRef}
-            src={audioUrl}
-            onEnded={() => setIsPlaying(false)}
-            style={{ display: "none" }}
-          />
-        )}
-      </div>
+      {/* Hidden Audio Element */}
+      {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setIsPlaying(false)}
+          style={{ display: "none" }}
+        />
+      )}
     </div>
   );
 };

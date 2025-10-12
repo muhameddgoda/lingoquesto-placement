@@ -2,198 +2,229 @@
   {
     "id": "C1-OR-001",
     "type": "open_response",
-    "prompt": "Analyze the ethical implications of using AI in healthcare.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What are the potential benefits of AI in healthcare? What ethical concerns arise from using AI for medical decisions? How might AI affect patient privacy and doctor-patient relationships? Should there be limits on AI's role in healthcare? How can we ensure AI is used responsibly in medicine?",
-        "context_description": "Advanced ethical reasoning and healthcare policy analysis"
-      }
+      "question": "Analyze the ethical implications of using AI in healthcare.",
+      "helpers": [
+        "What are the potential benefits and ethical concerns of AI in medical decisions?",
+        "How might AI affect patient privacy and doctor-patient relationships?",
+        "Should there be limits on AI's role in healthcare? How can we ensure responsible use?"
+      ]
     }
   },
   {
     "id": "C1-OR-002",
     "type": "open_response",
-    "prompt": "Evaluate government policies for combating climate change.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: Which climate policies have been most effective? What are the main challenges in implementing environmental policies? How can governments balance economic growth with environmental protection? What role should international cooperation play? How do different countries' approaches compare?",
-        "context_description": "Environmental policy evaluation and comparative analysis"
-      }
+      "question": "Evaluate government policies for combating climate change.",
+      "helpers": [
+        "Which climate policies have been most effective? What are the main implementation challenges?",
+        "How can governments balance economic growth with environmental protection?",
+        "What role should international cooperation play? How do different countries' approaches compare?"
+      ]
     }
   },
   {
     "id": "C1-OR-003",
     "type": "open_response",
-    "prompt": "Critique the gig economy's effects on workers' rights.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How has the gig economy changed traditional employment? What benefits does it offer workers? What labor protections are missing in gig work? How do workers' rights differ between traditional and gig employment? What reforms might be needed to protect gig workers?",
-        "context_description": "Labor economics and workers' rights critical analysis"
-      }
+      "question": "Critique the gig economy's effects on workers' rights.",
+      "helpers": [
+        "How has the gig economy changed traditional employment? What benefits does it offer workers?",
+        "What labor protections are missing in gig work?",
+        "How do workers' rights differ between traditional and gig employment? What reforms might be needed?"
+      ]
     }
   },
   {
     "id": "C1-OR-004",
     "type": "open_response",
-    "prompt": "Analyze the social consequences of economic inequality.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How does economic inequality affect social mobility and education? What impact does it have on healthcare access and community cohesion? What are the root causes of growing inequality? What solutions might help reduce inequality? How does inequality affect democracy and social stability?",
-        "context_description": "Socioeconomic analysis and inequality assessment"
-      }
+      "question": "Analyze the social consequences of economic inequality.",
+      "helpers": [
+        "How does economic inequality affect social mobility, education, and healthcare access?",
+        "What are the root causes of growing inequality?",
+        "What solutions might help reduce inequality? How does it affect democracy and social stability?"
+      ]
     }
   },
   {
     "id": "C1-OR-005",
     "type": "open_response",
-    "prompt": "Critically assess the statement: 'Technology democratizes knowledge.'",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: In what ways has technology made knowledge more accessible? What barriers still exist to accessing information? How do digital divides affect knowledge access? What role does misinformation play? Does technology create new forms of knowledge gatekeeping?",
-        "context_description": "Technology and knowledge accessibility critical evaluation"
-      }
+      "question": "Critically assess the statement: 'Technology democratizes knowledge.'",
+      "helpers": [
+        "In what ways has technology made knowledge more accessible? What barriers still exist?",
+        "How do digital divides affect knowledge access? What role does misinformation play?",
+        "Does technology create new forms of knowledge gatekeeping?"
+      ]
     }
   },
   {
     "id": "C1-OR-006",
     "type": "open_response",
-    "prompt": "Can you explain a situation where you had to navigate conflicting viewpoints?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What was the nature of the conflict between different viewpoints? How did you analyze and understand each perspective? What strategies did you use to find common ground? How did you manage relationships while addressing disagreements? What was the final outcome?",
-        "context_description": "Conflict resolution and diplomatic communication assessment"
-      }
+      "question": "Can you explain a situation where you had to navigate conflicting viewpoints?",
+      "helpers": [
+        "What was the nature of the conflict between different viewpoints?",
+        "How did you analyze and understand each perspective? What strategies did you use to find common ground?",
+        "How did you manage relationships while addressing disagreements? What was the outcome?"
+      ]
     }
   },
   {
     "id": "C1-OR-007",
     "type": "open_response",
-    "prompt": "What are the ethical implications of using AI in decision-making processes?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What types of decisions is AI currently making? What ethical concerns arise from algorithmic decision-making? How can we ensure AI systems are fair and unbiased? What role should human oversight play? How do we balance efficiency with ethical considerations?",
-        "context_description": "AI ethics and automated decision-making analysis"
-      }
+      "question": "What are the ethical implications of using AI in decision-making processes?",
+      "helpers": [
+        "What types of decisions is AI currently making? What ethical concerns arise?",
+        "How can we ensure AI systems are fair and unbiased?",
+        "What role should human oversight play? How do we balance efficiency with ethics?"
+      ]
     }
   },
   {
     "id": "C1-OR-008",
     "type": "open_response",
-    "prompt": "How would you evaluate the success of a long-term personal or professional goal?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What metrics should be used to measure goal achievement? How do you account for changing circumstances and evolving objectives? What role do unintended consequences play in evaluation? How do you balance quantitative results with qualitative outcomes? When should goals be modified or abandoned?",
-        "context_description": "Goal evaluation methodologies and strategic planning"
-      }
+      "question": "How would you evaluate the success of a long-term personal or professional goal?",
+      "helpers": [
+        "What metrics should be used to measure goal achievement?",
+        "How do you account for changing circumstances and evolving objectives?",
+        "What role do unintended consequences play? How do you balance quantitative and qualitative outcomes?"
+      ]
     }
   },
   {
     "id": "C1-OR-009",
     "type": "open_response",
-    "prompt": "In your opinion, how can organizations balance innovation with risk management?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What tensions exist between innovation and risk management? How can organizations foster creativity while maintaining oversight? What role does regulatory compliance play? How should companies evaluate and manage innovation risks? What are the costs of being too conservative versus too aggressive?",
-        "context_description": "Organizational strategy and risk-innovation balance"
-      }
+      "question": "In your opinion, how can organizations balance innovation with risk management?",
+      "helpers": [
+        "What tensions exist between innovation and risk management?",
+        "How can organizations foster creativity while maintaining oversight?",
+        "What role does regulatory compliance play? What are the costs of being too conservative versus too aggressive?"
+      ]
     }
   },
   {
     "id": "C1-OR-010",
     "type": "open_response",
-    "prompt": "Describe a time when your opinion changed after gaining new information.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What was your original opinion and what new information challenged it? What made you open to changing your perspective? How did you evaluate the credibility of the new information? What was the process of changing your mind like? Why is intellectual flexibility important?",
-        "context_description": "Intellectual humility and perspective evolution assessment"
-      }
+      "question": "Describe a time when your opinion changed after gaining new information.",
+      "helpers": [
+        "What was your original opinion and what new information challenged it?",
+        "What made you open to changing your perspective? How did you evaluate the credibility of the new information?",
+        "What was the process of changing your mind like? Why is intellectual flexibility important?"
+      ]
     }
   },
   {
     "id": "C1-IMG-001",
     "type": "image_description",
-    "prompt": "Analyze this image and discuss its broader implications.",
+    "prompt": "Analyze this image!",
     "metadata": {
       "accent": "us",
       "imageRef": "c1_img_001.png",
       "imageDescription": "A politician giving a speech to a sparse audience in an empty hall",
-      "context": {
-        "question": "Examine this image and provide a sophisticated analysis of what you observe. Discuss the potential implications for democratic engagement, political communication, and the relationship between leaders and citizens. Consider what this scene might represent about contemporary politics. Speak for up to 2 minutes.",
-        "context_description": "Political communication and democratic participation analysis"
-      }
+      "question": "Examine this image and provide a sophisticated analysis of what you observe. Discuss the potential implications for democratic engagement, political communication, and the relationship between leaders and citizens.",
+      "helpers": [
+        "What do you observe in this political scene?",
+        "What might this represent about contemporary politics and democratic engagement?",
+        "What are the implications for political communication and citizen-leader relationships?"
+      ]
     }
   },
   {
     "id": "C1-IMG-002",
     "type": "image_description",
-    "prompt": "Analyze this image and discuss its broader implications.",
+    "prompt": "Analyze this image!",
     "metadata": {
       "accent": "us",
       "imageRef": "c1_img_002.png",
       "imageDescription": "An abandoned factory overtaken by nature's vines and flowers",
-      "context": {
-        "question": "Analyze this image thoughtfully, considering themes of industrial decline, environmental reclamation, economic transformation, and the relationship between human activity and nature. Discuss what this scene might symbolize about societal change. Speak for up to 2 minutes.",
-        "context_description": "Post-industrial society and environmental themes analysis"
-      }
+      "question": "Analyze this image thoughtfully, considering themes of industrial decline, environmental reclamation, economic transformation, and the relationship between human activity and nature.",
+      "helpers": [
+        "What do you see in this scene? Describe the visual elements.",
+        "What themes of industrial decline and environmental reclamation are present?",
+        "What might this symbolize about societal change and economic transformation?"
+      ]
     }
   },
   {
     "id": "C1-IMG-003",
     "type": "image_description",
-    "prompt": "Analyze this image and discuss its broader implications.",
+    "prompt": "Analyze this image!",
     "metadata": {
       "accent": "us",
       "imageRef": "c1_img_003.png",
       "imageDescription": "Two business people shaking hands while their expressions seem tense",
-      "context": {
-        "question": "Examine this business interaction critically, analyzing the disconnect between formal gestures and underlying tension. Discuss what this might reveal about professional relationships, negotiation dynamics, and the complexities of corporate communication. Speak for up to 2 minutes.",
-        "context_description": "Business communication and interpersonal dynamics analysis"
-      }
+      "question": "Examine this business interaction critically, analyzing the disconnect between formal gestures and underlying tension. Discuss what this might reveal about professional relationships and negotiation dynamics.",
+      "helpers": [
+        "What do you observe about this business interaction?",
+        "What disconnect exists between formal gestures and underlying tension?",
+        "What does this reveal about professional relationships and corporate communication?"
+      ]
     }
   },
   {
     "id": "C1-IMG-004",
     "type": "image_description",
-    "prompt": "Analyze this image and discuss its broader implications.",
+    "prompt": "Analyze this image!",
     "metadata": {
       "accent": "us",
       "imageRef": "c1_img_004.png",
       "imageDescription": "A doctor watching monitors with concern in an ICU corridor",
-      "context": {
-        "question": "Provide a nuanced analysis of this medical scene, discussing the emotional and ethical dimensions of healthcare, the burden of medical responsibility, and the human elements of clinical practice. Consider the broader healthcare system implications. Speak for up to 2 minutes.",
-        "context_description": "Healthcare ethics and medical responsibility analysis"
-      }
+      "question": "Provide a nuanced analysis of this medical scene, discussing the emotional and ethical dimensions of healthcare, the burden of medical responsibility, and the human elements of clinical practice.",
+      "helpers": [
+        "What is happening in this medical scene? What do you observe?",
+        "What emotional and ethical dimensions of healthcare are present?",
+        "What does this reveal about medical responsibility and the human elements of clinical practice?"
+      ]
     }
   },
   {
     "id": "C1-IMG-005",
     "type": "image_description",
-    "prompt": "Analyze this image and discuss its broader implications.",
+    "prompt": "Analyze this image!",
     "metadata": {
       "accent": "us",
       "imageRef": "c1_img_005.png",
       "imageDescription": "A refugee family walking through a train station with few belongings",
-      "context": {
-        "question": "Analyze this powerful image thoughtfully, discussing themes of displacement, resilience, global migration, and human dignity. Consider the broader social, political, and humanitarian implications of forced migration in our interconnected world. Speak for up to 2 minutes.",
-        "context_description": "Migration, displacement, and humanitarian issues analysis"
-      }
+      "question": "Analyze this powerful image thoughtfully, discussing themes of displacement, resilience, global migration, and human dignity. Consider the broader social, political, and humanitarian implications.",
+      "helpers": [
+        "What do you observe in this image? Describe the scene.",
+        "What themes of displacement, resilience, and human dignity are present?",
+        "What are the broader social, political, and humanitarian implications of forced migration?"
+      ]
     }
   },
   {
     "id": "C1-BMQ-001",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Given the complexity of the topic, I'd recommend we approach it in phases. Thoughts?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Given the complexity of the topic, I'd recommend we approach it in phases. Thoughts?",
       "context": "Professional project planning discussion",
       "situation": "Colleague suggesting a phased approach to complex project",
       "options": [
@@ -209,8 +240,9 @@
   {
     "id": "C1-BMQ-002",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Some critics argue the initiative lacks transparency. What's your perspective?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Some critics argue the initiative lacks transparency. What's your perspective?",
       "context": "Policy discussion addressing criticism",
       "situation": "Someone asking for your view on criticism about transparency",
       "options": [
@@ -226,8 +258,9 @@
   {
     "id": "C1-BMQ-003",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'We need someone who can synthesize these perspectives and present a balanced view.'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "We need someone who can synthesize these perspectives and present a balanced view.",
       "context": "Team discussion about presenting complex information",
       "situation": "Looking for someone to integrate multiple viewpoints",
       "options": [
@@ -243,8 +276,9 @@
   {
     "id": "C1-BMQ-004",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What do you think drives someone to maintain a controversial position despite strong opposition?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What do you think drives someone to maintain a controversial position despite strong opposition?",
       "context": "Philosophical discussion about human behavior",
       "situation": "Someone asking about psychological motivations",
       "options": [
@@ -260,8 +294,9 @@
   {
     "id": "C1-BMQ-005",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'How would you explain the role of nuance in effective communication?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "How would you explain the role of nuance in effective communication?",
       "context": "Discussion about communication theory",
       "situation": "Someone asking about sophisticated communication concepts",
       "options": [
@@ -277,8 +312,9 @@
   {
     "id": "C1-BMQ-006",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'In your view, how has technology changed the way we interact with one another?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "In your view, how has technology changed the way we interact with one another?",
       "context": "Discussion about technology's social impact",
       "situation": "Someone asking for analysis of technological change",
       "options": [
@@ -293,8 +329,9 @@
   {
     "id": "C1-BMQ-007",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Do you think AI should be used to make decisions in areas like hiring or law?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Do you think AI should be used to make decisions in areas like hiring or law?",
       "context": "Ethics discussion about AI in decision-making",
       "situation": "Someone asking about AI ethics in critical areas",
       "options": [
@@ -309,8 +346,9 @@
   {
     "id": "C1-BMQ-008",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'How do you think globalization has influenced cultural identity?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "How do you think globalization has influenced cultural identity?",
       "context": "Discussion about globalization and culture",
       "situation": "Someone asking about cultural impact of globalization",
       "options": [
@@ -325,8 +363,9 @@
   {
     "id": "C1-BMQ-009",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What do you think is one of the biggest problems with traditional education systems?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What do you think is one of the biggest problems with traditional education systems?",
       "context": "Education reform discussion",
       "situation": "Someone asking for critical analysis of education",
       "options": [
@@ -341,8 +380,9 @@
   {
     "id": "C1-BMQ-010",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Why is media literacy becoming more important today?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Why is media literacy becoming more important today?",
       "context": "Discussion about information literacy",
       "situation": "Someone asking about media literacy importance",
       "options": [

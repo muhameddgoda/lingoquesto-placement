@@ -4,21 +4,16 @@ import {
   Play,
   Award,
   Mic,
-  Square,
-  CheckCircle,
   Clock,
   MessageSquare,
   List,
   Volume2,
   Brain,
   Target,
-  BookOpen,
   Headphones,
   Image,
   AlertTriangle,
-  FastForward,
   ChevronRight,
-  Star,
   Zap,
 } from "lucide-react";
 
@@ -34,6 +29,8 @@ import ListenAnswerQuestion from "./ListenAnswerQuestion";
 import GlobalTimerDisplay from "./GlobalTimerDisplay";
 import { TimerProvider, useTimer } from "../contexts/TimerContext";
 import ExamOverview from "./ExamOverview";
+import OpenResponse from "./OpenResponse";
+import RepeatSentence from "./RepeatSentence";
 
 const ExamInterface = () => {
   const [examState, setExamState] = useState("not_started");
@@ -48,8 +45,9 @@ const ExamInterface = () => {
   };
 
   const continueToExam = async () => {
+    if (examState === "loading") return; // prevent double-press
     setShowOverview(false);
-    setExamState("loading"); // Add this new state to show loading instead of start screen
+    setExamState("loading");
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/exam/start`, {
@@ -66,7 +64,6 @@ const ExamInterface = () => {
       }
     } catch (error) {
       console.error("Failed to start exam:", error);
-      // For demo, use mock data
       setSessionId("session123");
       setCurrentQuestion({
         q_id: "A1-OR-1",
@@ -272,155 +269,34 @@ const ExamInterface = () => {
     const { timeLeft, phase, formatTime } = useTimer();
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-purple-200/20 to-transparent rounded-full translate-x-48 -translate-y-48"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-200/20 to-transparent rounded-full -translate-x-40 translate-y-40"></div>
-
-        {/* Header with Logo and Timer */}
-        <div className="absolute top-8 left-0 right-0 z-20 px-20">
-          <div className="flex justify-between items-center">
-            {/* Logo - Left */}
-            <div>
-              <img
-                src="/lingoquesto.png"
-                alt="LingoQuesto Logo"
-                className="h-24 w-auto"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                  e.target.nextElementSibling.style.display = "flex";
-                }}
-              />
-              <div
-                style={{ display: "none" }}
-                className="flex items-center space-x-3"
-              >
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center shadow-lg">
-                  <Award className="w-4 h-4 text-white" />
-                </div>
-                <h1 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent">
-                  LingoQuesto
-                </h1>
+      <div className="min-h-screen bg-gray-50 relative">
+        <div className="fixed top-6 left-6 z-20">
+          {!isProcessing && (
+            <div className="bg-white rounded-full px-5 py-2.5 shadow-lg border-2 border-gray-100">
+              <div className="flex items-center space-x-2">
+                <Clock className="w-5 h-5 text-gray-600" />
+                <span className="font-mono text-base font-bold text-gray-800">
+                  {formatTime(timeLeft)}
+                </span>
               </div>
             </div>
-
-            {/* Timer - Right */}
-            {!isProcessing && (
-              <GlobalTimerDisplay
-                timeLeft={timeLeft}
-                formatTime={formatTime}
-                phase={phase}
-              />
-            )}
-          </div>
+          )}
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto p-6 space-y-6">
-          {/* Progress */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-200/50">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center space-x-3">
-                <span className="bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 px-4 py-2 rounded-xl font-bold text-sm border border-purple-300">
-                  Level {currentQuestion.current_level}
-                </span>
-                <span className="text-gray-700 font-medium">
-                  Question {currentQuestion.question_number} of{" "}
-                  {currentQuestion.total_questions_in_level}
-                </span>
-              </div>
-              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">
-                {Math.round(
-                  (currentQuestion.question_number /
-                    currentQuestion.total_questions_in_level) *
-                    100
-                )}
-                % Complete
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div
-                className="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full transition-all duration-500 shadow-sm"
-                style={{
-                  width: `${
-                    (currentQuestion.question_number /
-                      currentQuestion.total_questions_in_level) *
-                    100
-                  }%`,
-                }}
-              ></div>
-            </div>
-          </div>
-
-          {/* Question */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-3 border border-purple-200/50">
-            <div className="space-y-4">
-              {/* Question Type Badge */}
-              <div className="flex items-center justify-start mb-4">
-                <div
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl border-2 ${getQuestionTypeColor(
-                    currentQuestion.q_type
-                  )}`}
-                >
-                  {getQuestionTypeIcon(currentQuestion.q_type)}
-                  <span className="font-bold text-sm">
-                    {getQuestionTypeLabel(currentQuestion.q_type)}
-                  </span>
-                </div>
-              </div>
-
-              {/* Question Content */}
-              <div className="mb-4">
-                <div className="text-xl font-semibold text-gray-800 mb-2">
-                  {currentQuestion.prompt}
-                </div>
-              </div>
-              {/* While processing: only show a submission panel */}
-              {isProcessing ? (
-                <div className="py-8">
-                  <div className="rounded-2xl border border-green-200 bg-green-50 p-5">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start space-x-3">
-                        <svg
-                          className="w-6 h-6 text-green-600 mt-0.5"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                        >
-                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                          <path d="M22 4 12 14.01l-3-3" />
-                        </svg>
-                        <div>
-                          <h3 className="font-bold text-green-800">
-                            Response submitted
-                          </h3>
-                          <p className="text-green-700">
-                            We received your answer. Processing now…
-                          </p>
-                        </div>
-                      </div>
-                      {/* subtle spinner */}
-                      <div
-                        className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-600"
-                        aria-label="processing"
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              ) : /* Question Interface (your existing switch) */
-              currentQuestion.q_type === "image_description" ? (
+        {/* Question Content */}
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="w-full max-w-4xl px-6">
+            <div>
+              {currentQuestion.q_type === "image_description" ? (
                 <ImageDescription
                   question={currentQuestion}
                   onSubmit={handleAudioSubmit}
                 />
               ) : currentQuestion.q_type === "open_response" ? (
-                <AudioRecorder
+                <OpenResponse
+                  question={currentQuestion}
                   onSubmit={handleAudioSubmit}
                   disabled={isProcessing}
-                  thinkTime={currentQuestion.timing?.think_time_sec || 30}
-                  responseTime={currentQuestion.timing?.response_time_sec || 90}
-                  questionId={currentQuestion.q_id}
-                  questionContext={currentQuestion.metadata?.context?.question}
-                  forceSubmitting={isProcessing}
                 />
               ) : currentQuestion.q_type === "listen_answer" ? (
                 <ListenAnswerQuestion
@@ -447,14 +323,10 @@ const ExamInterface = () => {
                   disabled={isProcessing}
                 />
               ) : currentQuestion.q_type === "repeat_sentence" ? (
-                <AudioRecorder
+                <RepeatSentence
+                  question={currentQuestion}
                   onSubmit={handleAudioSubmit}
                   disabled={isProcessing}
-                  thinkTime={currentQuestion.timing?.think_time_sec || 5}
-                  responseTime={currentQuestion.timing?.response_time_sec || 15}
-                  questionId={currentQuestion.q_id}
-                  questionContext={currentQuestion.metadata?.context?.question}
-                  forceSubmitting={isProcessing}
                 />
               ) : (
                 <MCQQuestion

@@ -1,78 +1,75 @@
-// MinimalPairQuestion.jsx - Listening pronunciation test component
+// MinimalPairQuestion.jsx – fixed audio gating, stable layout, consistent spacing
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  Volume2,
-  Play,
-  CheckCircle,
-  AlertTriangle,
-  Headphones,
-} from "lucide-react";
+import { Headphones, Play, CheckCircle, Loader2, Send, Check } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import { useTimer } from "../contexts/TimerContext";
 
+const BRAND_PURPLE = "#967AFE";
+const MAX_PLAYS = 3;
+
 const MinimalPairQuestion = ({ question, onSubmit, disabled }) => {
+  // UI state
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [audioError, setAudioError] = useState(false);
+  const [isAudioReady, setIsAudioReady] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const audioRef = useRef(null);
-  const MAX_PLAYS = 3;
+  const selectedRef = useRef("");
 
-  // Use global timer
-  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
-    useTimer();
-
-  // Create a stable reference to get current selected value
-  const getCurrentSelection = useCallback(() => {
-    return selectedAnswer;
+  // Keep latest selection for autosubmit
+  useEffect(() => {
+    selectedRef.current = selectedAnswer;
   }, [selectedAnswer]);
 
-  // Handle auto-submit function
-  const handleAutoSubmit = useCallback(() => {
-    const currentSelection = getCurrentSelection();
-    console.log(
-      "Auto-submitting MinimalPair - Time expired. Selected:",
-      currentSelection
-    );
-    onSubmit(currentSelection || "");
-  }, [getCurrentSelection, onSubmit]);
+  // ----- Timer -----
+  const { startTimer, stopTimer } = useTimer();
+  useEffect(() => {
+    const totalTime = question?.timing?.total_estimated_sec || 30;
+    startTimer({
+      responseTime: totalTime,
+      onTimeExpired: () => onSubmit(selectedRef.current || ""),
+    });
+    return () => stopTimer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question?.q_id]);
 
-// Add a ref to track if timer is already started
-const timerStartedRef = useRef(false);
+  // ----- Audio URL + MIME detection -----
+  const audioFileName = (question?.metadata?.audioRef || question?.audio_ref || "").trim();
+  const cleanAudioFileName = audioFileName.replace(/^audio\//, "");
+  const audioUrl = cleanAudioFileName ? `${API_BASE_URL}/api/audio/${cleanAudioFileName}` : null;
+  const ext = cleanAudioFileName?.split(".").pop()?.toLowerCase();
+  const mimeByExt = { mp3: "audio/mpeg", wav: "audio/wav", webm: "audio/webm", m4a: "audio/mp4" };
+  const mimeType = mimeByExt[ext] || undefined;
 
-useEffect(() => {
-  // Only start timer once per question
-  if (timerStartedRef.current) return;
-  
-  const totalTime = question.timing?.total_estimated_sec || 30;
+  // Reset audio state when question changes
+  useEffect(() => {
+    setIsPlaying(false);
+    setPlayCount(0);
+    setIsLoading(false);
+    setAudioError(false);
+    setIsAudioReady(false);
+    if (audioRef.current) {
+      try {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.load();
+      } catch {}
+    }
+  }, [question?.q_id]);
 
-  startTimer({
-    responseTime: totalTime,
-    onTimeExpired: handleAutoSubmit,
-  });
-
-  timerStartedRef.current = true;
-
-  return () => {
-    timerStartedRef.current = false;
-    stopTimer();
-  };
-}, [question.q_id]); // Only depend on question ID
-
+  // Handlers
   const handleAudioPlay = async () => {
-    if (
-      !audioRef.current ||
-      isLoading ||
-      isPlaying ||
-      playCount >= MAX_PLAYS ||
-      audioError
-    )
-      return;
+    if (!audioRef.current) return;
+    if (isLoading || isPlaying || playCount >= MAX_PLAYS || audioError) return;
 
     setIsLoading(true);
     try {
+      // Ensure we start from the beginning
       audioRef.current.currentTime = 0;
       await audioRef.current.play();
       setPlayCount((prev) => prev + 1);
@@ -84,261 +81,190 @@ useEffect(() => {
     }
   };
 
-  const getInstructions = (timeLeft, playCount, maxPlays) => {
-    if (timeLeft <= 10) {
-      return {
-        title: "Time Almost Up!",
-        instruction:
-          "Your answer will be automatically submitted when time expires.",
-        color: "red",
-        icon: AlertTriangle,
-        urgent: true,
-      };
-    }
-
-    if (playCount === 0) {
-      return {
-        title: "Listen for Pronunciation",
-        instruction:
-          "Play the audio and choose which word or phrase you hear. Focus on the pronunciation differences.",
-        color: "amber",
-        icon: Headphones,
-        urgent: false,
-      };
-    }
-
-    return {
-      title: "Choose What You Heard",
-      instruction: `Listen carefully to the pronunciation. ${
-        maxPlays - playCount
-      } play${maxPlays - playCount !== 1 ? "s" : ""} remaining.`,
-      color: "amber",
-      icon: Volume2,
-      urgent: false,
-    };
-  };
-
-  const handleAudioEnded = () => {
-    setIsPlaying(false);
-  };
-
-  const handleAudioPlayStart = () => {
-    setIsPlaying(true);
-    setIsLoading(false);
-    setAudioError(false);
-  };
-
-  const handleAudioError = (e) => {
-    console.error("Audio failed to load:", audioUrl);
-    setAudioError(true);
-    setIsLoading(false);
-    setIsPlaying(false);
-  };
-
   const handleOptionChange = (value) => {
-    if (!disabled) {
-      setSelectedAnswer(value);
+    if (!disabled) setSelectedAnswer(value);
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedAnswer || disabled || submitting) return;
+    setSubmitting(true);
+    stopTimer();
+    try {
+      await onSubmit(selectedAnswer);
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 1200);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleSubmit = () => {
-    if (selectedAnswer && !disabled) {
-      stopTimer(); // Stop the timer
-      onSubmit(selectedAnswer);
-    }
-  };
-
-  const remainingPlays = MAX_PLAYS - playCount;
-  const canPlay = remainingPlays > 0 && !disabled && !isPlaying && !audioError;
-
-  // Get audio URL
-  const audioFileName = question.metadata?.audioRef || question.audio_ref;
-  const cleanAudioFileName = audioFileName?.startsWith("audio/")
-    ? audioFileName.substring(6)
-    : audioFileName;
-  const audioUrl = cleanAudioFileName
-    ? `${API_BASE_URL}/api/audio/${cleanAudioFileName}`
-    : null;
+  const remainingPlays = Math.max(0, MAX_PLAYS - playCount);
+  // Only allow play when we actually have a URL and the audio is ready to go
+  const canPlay = !!audioUrl && isAudioReady && remainingPlays > 0 && !disabled && !isPlaying && !audioError;
 
   return (
-    <div className="space-y-3">
-      {/* Instruction Panel */}
-      <div
-        className={`rounded-xl border-2 p-4 mb-4 ${
-          getInstructions(timeLeft, playCount, MAX_PLAYS).urgent
-            ? "bg-red-50 border-red-200 text-red-800 animate-pulse"
-            : "bg-amber-50 border-amber-200 text-amber-800"
-        }`}
-      >
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0 mt-1">
-            {React.createElement(
-              getInstructions(timeLeft, playCount, MAX_PLAYS).icon,
-              { className: "w-6 h-6" }
-            )}
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-6 pt-24 pb-16">
+        {/* Title */}
+        <h1 className="text-center text-3xl font-extrabold text-gray-900 mb-6">
+          {question?.prompt || "Which word did you hear?"}
+        </h1>
+
+        {/* Micro-instructions */}
+        <div className="mx-auto max-w-2xl grid grid-cols-1 sm:grid-cols-3 gap-2 mb-8">
+          {[
+            { icon: <Headphones className="w-4 h-4" />, text: "Listen carefully" },
+            { icon: <Play className="w-4 h-4" />, text: "Up to 3 replays" },
+            { icon: <CheckCircle className="w-4 h-4" />, text: "Choose what you heard" },
+          ].map((it, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm text-gray-700"
+            >
+              <span className="shrink-0 text-gray-600">{it.icon}</span>
+              <span>{it.text}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Play section */}
+        <div className="flex flex-col items-center justify-center mb-8">
+          <button
+            onClick={handleAudioPlay}
+            disabled={!canPlay}
+            className={[
+              "relative w-36 h-36 rounded-full flex items-center justify-center transition-all",
+              "shadow-xl hover:shadow-2xl hover:scale-105 focus:outline-none",
+              canPlay ? "bg-[--brand] text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed",
+            ].join(" ")}
+            style={{ ["--brand"]: BRAND_PURPLE }}
+            aria-label="Play audio"
+            title={!audioUrl ? "Audio not available" : (isAudioReady ? "" : "Loading audio…")}
+          >
+            {/* radial glow when playing */}
+            <span
+              className={["absolute inset-0 rounded-full", isPlaying ? "animate-ping bg-purple-300/40" : "hidden"].join(
+                " "
+              )}
+            />
+            {isLoading ? <Loader2 className="w-12 h-12 animate-spin" /> : <Play className="w-20 h-20 translate-x-1" />}
+          </button>
+
+          {/* Replay dots + status */}
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex gap-1.5">
+              {Array.from({ length: MAX_PLAYS }).map((_, idx) => (
+                <span
+                  key={idx}
+                  className={["h-2.5 w-2.5 rounded-full", idx < playCount ? "bg-gray-300" : "bg-purple-500"].join(" ")}
+                />
+              ))}
+            </div>
+            <span className="text-xs font-semibold text-gray-600 tracking-wider">
+              {audioError
+                ? "Audio unavailable"
+                : isPlaying
+                ? "Playing…"
+                : isAudioReady
+                ? `Replays left: ${remainingPlays}`
+                : audioUrl
+                ? "Loading audio…"
+                : "Audio unavailable"}
+            </span>
           </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-lg mb-2">
-              {getInstructions(timeLeft, playCount, MAX_PLAYS).title}
-            </h3>
-            <p className="text-base">
-              {getInstructions(timeLeft, playCount, MAX_PLAYS).instruction}
-            </p>
+
+          {/* Hidden audio element – single src for reliability */}
+          {audioUrl && (
+            <audio
+              key={audioUrl} // force reload when URL changes
+              ref={audioRef}
+              preload="auto"
+              className="hidden"
+              crossOrigin="anonymous"
+              src={audioUrl}
+              {...(mimeType ? { type: mimeType } : {})}
+              onCanPlayThrough={() => {
+                setIsAudioReady(true);
+                setAudioError(false);
+              }}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onEnded={() => setIsPlaying(false)}
+              onError={() => {
+                setAudioError(true);
+                setIsAudioReady(false);
+                setIsPlaying(false);
+              }}
+            />
+          )}
+        </div>
+
+        {/* Options */}
+        <div className="max-w-3xl mx-auto mb-6">
+          <label className="mb-3 block text-sm font-semibold text-gray-700 text-center">
+            Select the word you heard
+          </label>
+          <div className="grid grid-cols-2 gap-4">
+            {(question?.metadata?.options || []).map((option, index) => (
+              <label
+                key={index}
+                className={[
+                  // fixed metrics to avoid layout shift on select
+                  "flex items-center justify-center gap-3 p-6 border-2 rounded-2xl cursor-pointer",
+                  "transition-colors duration-200 text-center min-h-[92px] shadow-md",
+                  selectedAnswer === option
+                    ? "border-[--brand] bg-gradient-to-r from-purple-50 to-purple-100"
+                    : "border-gray-200 hover:border-[--brand] hover:bg-gray-50 bg-white",
+                  disabled ? "opacity-50 cursor-not-allowed" : "",
+                ].join(" ")}
+                style={{ ["--brand"]: BRAND_PURPLE }}
+              >
+                <input
+                  type="radio"
+                  name={`minimal-pair-${question?.q_id}`}
+                  value={option}
+                  checked={selectedAnswer === option}
+                  onChange={(e) => handleOptionChange(e.target.value)}
+                  disabled={disabled}
+                  className="w-5 h-5 text-purple-600 border-gray-300 focus:ring-purple-500"
+                />
+                <span className="flex-1 text-gray-900 font-semibold text-2xl">{option}</span>
+                {selectedAnswer === option && <CheckCircle className="w-6 h-6 text-purple-600" />}
+              </label>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* Audio Player Section */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-4 border border-amber-200/50">
-        <div className="text-center space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
-                <Volume2 className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-amber-800">
-                Minimal Pairs
-              </h3>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center">
-            <div className="bg-white rounded-lg px-3 py-1 border border-amber-200">
-              <span className="text-sm font-medium text-amber-700">
-                {audioError
-                  ? "Audio unavailable"
-                  : `${remainingPlays} play${
-                      remainingPlays !== 1 ? "s" : ""
-                    } remaining`}
-              </span>
-            </div>
-          </div>
-
-          {/* Audio Element */}
-          <audio
-            ref={audioRef}
-            onPlay={handleAudioPlayStart}
-            onPause={() => setIsPlaying(false)}
-            onEnded={handleAudioEnded}
-            onError={handleAudioError}
-            preload="auto"
-            style={{ display: "none" }}
+        {/* Submit Button */}
+        <div className="max-w-3xl mx-auto flex justify-end">
+          <button
+            onClick={handleSubmit}
+            disabled={disabled || !selectedAnswer || submitting}
+            className={[
+              "inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold text-white transition-all",
+              "shadow-lg hover:shadow-xl hover:scale-[1.02] focus:outline-none",
+              disabled || !selectedAnswer || submitting ? "bg-gray-300 cursor-not-allowed" : "bg-[--brand]",
+            ].join(" ")}
+            style={{ ["--brand"]: BRAND_PURPLE }}
           >
-            {audioUrl && (
+            {submitting ? (
               <>
-                <source src={audioUrl} type="audio/wav" />
-                <source src={audioUrl} type="audio/mp3" />
-                <source src={audioUrl} type="audio/webm" />
-                <source src={audioUrl} type="audio/m4a" />
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Submitting…
+              </>
+            ) : submitted ? (
+              <>
+                <Check className="w-5 h-5" />
+                Submitted
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5" />
+                Submit
               </>
             )}
-          </audio>
-
-          {/* Play Button */}
-          <div className="flex justify-center">
-            <button
-              onClick={handleAudioPlay}
-              disabled={
-                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
-              }
-              className={`
-    w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center
-    ${
-      !isLoading && audioUrl && canPlay
-        ? "bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
-        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-    }
-  `}
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Play className="w-6 h-6 ml-1" />
-              )}
-            </button>
-          </div>
-
-          {/* Audio Error Message */}
-          {audioError && (
-            <div className="text-center">
-              <p className="text-sm text-red-600">
-                Audio could not be loaded. Please contact support if this
-                persists.
-              </p>
-            </div>
-          )}
-
-          {/* Audio Playing Indicator */}
-          {isPlaying && (
-            <div className="flex items-center justify-center space-x-2 text-amber-700">
-              <div className="w-2 h-2 bg-amber-600 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Playing audio...</span>
-            </div>
-          )}
+          </button>
         </div>
-      </div>
-
-      {/* MCQ Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {question.metadata?.options?.map((option, index) => (
-          <label
-            key={index}
-            className={`
-    flex items-center space-x-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md
-    ${
-      selectedAnswer === option
-        ? "border-amber-400 bg-gradient-to-r from-amber-50 to-amber-100 shadow-md transform scale-[1.02]"
-        : "border-gray-200 hover:border-amber-300 hover:bg-gray-50 bg-white/80 backdrop-blur-sm"
-    }
-    ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-  `}
-          >
-            <input
-              type="radio"
-              name={`minimal-pair-${question.q_id}`}
-              value={option}
-              checked={selectedAnswer === option}
-              onChange={(e) => handleOptionChange(e.target.value)}
-              disabled={disabled}
-              className="w-4 h-4 text-amber-600 border-gray-300 focus:ring-amber-500"
-            />
-            <span className="flex-1 text-gray-900 font-medium text-lg">
-              {option}
-            </span>
-            {selectedAnswer === option && (
-              <CheckCircle className="w-5 h-5 text-amber-600" />
-            )}
-          </label>
-        ))}
-      </div>
-
-      {/* No Options Warning */}
-      {(!question.metadata?.options ||
-        question.metadata.options.length === 0) && (
-        <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-yellow-800 font-medium">
-            No answer options available for this question.
-          </p>
-        </div>
-      )}
-
-      {/* Submit Button */}
-      <div className="flex justify-center pt-2">
-        <button
-          onClick={handleSubmit}
-          disabled={disabled || !selectedAnswer}
-          className={`
-    px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
-    ${
-      disabled || !selectedAnswer
-        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-        : "bg-gradient-to-r from-amber-600 to-amber-700 text-white hover:from-amber-700 hover:to-amber-800"
-    }
-  `}
-        >
-          <CheckCircle className="w-4 h-4" />
-          <span>Submit Answer</span>
-        </button>
       </div>
     </div>
   );

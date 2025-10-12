@@ -2,135 +2,152 @@
   {
     "id": "B2-OR-001",
     "type": "open_response",
-    "prompt": "Discuss the pros and cons of working from home.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about the advantages and disadvantages of working from home, providing specific examples and your personal perspective on this modern work arrangement.",
-        "context_description": "Workplace trends and balanced argumentation assessment"
-      }
+      "question": "Discuss the pros and cons of working from home.",
+      "helpers": [
+        "What are the main advantages of working from home?",
+        "What are the disadvantages or challenges?",
+        "What is your personal perspective on remote work?"
+      ]
     }
   },
   {
     "id": "B2-OR-002",
     "type": "open_response",
-    "prompt": "Talk about how social media affects personal relationships.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about how social media impacts personal relationships, including both positive and negative effects with concrete examples from your observations or experience.",
-        "context_description": "Social issues and critical analysis assessment"
-      }
+      "question": "Talk about how social media affects personal relationships.",
+      "helpers": [
+        "What are the positive effects of social media on relationships?",
+        "What are the negative impacts?",
+        "Can you give concrete examples from your observations or experience?"
+      ]
     }
   },
   {
     "id": "B2-OR-003",
     "type": "open_response",
-    "prompt": "Describe environmental problems in your country and suggest solutions.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about major environmental issues in your country and suggest realistic solutions, discussing who should be responsible for implementing them.",
-        "context_description": "Environmental awareness and problem-solving assessment"
-      }
+      "question": "Describe environmental problems in your country and suggest solutions.",
+      "helpers": [
+        "What are the major environmental issues in your country?",
+        "What realistic solutions can help address these problems?",
+        "Who should be responsible for implementing these solutions?"
+      ]
     }
   },
   {
     "id": "B2-OR-004",
     "type": "open_response",
-    "prompt": "Describe how globalization has changed your community.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about how globalization has influenced your community, including cultural, economic, or social changes, and whether you view these changes positively or negatively.",
-        "context_description": "Globalization effects and community analysis assessment"
-      }
+      "question": "Describe how globalization has changed your community.",
+      "helpers": [
+        "What cultural, economic, or social changes have you noticed?",
+        "How has globalization influenced your community?",
+        "Do you view these changes positively or negatively? Why?"
+      ]
     }
   },
   {
     "id": "B2-OR-005",
     "type": "open_response",
-    "prompt": "Discuss the challenges of balancing work life and personal life.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about the difficulties of maintaining a healthy work-life balance and possible strategies to overcome them, including what role employers should play.",
-        "context_description": "Work-life balance and modern lifestyle assessment"
-      }
+      "question": "Discuss the challenges of balancing work life and personal life.",
+      "helpers": [
+        "What are the main difficulties in maintaining a healthy work-life balance?",
+        "What strategies can help overcome these challenges?",
+        "What role should employers play in supporting work-life balance?"
+      ]
     }
   },
   {
     "id": "B2-OR-006",
     "type": "open_response",
-    "prompt": "Can you describe a time when you had to learn something quickly under pressure?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing a specific situation where you had to acquire new knowledge or skills quickly under pressure, explaining your approach and what you learned from the experience.",
-        "context_description": "Problem-solving and adaptability under stress assessment"
-      }
+      "question": "Can you describe a time when you had to learn something quickly under pressure?",
+      "helpers": [
+        "What was the situation? What did you need to learn?",
+        "What approach did you take to learn quickly?",
+        "What did you learn from this experience?"
+      ]
     }
   },
   {
     "id": "B2-OR-007",
     "type": "open_response",
-    "prompt": "What factors should someone consider before making a major life decision?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about the important factors people should consider when making significant life decisions, such as career changes, relationships, or major purchases.",
-        "context_description": "Decision-making processes and life planning assessment"
-      }
+      "question": "What factors should someone consider before making a major life decision?",
+      "helpers": [
+        "What types of major decisions are you thinking about (career, relationships, purchases)?",
+        "What are the most important factors to consider?",
+        "How should someone weigh different options?"
+      ]
     }
   },
   {
     "id": "B2-OR-008",
     "type": "open_response",
-    "prompt": "Tell me about a situation where you had to give someone constructive feedback.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing a specific situation where you needed to provide constructive feedback to someone, explaining your approach and the outcome.",
-        "context_description": "Interpersonal communication and leadership skills assessment"
-      }
+      "question": "Tell me about a situation where you had to give someone constructive feedback.",
+      "helpers": [
+        "What was the situation? Who needed feedback?",
+        "What approach did you take in giving the feedback?",
+        "What was the outcome?"
+      ]
     }
   },
   {
     "id": "B2-OR-009",
     "type": "open_response",
-    "prompt": "In your opinion, how important is it to stay informed about global events?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes about the importance of staying informed about global events, discussing the benefits and potential drawbacks, and sharing your personal approach to following news.",
-        "context_description": "Global awareness and media literacy assessment"
-      }
+      "question": "In your opinion, how important is it to stay informed about global events?",
+      "helpers": [
+        "What are the benefits of staying informed about global events?",
+        "Are there any potential drawbacks?",
+        "How do you personally approach following the news?"
+      ]
     }
   },
   {
     "id": "B2-OR-010",
     "type": "open_response",
-    "prompt": "How do you usually prepare for important presentations or meetings?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Speak for up to 2 minutes describing your preparation process for important presentations or meetings, including specific strategies, tools you use, and how you handle pre-presentation anxiety.",
-        "context_description": "Professional preparation and presentation skills assessment"
-      }
+      "question": "How do you usually prepare for important presentations or meetings?",
+      "helpers": [
+        "What specific strategies and tools do you use to prepare?",
+        "How do you organize your preparation process?",
+        "How do you handle pre-presentation anxiety?"
+      ]
     }
   },
   {
     "id": "B2-LA-001",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_001.wav",
       "audioText": "The data seems inconsistent with our earlier findings. What do you think?",
-      "context": {
-        "question": "Listen to this workplace scenario and respond as you would in a professional meeting, addressing the concern about data inconsistency.",
-        "context_description": "Professional problem-solving and data analysis discussion"
-      },
+      "question": "Respond as you would in a professional meeting, addressing the concern about data inconsistency.",
       "expectedResponseElements": [
         "Acknowledge the inconsistency",
         "Suggest investigating the cause",
@@ -141,15 +158,12 @@
   {
     "id": "B2-LA-002",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_002.wav",
       "audioText": "Could you explain the main idea behind your proposal?",
-      "context": {
-        "question": "Listen to this request and respond as if you're presenting a business proposal, explaining your main concept clearly and persuasively.",
-        "context_description": "Business communication and proposal presentation"
-      },
+      "question": "Respond as if you're presenting a business proposal, explaining your main concept clearly and persuasively.",
       "expectedResponseElements": [
         "Clear explanation of main concept",
         "Benefits or advantages",
@@ -160,15 +174,12 @@
   {
     "id": "B2-LA-003",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_003.wav",
       "audioText": "Why do you think some teams collaborate more successfully than others?",
-      "context": {
-        "question": "Listen to this question about team dynamics and provide a thoughtful analysis based on your understanding of teamwork and collaboration.",
-        "context_description": "Team dynamics and organizational psychology discussion"
-      },
+      "question": "Provide a thoughtful analysis based on your understanding of teamwork and collaboration.",
       "expectedResponseElements": [
         "Key factors for successful collaboration",
         "Examples or experiences",
@@ -179,15 +190,12 @@
   {
     "id": "B2-LA-004",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_004.wav",
       "audioText": "What are the main risks of adopting new technologies too quickly?",
-      "context": {
-        "question": "Listen to this question about technology adoption and provide a balanced analysis of potential risks and challenges.",
-        "context_description": "Technology management and risk assessment discussion"
-      },
+      "question": "Provide a balanced analysis of potential risks and challenges.",
       "expectedResponseElements": [
         "Identify specific risks",
         "Explain consequences",
@@ -198,15 +206,12 @@
   {
     "id": "B2-LA-005",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_005.wav",
       "audioText": "How do you stay productive during busy weeks?",
-      "context": {
-        "question": "Listen to this question about productivity management and share your strategies for maintaining effectiveness during high-pressure periods.",
-        "context_description": "Personal productivity and time management discussion"
-      },
+      "question": "Share your strategies for maintaining effectiveness during high-pressure periods.",
       "expectedResponseElements": [
         "Specific productivity strategies",
         "Time management techniques",
@@ -217,15 +222,12 @@
   {
     "id": "B2-LA-006",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_006.wav",
       "audioText": "How do you feel about the rise of remote work in recent years?",
-      "context": {
-        "question": "Listen to this question about remote work trends and provide your perspective on this workplace evolution, including benefits and challenges.",
-        "context_description": "Modern workplace trends and professional opinion discussion"
-      },
+      "question": "Provide your perspective on this workplace evolution, including benefits and challenges.",
       "expectedResponseElements": [
         "Personal opinion on remote work",
         "Benefits and challenges",
@@ -236,15 +238,12 @@
   {
     "id": "B2-LA-007",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_007.wav",
       "audioText": "Do you think social media has a mostly positive or negative effect on society?",
-      "context": {
-        "question": "Listen to this question about social media's societal impact and provide a balanced analysis with specific examples and reasoning.",
-        "context_description": "Social media analysis and critical thinking discussion"
-      },
+      "question": "Provide a balanced analysis with specific examples and reasoning.",
       "expectedResponseElements": [
         "Clear position statement",
         "Supporting arguments",
@@ -255,15 +254,12 @@
   {
     "id": "B2-LA-008",
     "type": "listen_answer",
-    "prompt": "Listen to the question and provide a detailed response.",
+    "prompt": "Listen and respond!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/b2_la_008.wav",
       "audioText": "What do you think is one of the biggest environmental problems today?",
-      "context": {
-        "question": "Listen to this environmental question and provide your analysis of a major environmental issue, including causes and potential solutions.",
-        "context_description": "Environmental awareness and problem analysis discussion"
-      },
+      "question": "Provide your analysis of a major environmental issue, including causes and potential solutions.",
       "expectedResponseElements": [
         "Identify specific environmental problem",
         "Explain its significance",

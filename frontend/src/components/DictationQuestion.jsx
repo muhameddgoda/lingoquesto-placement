@@ -1,311 +1,277 @@
-// DictationQuestion.jsx - Complete Fixed Version
+// DictationQuestion.jsx – Tailwind-upgraded UI (drop-in)
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  Volume2,
-  Play,
-  Send,
-  Clock,
-  Headphones,
-  AlertTriangle,
-} from "lucide-react";
+import { Play, Check, Loader2, Headphones, Send } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import TextInput from "./TextInput";
 import { useTimer } from "../contexts/TimerContext";
-import TimerDisplay from "./TimerDisplay";
+import { BRAND_PURPLE, BUTTON_STYLE } from "../config/theme";
 
 const DictationQuestion = ({ question, onSubmit, disabled }) => {
   const [userInput, setUserInput] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAudioReady, setIsAudioReady] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const audioRef = useRef(null);
   const textInputRef = useRef(null);
   const MAX_PLAYS = 3;
 
-  // Use global timer
-  const { phase, timeLeft, formatTime, startTimer, stopTimer, skipThinking } =
-    useTimer();
+  const { startTimer, stopTimer} = useTimer();
 
-  // FIXED: Create a stable reference to get current input value
-  const getCurrentInput = useCallback(() => {
-    // Always get the most current value from the DOM element
-    return textInputRef.current?.value || "";
-  }, []);
+  const getCurrentInput = useCallback(
+    () => textInputRef.current?.value || "",
+    []
+  );
 
-  // FIXED: Handle auto-submit with current value (prevents stale closure)
   const handleAutoSubmit = useCallback(() => {
-    const currentValue = getCurrentInput();
-    console.log(
-      "Auto-submitting Dictation - Time expired. User input:",
-      currentValue
-    );
-    // Submit whatever is currently in the text field
-    onSubmit(currentValue.trim());
+    const current = getCurrentInput().trim();
+    onSubmit(current);
   }, [getCurrentInput, onSubmit]);
 
-  // Start timer when question loads
+  // Start/cleanup timer for this question
   useEffect(() => {
     const totalTime = question.timing?.total_estimated_sec || 30;
+    startTimer({ responseTime: totalTime, onTimeExpired: handleAutoSubmit });
+    return () => stopTimer();
+  }, [question.audio_ref, startTimer, stopTimer, handleAutoSubmit]);
 
-    startTimer({
-      responseTime: totalTime,
-      onTimeExpired: handleAutoSubmit, // Use the stable callback
-    });
-
-    // Cleanup function to prevent stale timer callbacks
-    return () => {
-      stopTimer();
-    };
-  }, [question.audio_ref, handleAutoSubmit, startTimer, stopTimer]);
-
-  // Reset state when question changes
+  // Reset state on question change
   useEffect(() => {
     setUserInput("");
     setIsPlaying(false);
     setPlayCount(0);
     setIsLoading(false);
+    setIsAudioReady(false);
+    setSubmitting(false);
+    setSubmitted(false);
 
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.load();
     }
-
-    if (textInputRef.current) {
-      textInputRef.current.focus();
-    }
   }, [question.audio_ref]);
 
-  // FIXED: Handle input changes - keep both state and ref in sync
   const handleInputChange = (e) => {
-    const value = e.target.value;
-    setUserInput(value);
-    // Ensure the ref always has the current value
-    if (textInputRef.current) {
-      textInputRef.current.value = value;
-    }
+    setUserInput(e.target.value);
+    if (textInputRef.current) textInputRef.current.value = e.target.value;
   };
-  // Add this helper function similar to AudioRecorder
-  const getInstructions = (timeLeft, playCount, maxPlays) => {
-    if (timeLeft <= 10) {
-      return {
-        title: "Time Almost Up!",
-        instruction:
-          "Your answer will be automatically submitted when time expires.",
-        color: "red",
-        icon: AlertTriangle,
-        urgent: true,
-      };
-    }
 
-    if (playCount === 0) {
-      return {
-        title: "Listen and Type",
-        instruction:
-          "Play the audio and type exactly what you hear. You have 3 plays maximum.",
-        color: "blue",
-        icon: Headphones,
-        urgent: false,
-      };
-    }
-
-    return {
-      title: "Type What You Heard",
-      instruction: `You have ${maxPlays - playCount} play${
-        maxPlays - playCount !== 1 ? "s" : ""
-      } remaining. Type the sentence exactly as spoken.`,
-      color: "blue",
-      icon: Volume2,
-      urgent: false,
-    };
-  };
-  // Audio play handling
   const handleAudioPlay = async () => {
     if (!audioRef.current || isLoading || isPlaying || playCount >= MAX_PLAYS)
       return;
-
     setIsLoading(true);
     try {
       audioRef.current.currentTime = 0;
       await audioRef.current.play();
-      setPlayCount((prev) => prev + 1);
-    } catch (error) {
-      console.error("Audio play error:", error);
+      setPlayCount((p) => p + 1);
+    } catch (e) {
+      console.error("Audio play error:", e);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleAudioEnded = () => {
-    setIsPlaying(false);
-  };
-
-  const handleAudioPlayStart = () => {
-    setIsPlaying(true);
-    setIsLoading(false);
-  };
-
-  // FIXED: Manual submit function
-  const handleSubmit = () => {
-    if (!disabled) {
-      const currentValue = getCurrentInput();
-      console.log("Manual submit - User input:", currentValue);
-      stopTimer(); // Stop the global timer
-      onSubmit(currentValue.trim());
+  const handleSubmit = async () => {
+    if (disabled || submitting) return;
+    setSubmitting(true);
+    stopTimer();
+    try {
+      await onSubmit(getCurrentInput().trim());
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 1200);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey && !disabled) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  const remainingPlays = MAX_PLAYS - playCount;
-  const canPlay = remainingPlays > 0 && !disabled && !isPlaying;
+  const remainingPlays = Math.max(0, MAX_PLAYS - playCount);
+  const canPlay = remainingPlays > 0 && !disabled && !isPlaying && isAudioReady;
 
   const audioFileName = question.metadata?.audioRef || question.audio_ref;
-  const cleanAudioFileName = audioFileName?.startsWith("audio/")
-    ? audioFileName.substring(6)
+  const clean = audioFileName?.startsWith("audio/")
+    ? audioFileName.slice(6)
     : audioFileName;
-  const audioUrl = cleanAudioFileName
-    ? `${API_BASE_URL}/api/audio/${cleanAudioFileName}`
-    : null;
+  const audioUrl = clean ? `${API_BASE_URL}/api/audio/${clean}` : null;
 
   return (
-    <div className="space-y-4">
-      {/* Instruction Panel */}
-      <div
-        className={`rounded-xl border-2 p-4 mb-4 ${
-          getInstructions(timeLeft, playCount, MAX_PLAYS).urgent
-            ? "bg-red-50 border-red-200 text-red-800 animate-pulse"
-            : "bg-blue-50 border-blue-200 text-blue-800"
-        }`}
-      >
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0 mt-1">
-            {React.createElement(
-              getInstructions(timeLeft, playCount, MAX_PLAYS).icon,
-              { className: "w-6 h-6" }
-            )}
-          </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-lg mb-2">
-              {getInstructions(timeLeft, playCount, MAX_PLAYS).title}
-            </h3>
-            <p className="text-base">
-              {getInstructions(timeLeft, playCount, MAX_PLAYS).instruction}
-            </p>
-            {question.metadata?.question && (
-              <p className="text-sm mt-2 opacity-80">
-                {question.metadata.question}
-              </p>
-            )}
-          </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-6 pt-24 pb-16">
+        {/* Title */}
+        <h1 className="text-center text-3xl font-extrabold text-gray-900 mb-6">
+          {question?.prompt || "Type what you hear!"}
+        </h1>
+
+        {/* micro-instructions */}
+        <div className="mx-auto max-w-2xl grid grid-cols-1 sm:grid-cols-3 gap-2 mb-8">
+          {[
+            {
+              icon: <Headphones className="w-4 h-4" />,
+              text: "Listen carefully",
+            },
+            { icon: <Play className="w-4 h-4" />, text: "Up to 3 replays" },
+            {
+              icon: <Send className="w-4 h-4" />,
+              text: "Type exactly & submit",
+            },
+          ].map((it, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm text-gray-700"
+            >
+              <span className="shrink-0 text-gray-600">{it.icon}</span>
+              <span>{it.text}</span>
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Audio Player Section */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-4 border border-purple-200/50">
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                <Volume2 className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-purple-800">
-                Listen Carefully
-              </h3>
+        {/* Play section */}
+        <div className="flex flex-col items-center justify-center mb-8">
+          <button
+            onClick={handleAudioPlay}
+            disabled={!canPlay}
+            className={[
+              "relative w-36 h-36 rounded-full flex items-center justify-center transition-all",
+              "shadow-xl hover:shadow-2xl hover:scale-105 focus:outline-none",
+              canPlay
+                ? "bg-[--brand] text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed",
+            ].join(" ")}
+            style={{ ["--brand"]: BRAND_PURPLE }}
+            aria-label="Play audio"
+          >
+            {/* radial glow when playing */}
+            <span
+              className={[
+                "absolute inset-0 rounded-full",
+                isPlaying ? "animate-ping bg-purple-300/40" : "hidden",
+              ].join(" ")}
+            />
+            {isLoading ? (
+              <Loader2 className="w-12 h-12 animate-spin" />
+            ) : (
+              <Play className="w-20 h-20 translate-x-1" />
+            )}
+          </button>
+
+          {/* Replay dots + status */}
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex gap-1.5">
+              {Array.from({ length: MAX_PLAYS }).map((_, idx) => (
+                <span
+                  key={idx}
+                  className={[
+                    "h-2.5 w-2.5 rounded-full",
+                    idx < playCount ? "bg-gray-300" : "bg-purple-500",
+                  ].join(" ")}
+                />
+              ))}
             </div>
+            <span className="text-xs font-semibold text-gray-600 tracking-wider">
+              {isPlaying
+                ? "Playing…"
+                : isAudioReady
+                ? `Replays left: ${remainingPlays}`
+                : "Loading audio…"}
+            </span>
           </div>
 
-          <div className="flex items-center justify-center">
-            <div className="bg-white rounded-lg px-3 py-1 border border-purple-200">
-              <span className="text-sm font-medium text-purple-700">
-                {remainingPlays} play{remainingPlays !== 1 ? "s" : ""} remaining
-              </span>
-            </div>
-          </div>
-
+          {/* hidden audio */}
           <audio
             ref={audioRef}
-            onPlay={handleAudioPlayStart}
-            onPause={() => setIsPlaying(false)}
-            onEnded={handleAudioEnded}
             preload="auto"
-            onError={(e) => {
-              console.error("Audio failed to load:", audioUrl);
+            className="hidden"
+            onCanPlayThrough={() => setIsAudioReady(true)}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onEnded={() => setIsPlaying(false)}
+            onError={() => {
+              setIsAudioReady(false);
+              setIsPlaying(false);
             }}
           >
             {audioUrl && (
               <>
-                <source src={audioUrl} type="audio/wav" />
+                <source src={audioUrl} type="audio/m4a" />
+                <source src={audioUrl} type="audio/webm" />
                 <source src={audioUrl} type="audio/mp3" />
+                <source src={audioUrl} type="audio/wav" />
               </>
             )}
           </audio>
-
-          {/* Play Button */}
-          <div className="flex justify-center">
-            <button
-              onClick={handleAudioPlay}
-              disabled={
-                !canPlay || isLoading || !audioUrl || playCount >= MAX_PLAYS
-              }
-              className={`
-                w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center
-                ${
-                  canPlay && !isLoading && audioUrl
-                    ? "bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }
-              `}
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Play className="w-6 h-6 ml-1" />
-              )}
-            </button>
-          </div>
         </div>
-      </div>
 
-      {/* Text Input Section */}
-      <div className="space-y-2">
-        <TextInput
-          ref={textInputRef}
-          value={userInput}
-          onChange={handleInputChange} // FIXED: Use new handler
-          onKeyPress={handleKeyPress}
-          placeholder="Type the sentence you heard here..."
-          disabled={disabled}
-          rows={3}
-          disableSpellCheck={true}
-          showCharCount={true}
-          className="border-purple-200 focus:border-purple-400 focus:ring-purple-200"
-        />
-      </div>
+        {/* Input */}
+        <div className="max-w-3xl mx-auto">
+          <label
+            htmlFor="dictation-input"
+            className="mb-2 block text-sm font-semibold text-gray-700"
+          >
+            Your transcription
+          </label>
+          <TextInput
+            id="dictation-input"
+            ref={textInputRef}
+            value={userInput}
+            onChange={handleInputChange}
+            placeholder="Type the sentence you heard here…"
+            disabled={disabled || submitting}
+            rows={3}
+            showCharCount={false}
+            className="text-lg rounded-2xl w-full px-5 py-4 border-2 border-gray-200 bg-white
+                       focus:border-[--brand] focus:ring-4 focus:ring-purple-200/60"
+            style={{ ["--brand"]: BRAND_PURPLE }}
+            onFocus={(e) => e.target.select?.()}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            inputMode="text"
+            enterKeyHint="done"
+            onPaste={(e) => e.preventDefault()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
+          />
+        </div>
 
-      {/* Submit Button - FIXED: Allow empty submissions */}
-      <div className="flex justify-center">
-        <button
-          onClick={handleSubmit}
-          disabled={disabled} // Only disable if processing, allow empty submissions
-          className={`
-            px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center space-x-2
-            ${
-              disabled
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800"
-            }
-          `}
-        >
-          <Send className="w-4 h-4" />
-          <span>Submit Answer</span>
-        </button>
+        {/* Submit */}
+        <div className="max-w-3xl mx-auto mt-6 flex justify-end">
+          <button
+            onClick={handleSubmit}
+            disabled={disabled || userInput.trim().length === 0 || submitting}
+            className={`${BUTTON_STYLE} ${
+              disabled || userInput.trim().length === 0 || submitting
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-[--brand]"
+            }`}
+            style={{ ["--brand"]: BRAND_PURPLE }}
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Submitting…
+              </>
+            ) : submitted ? (
+              <>
+                <Check className="w-5 h-5" />
+                Submitted
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5" />
+                Submit
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -2,135 +2,152 @@
   {
     "id": "C2-OR-001",
     "type": "open_response",
-    "prompt": "Debate free will versus determinism: which better explains human behavior?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How do you define free will and determinism? What evidence supports each perspective? How do neuroscience and psychology inform this debate? What are the implications for moral responsibility and justice? Can both concepts coexist in some form?",
-        "context_description": "Advanced philosophical argumentation and meta-ethical reasoning"
-      }
+      "question": "Debate free will versus determinism: which better explains human behavior?",
+      "helpers": [
+        "How do you define free will and determinism? What evidence supports each perspective?",
+        "How do neuroscience and psychology inform this debate?",
+        "What are the implications for moral responsibility and justice? Can both concepts coexist?"
+      ]
     }
   },
   {
     "id": "C2-OR-002",
     "type": "open_response",
-    "prompt": "Analyze the epistemological challenges of big-data analytics.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How does big data change the way we generate knowledge? What are the limitations of correlation-based insights? How do algorithmic biases affect data interpretation? What epistemological assumptions underlie data analytics? How do we distinguish meaningful patterns from statistical noise?",
-        "context_description": "Advanced epistemology and philosophy of science"
-      }
+      "question": "Analyze the epistemological challenges of big-data analytics.",
+      "helpers": [
+        "How does big data change the way we generate knowledge? What are the limitations of correlation-based insights?",
+        "How do algorithmic biases affect data interpretation?",
+        "What epistemological assumptions underlie data analytics? How do we distinguish meaningful patterns from statistical noise?"
+      ]
     }
   },
   {
     "id": "C2-OR-003",
     "type": "open_response",
-    "prompt": "Critically examine AI's role in reinforcing social biases.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How do AI systems learn and perpetuate existing biases? What are specific examples of algorithmic discrimination? What systemic factors contribute to biased AI? How can technical solutions address these issues? What role do social and legal interventions play?",
-        "context_description": "AI ethics and social justice analysis"
-      }
+      "question": "Critically examine AI's role in reinforcing social biases.",
+      "helpers": [
+        "How do AI systems learn and perpetuate existing biases? What are specific examples of algorithmic discrimination?",
+        "What systemic factors contribute to biased AI?",
+        "How can technical solutions address these issues? What role do social and legal interventions play?"
+      ]
     }
   },
   {
     "id": "C2-OR-004",
     "type": "open_response",
-    "prompt": "Debate the ethics of autonomous weapons in warfare.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What ethical principles should govern warfare? How do autonomous weapons challenge traditional just war theory? What are the implications for human accountability in warfare? How might these weapons affect global security and conflict dynamics? What regulatory frameworks are needed?",
-        "context_description": "Military ethics and moral philosophy"
-      }
+      "question": "Debate the ethics of autonomous weapons in warfare.",
+      "helpers": [
+        "What ethical principles should govern warfare? How do autonomous weapons challenge traditional just war theory?",
+        "What are the implications for human accountability in warfare?",
+        "How might these weapons affect global security and conflict dynamics? What regulatory frameworks are needed?"
+      ]
     }
   },
   {
     "id": "C2-OR-005",
     "type": "open_response",
-    "prompt": "Propose multidisciplinary solutions to a global health crisis.",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What insights can different disciplines offer to health crisis management? How do social, economic, and political factors influence health outcomes? What are the systemic causes of global health inequities? How can international cooperation be improved? What lessons have we learned from recent health crises?",
-        "context_description": "Interdisciplinary policy analysis and global health governance"
-      }
+      "question": "Propose multidisciplinary solutions to a global health crisis.",
+      "helpers": [
+        "What insights can different disciplines offer to health crisis management?",
+        "How do social, economic, and political factors influence health outcomes? What are the systemic causes of global health inequities?",
+        "How can international cooperation be improved? What lessons have we learned from recent health crises?"
+      ]
     }
   },
   {
     "id": "C2-OR-006",
     "type": "open_response",
-    "prompt": "Can you discuss a time when you had to defend a complex idea to someone unfamiliar with the topic?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What made the idea complex and why was it important to communicate it? How did you adapt your communication style for your audience? What objections or misconceptions did you encounter? How did you maintain accuracy while making the idea accessible? What was the outcome of your efforts?",
-        "context_description": "Advanced communication and persuasion in complex contexts"
-      }
+      "question": "Can you discuss a time when you had to defend a complex idea to someone unfamiliar with the topic?",
+      "helpers": [
+        "What made the idea complex and why was it important to communicate it? How did you adapt your communication style?",
+        "What objections or misconceptions did you encounter?",
+        "How did you maintain accuracy while making the idea accessible? What was the outcome?"
+      ]
     }
   },
   {
     "id": "C2-OR-007",
     "type": "open_response",
-    "prompt": "What are the limitations of relying solely on data when making high-stakes decisions?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What can data tell us and what can't it reveal? How do context and human judgment complement data analysis? What are the risks of over-relying on quantitative metrics? How do ethical considerations factor into data-driven decisions? When might intuition or experience trump data?",
-        "context_description": "Decision theory and philosophy of data science"
-      }
+      "question": "What are the limitations of relying solely on data when making high-stakes decisions?",
+      "helpers": [
+        "What can data tell us and what can't it reveal? How do context and human judgment complement data analysis?",
+        "What are the risks of over-relying on quantitative metrics?",
+        "How do ethical considerations factor into data-driven decisions? When might intuition or experience trump data?"
+      ]
     }
   },
   {
     "id": "C2-OR-008",
     "type": "open_response",
-    "prompt": "How do you determine whether a nuanced argument is persuasive or simply ambiguous?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: What distinguishes sophisticated nuance from problematic ambiguity? How do you evaluate the quality and clarity of complex arguments? What role does precision play in effective communication? How can you maintain nuance while avoiding confusion? What criteria help assess argumentative strength?",
-        "context_description": "Advanced rhetoric and critical thinking analysis"
-      }
+      "question": "How do you determine whether a nuanced argument is persuasive or simply ambiguous?",
+      "helpers": [
+        "What distinguishes sophisticated nuance from problematic ambiguity?",
+        "How do you evaluate the quality and clarity of complex arguments? What role does precision play?",
+        "How can you maintain nuance while avoiding confusion? What criteria help assess argumentative strength?"
+      ]
     }
   },
   {
     "id": "C2-OR-009",
     "type": "open_response",
-    "prompt": "Can you evaluate the role of bias in interpreting historical or scientific narratives?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How do personal and cultural biases shape our understanding of history and science? What methods can help minimize bias in interpretation? How do institutional factors influence narrative construction? Can complete objectivity ever be achieved? How should we account for bias in evaluation?",
-        "context_description": "Historiography and philosophy of science"
-      }
+      "question": "Can you evaluate the role of bias in interpreting historical or scientific narratives?",
+      "helpers": [
+        "How do personal and cultural biases shape our understanding of history and science?",
+        "What methods can help minimize bias in interpretation? How do institutional factors influence narrative construction?",
+        "Can complete objectivity ever be achieved? How should we account for bias in evaluation?"
+      ]
     }
   },
   {
     "id": "C2-OR-010",
     "type": "open_response",
-    "prompt": "What strategies do you use to communicate abstract or layered concepts to a broad audience?",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "context": {
-        "question": "Questions to help you think about this topic: How do you balance accessibility with intellectual rigor? What techniques help make abstract concepts concrete? How do you gauge your audience's understanding and adjust accordingly? What role do analogies and examples play? How do you maintain accuracy while simplifying complex ideas?",
-        "context_description": "Advanced pedagogical communication and public intellectualism"
-      }
+      "question": "What strategies do you use to communicate abstract or layered concepts to a broad audience?",
+      "helpers": [
+        "How do you balance accessibility with intellectual rigor? What techniques help make abstract concepts concrete?",
+        "How do you gauge your audience's understanding and adjust accordingly?",
+        "What role do analogies and examples play? How do you maintain accuracy while simplifying complex ideas?"
+      ]
     }
   },
   {
     "id": "C2-LA-001",
     "type": "listen_answer",
-    "prompt": "Listen to the complex statement and provide a sophisticated analysis.",
+    "prompt": "Listen and provide your analysis!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_la_001.wav",
       "audioText": "The speaker made a compelling case, but some of her assumptions remained unexamined. What's your take?",
-      "context": {
-        "question": "Listen to this intellectual critique and provide a nuanced analysis of how to evaluate arguments with unstated assumptions, discussing methods for identifying hidden premises and assessing argumentative foundations.",
-        "context_description": "Advanced critical analysis and argumentation theory"
-      },
+      "question": "Provide a nuanced analysis of how to evaluate arguments with unstated assumptions, discussing methods for identifying hidden premises and assessing argumentative foundations.",
       "expectedResponseElements": [
         "Identify methods for uncovering assumptions",
         "Discuss the relationship between assumptions and conclusions",
@@ -141,15 +158,12 @@
   {
     "id": "C2-LA-002",
     "type": "listen_answer",
-    "prompt": "Listen to the complex statement and provide a sophisticated analysis.",
+    "prompt": "Listen and provide your analysis!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_la_002.wav",
       "audioText": "How do you interpret a response that's vague but delivered with confidence?",
-      "context": {
-        "question": "Listen to this question about communication analysis and discuss the psychological and rhetorical dynamics of confident ambiguity, examining how authority and uncertainty interact in discourse.",
-        "context_description": "Communication psychology and rhetorical analysis"
-      },
+      "question": "Discuss the psychological and rhetorical dynamics of confident ambiguity, examining how authority and uncertainty interact in discourse.",
       "expectedResponseElements": [
         "Analyze the psychology of confident vagueness",
         "Discuss rhetorical strategies and their effects",
@@ -160,15 +174,12 @@
   {
     "id": "C2-LA-003",
     "type": "listen_answer",
-    "prompt": "Listen to the complex statement and provide a sophisticated analysis.",
+    "prompt": "Listen and provide your analysis!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_la_003.wav",
       "audioText": "The debate touched on several ethical dilemmas, but the panel didn't reach a consensus. Why?",
-      "context": {
-        "question": "Listen to this observation about ethical discourse and analyze why consensus is often elusive in moral debates, examining the nature of ethical disagreement and the role of foundational values.",
-        "context_description": "Meta-ethics and moral disagreement analysis"
-      },
+      "question": "Analyze why consensus is often elusive in moral debates, examining the nature of ethical disagreement and the role of foundational values.",
       "expectedResponseElements": [
         "Analyze sources of ethical disagreement",
         "Discuss the nature of moral consensus",
@@ -179,15 +190,12 @@
   {
     "id": "C2-LA-004",
     "type": "listen_answer",
-    "prompt": "Listen to the complex statement and provide a sophisticated analysis.",
+    "prompt": "Listen and provide your analysis!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_la_004.wav",
       "audioText": "When reviewing a complex argument with unclear structure, what should you prioritize?",
-      "context": {
-        "question": "Listen to this question about argument analysis and discuss systematic approaches to deconstructing complex, poorly structured arguments while maintaining analytical rigor.",
-        "context_description": "Advanced argumentation analysis and logical evaluation"
-      },
+      "question": "Discuss systematic approaches to deconstructing complex, poorly structured arguments while maintaining analytical rigor.",
       "expectedResponseElements": [
         "Propose systematic analysis methods",
         "Discuss structural versus content evaluation",
@@ -198,15 +206,12 @@
   {
     "id": "C2-LA-005",
     "type": "listen_answer",
-    "prompt": "Listen to the complex statement and provide a sophisticated analysis.",
+    "prompt": "Listen and provide your analysis!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_la_005.wav",
       "audioText": "Why is summarizing a layered discussion more difficult than summarizing a single viewpoint?",
-      "context": {
-        "question": "Listen to this question about synthesis and analyze the cognitive and methodological challenges of integrating multiple complex perspectives while maintaining accuracy and nuance.",
-        "context_description": "Information synthesis and cognitive complexity analysis"
-      },
+      "question": "Analyze the cognitive and methodological challenges of integrating multiple complex perspectives while maintaining accuracy and nuance.",
       "expectedResponseElements": [
         "Identify cognitive challenges in synthesis",
         "Discuss methodological approaches to integration",
@@ -217,7 +222,7 @@
   {
     "id": "C2-SEQ-001-001",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated philosophical discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_001_001.wav",
@@ -238,7 +243,7 @@
   {
     "id": "C2-SEQ-001-002",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated philosophical discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_001_002.wav",
@@ -259,7 +264,7 @@
   {
     "id": "C2-SEQ-001-003",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated philosophical discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_001_003.wav",
@@ -280,7 +285,7 @@
   {
     "id": "C2-SEQ-002-001",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated ethical discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_002_001.wav",
@@ -301,7 +306,7 @@
   {
     "id": "C2-SEQ-002-002",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated ethical discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_002_002.wav",
@@ -322,7 +327,7 @@
   {
     "id": "C2-SEQ-003-001",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated political discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_003_001.wav",
@@ -343,7 +348,7 @@
   {
     "id": "C2-SEQ-003-002",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated political discussion.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_003_002.wav",
@@ -364,7 +369,7 @@
   {
     "id": "C2-SEQ-004-001",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated discussion about work.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_004_001.wav",
@@ -385,7 +390,7 @@
   {
     "id": "C2-SEQ-005-001",
     "type": "sequence",
-    "prompt": "Listen and engage in this sophisticated discussion about global responsibility.",
+    "prompt": "Listen and engage in the discussion!",
     "metadata": {
       "accent": "us",
       "audioRef": "audio/c2_seq_005_001.wav",
@@ -406,8 +411,9 @@
   {
     "id": "C2-BMQ-001",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'The speaker made a compelling case, but some of her assumptions remained unexamined. What's your take?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "The speaker made a compelling case, but some of her assumptions remained unexamined. What's your take?",
       "context": "Academic or intellectual critique discussion",
       "situation": "Evaluating an argument with unstated premises",
       "options": [
@@ -423,8 +429,9 @@
   {
     "id": "C2-BMQ-002",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'How do you interpret a response that's vague but delivered with confidence?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "How do you interpret a response that's vague but delivered with confidence?",
       "context": "Analysis of communication and rhetorical strategies",
       "situation": "Discussing the psychology of confident ambiguity",
       "options": [
@@ -440,8 +447,9 @@
   {
     "id": "C2-BMQ-003",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'The debate touched on several ethical dilemmas, but the panel didn't reach a consensus. Why?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "The debate touched on several ethical dilemmas, but the panel didn't reach a consensus. Why?",
       "context": "Meta-ethical discussion about moral disagreement",
       "situation": "Analyzing why ethical consensus is difficult",
       "options": [
@@ -457,8 +465,9 @@
   {
     "id": "C2-BMQ-004",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'When reviewing a complex argument with unclear structure, what should you prioritize?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "When reviewing a complex argument with unclear structure, what should you prioritize?",
       "context": "Advanced argumentation and critical analysis",
       "situation": "Discussing systematic approaches to argument evaluation",
       "options": [
@@ -474,8 +483,9 @@
   {
     "id": "C2-BMQ-005",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Why is summarizing a layered discussion more difficult than summarizing a single viewpoint?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Why is summarizing a layered discussion more difficult than summarizing a single viewpoint?",
       "context": "Discussion about information synthesis and complexity",
       "situation": "Analyzing cognitive challenges in complex synthesis",
       "options": [
@@ -491,8 +501,9 @@
   {
     "id": "C2-BMQ-006",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Can art still have value if it isn't widely understood by the public?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Can art still have value if it isn't widely understood by the public?",
       "context": "Aesthetic philosophy and cultural criticism",
       "situation": "Discussing artistic value and accessibility",
       "options": [
@@ -507,8 +518,9 @@
   {
     "id": "C2-BMQ-007",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'How should we decide what's ethically acceptable in science?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "How should we decide what's ethically acceptable in science?",
       "context": "Science ethics and policy discussion",
       "situation": "Discussing ethical decision-making frameworks",
       "options": [
@@ -523,8 +535,9 @@
   {
     "id": "C2-BMQ-008",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Is freedom of speech ever truly equal in practice?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Is freedom of speech ever truly equal in practice?",
       "context": "Political philosophy and democratic theory",
       "situation": "Analyzing power dynamics in free expression",
       "options": [
@@ -539,8 +552,9 @@
   {
     "id": "C2-BMQ-009",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'What kind of skills will be most valuable in a post-automation workforce?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "What kind of skills will be most valuable in a post-automation workforce?",
       "context": "Future of work and technological change",
       "situation": "Discussing skills for automated economy",
       "options": [
@@ -555,8 +569,9 @@
   {
     "id": "C2-BMQ-010",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response to: 'Is it realistic to expect nations with different values to cooperate meaningfully?'",
+    "prompt": "Choose the best response!",
     "metadata": {
+      "question": "Is it realistic to expect nations with different values to cooperate meaningfully?",
       "context": "International relations and global governance",
       "situation": "Discussing cross-cultural cooperation challenges",
       "options": [
