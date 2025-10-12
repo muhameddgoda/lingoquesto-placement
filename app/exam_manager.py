@@ -38,7 +38,7 @@ class ExamManager:
     
     def _load_configuration(self) -> Dict:
         """Load configuration with simple fallback"""
-        config_paths = ["mock_exam_config.json", "config/exam_config.json"]
+        config_paths = ["exam_config.json", "config/exam_config.json"]
         
         for path in config_paths:
             if Path(path).exists():
