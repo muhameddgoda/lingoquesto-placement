@@ -1,586 +1,416 @@
 [
   {
-    "id": "C2-OR-001",
+    "id": "C2-MP-601",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_601.wav",
+      "options": ["affect", "effect"],
+      "correctAnswer": "affect"
+    }
+  },
+  {
+    "id": "C2-MP-602",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_602.wav",
+      "options": ["affect", "effect"],
+      "correctAnswer": "effect"
+    }
+  },
+  {
+    "id": "C2-MP-603",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_603.wav",
+      "options": ["principal", "principle"],
+      "correctAnswer": "principal"
+    }
+  },
+  {
+    "id": "C2-MP-604",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_604.wav",
+      "options": ["principal", "principle"],
+      "correctAnswer": "principle"
+    }
+  },
+  {
+    "id": "C2-MP-605",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_605.wav",
+      "options": ["elicit", "illicit"],
+      "correctAnswer": "elicit"
+    }
+  },
+  {
+    "id": "C2-MP-606",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_606.wav",
+      "options": ["elicit", "illicit"],
+      "correctAnswer": "illicit"
+    }
+  },
+  {
+    "id": "C2-MP-607",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_607.wav",
+      "options": ["imply", "infer"],
+      "correctAnswer": "imply"
+    }
+  },
+  {
+    "id": "C2-MP-608",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_608.wav",
+      "options": ["imply", "infer"],
+      "correctAnswer": "infer"
+    }
+  },
+  {
+    "id": "C2-MP-609",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_609.wav",
+      "options": ["discreet", "discrete"],
+      "correctAnswer": "discreet"
+    }
+  },
+  {
+    "id": "C2-MP-610",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_mp_610.wav",
+      "options": ["discreet", "discrete"],
+      "correctAnswer": "discrete"
+    }
+  },
+  {
+    "id": "C2-DICT-601",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Philosophical inquiry challenges assumptions that often go unquestioned in daily life.",
+      "audioRef": "audio/c2_dict_601.wav"
+    }
+  },
+  {
+    "id": "C2-DICT-602",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Economic inequality remains one of the most persistent issues of modern governance.",
+      "audioRef": "audio/c2_dict_602.wav"
+    }
+  },
+  {
+    "id": "C2-DICT-603",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "The interplay between language and thought continues to fascinate cognitive scientists.",
+      "audioRef": "audio/c2_dict_603.wav"
+    }
+  },
+  {
+    "id": "C2-DICT-604",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Although technology connects people globally, it also risks deepening cultural divides.",
+      "audioRef": "audio/c2_dict_604.wav"
+    }
+  },
+  {
+    "id": "C2-DICT-605",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Critical thinking requires both open-mindedness and rigorous evaluation of evidence.",
+      "audioRef": "audio/c2_dict_605.wav"
+    }
+  },
+  {
+    "id": "C2-LMQ-601",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_lmq_601.wav",
+      "audioText": "The researcher argued that correlation does not imply causation.",
+      "question": "What point did the researcher make?",
+      "options": [
+        "Correlation does not imply causation.",
+        "Causation always implies correlation.",
+        "Correlation and causation are identical."
+      ],
+      "correctAnswer": "Correlation does not imply causation."
+    }
+  },
+  {
+    "id": "C2-LMQ-602",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_lmq_602.wav",
+      "audioText": "While the theory is elegant, it lacks empirical substantiation.",
+      "question": "What criticism does the speaker make?",
+      "options": [
+        "It lacks empirical support.",
+        "It’s too complex to understand.",
+        "It contradicts earlier theories."
+      ],
+      "correctAnswer": "It lacks empirical support."
+    }
+  },
+  {
+    "id": "C2-LMQ-603",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c2_lmq_603.wav",
+      "audioText": "Ethical relativism suggests that moral values depend on cultural context.",
+      "question": "According to the statement, what determines moral values?",
+      "options": [
+        "Cultural context.",
+        "Universal laws.",
+        "Religious doctrine."
+      ],
+      "correctAnswer": "Cultural context."
+    }
+  },
+  {
+    "id": "C2-BMQ-601",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "How should governments balance freedom of speech with preventing misinformation?",
+      "context": "Ethics and policy discussion",
+      "situation": "Balancing rights and responsibilities",
+      "options": [
+        "By ensuring transparency and promoting media literacy.",
+        "By allowing only verified news sources to publish.",
+        "By restricting public discussion entirely."
+      ],
+      "correctAnswer": "By ensuring transparency and promoting media literacy."
+    }
+  },
+  {
+    "id": "C2-BMQ-602",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "Why might artificial intelligence pose philosophical challenges?",
+      "context": "AI and ethics debate",
+      "situation": "Exploring abstract implications",
+      "options": [
+        "Because it raises questions about consciousness and moral agency.",
+        "Because robots will replace all human workers.",
+        "Because technology changes very quickly."
+      ],
+      "correctAnswer": "Because it raises questions about consciousness and moral agency."
+    }
+  },
+  {
+    "id": "C2-BMQ-603",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "What is the main argument of existentialist philosophy?",
+      "context": "Philosophy discussion",
+      "situation": "Exploring ideas about meaning and freedom",
+      "options": [
+        "Humans create meaning through free choice.",
+        "Life follows a predetermined purpose.",
+        "Morality is fixed and universal."
+      ],
+      "correctAnswer": "Humans create meaning through free choice."
+    }
+  },
+  {
+    "id": "C2-OR-601",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Debate free will versus determinism: which better explains human behavior?",
+      "question": "Debate whether technological progress always leads to human progress.",
       "helpers": [
-        "How do you define free will and determinism? What evidence supports each perspective?",
-        "How do neuroscience and psychology inform this debate?",
-        "What are the implications for moral responsibility and justice? Can both concepts coexist?"
+        "Can innovation have negative consequences?",
+        "What defines real progress?",
+        "How should societies manage new technologies?"
       ]
     }
   },
   {
-    "id": "C2-OR-002",
+    "id": "C2-OR-602",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Analyze the epistemological challenges of big-data analytics.",
+      "question": "Discuss whether morality can exist without religion.",
       "helpers": [
-        "How does big data change the way we generate knowledge? What are the limitations of correlation-based insights?",
-        "How do algorithmic biases affect data interpretation?",
-        "What epistemological assumptions underlie data analytics? How do we distinguish meaningful patterns from statistical noise?"
+        "Where do moral principles come from?",
+        "Can societies function without shared beliefs?",
+        "What examples support your argument?"
       ]
     }
   },
   {
-    "id": "C2-OR-003",
+    "id": "C2-OR-603",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Critically examine AI's role in reinforcing social biases.",
+      "question": "Evaluate the impact of artificial intelligence on human creativity.",
       "helpers": [
-        "How do AI systems learn and perpetuate existing biases? What are specific examples of algorithmic discrimination?",
-        "What systemic factors contribute to biased AI?",
-        "How can technical solutions address these issues? What role do social and legal interventions play?"
+        "Can AI be creative?",
+        "How does it change artistic industries?",
+        "What does creativity mean in the digital age?"
       ]
     }
   },
   {
-    "id": "C2-OR-004",
+    "id": "C2-OR-604",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Debate the ethics of autonomous weapons in warfare.",
+      "question": "Analyze how globalization influences ethical decision-making.",
       "helpers": [
-        "What ethical principles should govern warfare? How do autonomous weapons challenge traditional just war theory?",
-        "What are the implications for human accountability in warfare?",
-        "How might these weapons affect global security and conflict dynamics? What regulatory frameworks are needed?"
+        "How do global norms shape ethics?",
+        "Can universal ethics exist?",
+        "How should conflicts of values be resolved?"
       ]
     }
   },
   {
-    "id": "C2-OR-005",
+    "id": "C2-OR-605",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Propose multidisciplinary solutions to a global health crisis.",
+      "question": "Discuss the relationship between language and thought.",
       "helpers": [
-        "What insights can different disciplines offer to health crisis management?",
-        "How do social, economic, and political factors influence health outcomes? What are the systemic causes of global health inequities?",
-        "How can international cooperation be improved? What lessons have we learned from recent health crises?"
+        "Does language limit or expand thinking?",
+        "How do bilingual people perceive the world?",
+        "What do linguistic theories suggest?"
       ]
     }
   },
   {
-    "id": "C2-OR-006",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "C2-IMG-601",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "question": "Can you discuss a time when you had to defend a complex idea to someone unfamiliar with the topic?",
+      "imageTopic": "Ethics – Artificial intelligence in healthcare",
+      "imageGuidance": "Robot assisting a doctor with a patient; medical equipment in background.",
+      "context": "Describe ethical dilemmas of AI in decision-making.",
+      "question": "Look at the image and describe the situation.",
       "helpers": [
-        "What made the idea complex and why was it important to communicate it? How did you adapt your communication style?",
-        "What objections or misconceptions did you encounter?",
-        "How did you maintain accuracy while making the idea accessible? What was the outcome?"
+        "Who is in the picture?",
+        "What role does AI play?",
+        "What issues might arise?"
       ]
     }
   },
   {
-    "id": "C2-OR-007",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "C2-IMG-602",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "question": "What are the limitations of relying solely on data when making high-stakes decisions?",
+      "imageTopic": "Society – Refugee crisis",
+      "imageGuidance": "People carrying belongings across a border; tents and relief workers nearby.",
+      "context": "Describe human rights issues and global responsibility.",
+      "question": "Look at the image and describe what is happening.",
       "helpers": [
-        "What can data tell us and what can't it reveal? How do context and human judgment complement data analysis?",
-        "What are the risks of over-relying on quantitative metrics?",
-        "How do ethical considerations factor into data-driven decisions? When might intuition or experience trump data?"
+        "What challenges do these people face?",
+        "Who is helping them?",
+        "What emotions are visible?"
       ]
     }
   },
   {
-    "id": "C2-OR-008",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "C2-IMG-603",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "question": "How do you determine whether a nuanced argument is persuasive or simply ambiguous?",
+      "imageTopic": "Environment – Climate change impact",
+      "imageGuidance": "Flooded city streets with rescue workers; damaged buildings.",
+      "context": "Describe environmental consequences and human reactions.",
+      "question": "Look at the image and describe the situation.",
       "helpers": [
-        "What distinguishes sophisticated nuance from problematic ambiguity?",
-        "How do you evaluate the quality and clarity of complex arguments? What role does precision play?",
-        "How can you maintain nuance while avoiding confusion? What criteria help assess argumentative strength?"
+        "What happened here?",
+        "Who is affected?",
+        "How might this be prevented?"
       ]
     }
   },
   {
-    "id": "C2-OR-009",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "C2-IMG-604",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "question": "Can you evaluate the role of bias in interpreting historical or scientific narratives?",
+      "imageTopic": "Culture – Global conference",
+      "imageGuidance": "International delegates in a meeting room with translation booths.",
+      "context": "Describe international cooperation and communication.",
+      "question": "Look at the image and describe what’s happening.",
       "helpers": [
-        "How do personal and cultural biases shape our understanding of history and science?",
-        "What methods can help minimize bias in interpretation? How do institutional factors influence narrative construction?",
-        "Can complete objectivity ever be achieved? How should we account for bias in evaluation?"
+        "Who is attending?",
+        "What is being discussed?",
+        "Why is this important?"
       ]
     }
   },
   {
-    "id": "C2-OR-010",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "C2-IMG-605",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "question": "What strategies do you use to communicate abstract or layered concepts to a broad audience?",
+      "imageTopic": "Philosophy – Debate panel",
+      "imageGuidance": "Speakers at a university discussing moral philosophy.",
+      "context": "Describe academic discussion and exchange of ideas.",
+      "question": "Look at the image and describe the debate.",
       "helpers": [
-        "How do you balance accessibility with intellectual rigor? What techniques help make abstract concepts concrete?",
-        "How do you gauge your audience's understanding and adjust accordingly?",
-        "What role do analogies and examples play? How do you maintain accuracy while simplifying complex ideas?"
+        "Who is speaking?",
+        "What might they be debating?",
+        "How does the audience react?"
       ]
-    }
-  },
-  {
-    "id": "C2-LA-001",
-    "type": "listen_answer",
-    "prompt": "Listen and provide your analysis!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_la_001.wav",
-      "audioText": "The speaker made a compelling case, but some of her assumptions remained unexamined. What's your take?",
-      "question": "Provide a nuanced analysis of how to evaluate arguments with unstated assumptions, discussing methods for identifying hidden premises and assessing argumentative foundations.",
-      "expectedResponseElements": [
-        "Identify methods for uncovering assumptions",
-        "Discuss the relationship between assumptions and conclusions",
-        "Propose frameworks for evaluating argument quality"
-      ]
-    }
-  },
-  {
-    "id": "C2-LA-002",
-    "type": "listen_answer",
-    "prompt": "Listen and provide your analysis!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_la_002.wav",
-      "audioText": "How do you interpret a response that's vague but delivered with confidence?",
-      "question": "Discuss the psychological and rhetorical dynamics of confident ambiguity, examining how authority and uncertainty interact in discourse.",
-      "expectedResponseElements": [
-        "Analyze the psychology of confident vagueness",
-        "Discuss rhetorical strategies and their effects",
-        "Examine the relationship between authority and precision"
-      ]
-    }
-  },
-  {
-    "id": "C2-LA-003",
-    "type": "listen_answer",
-    "prompt": "Listen and provide your analysis!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_la_003.wav",
-      "audioText": "The debate touched on several ethical dilemmas, but the panel didn't reach a consensus. Why?",
-      "question": "Analyze why consensus is often elusive in moral debates, examining the nature of ethical disagreement and the role of foundational values.",
-      "expectedResponseElements": [
-        "Analyze sources of ethical disagreement",
-        "Discuss the nature of moral consensus",
-        "Examine the role of foundational values in ethics"
-      ]
-    }
-  },
-  {
-    "id": "C2-LA-004",
-    "type": "listen_answer",
-    "prompt": "Listen and provide your analysis!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_la_004.wav",
-      "audioText": "When reviewing a complex argument with unclear structure, what should you prioritize?",
-      "question": "Discuss systematic approaches to deconstructing complex, poorly structured arguments while maintaining analytical rigor.",
-      "expectedResponseElements": [
-        "Propose systematic analysis methods",
-        "Discuss structural versus content evaluation",
-        "Address the challenge of unclear argumentation"
-      ]
-    }
-  },
-  {
-    "id": "C2-LA-005",
-    "type": "listen_answer",
-    "prompt": "Listen and provide your analysis!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_la_005.wav",
-      "audioText": "Why is summarizing a layered discussion more difficult than summarizing a single viewpoint?",
-      "question": "Analyze the cognitive and methodological challenges of integrating multiple complex perspectives while maintaining accuracy and nuance.",
-      "expectedResponseElements": [
-        "Identify cognitive challenges in synthesis",
-        "Discuss methodological approaches to integration",
-        "Address the balance between comprehensiveness and clarity"
-      ]
-    }
-  },
-  {
-    "id": "C2-SEQ-001-001",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_001_001.wav",
-      "audioText": "What would you say is the fundamental role of art in a modern society?",
-      "sequence_id": "C2-SEQ-001",
-      "sequence_title": "The Role of Art in Society",
-      "step": 1,
-      "context": "Philosophical discussion about art's societal function",
-      "options": [
-        "To provoke reflection and offer alternative ways of perceiving reality.",
-        "To help people express emotions in creative and colorful forms.",
-        "To provide entertainment and keep people engaged with beauty.",
-        "To decorate public spaces and bring color to urban environments."
-      ],
-      "correctAnswer": "To provoke reflection and offer alternative ways of perceiving reality."
-    }
-  },
-  {
-    "id": "C2-SEQ-001-002",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_001_002.wav",
-      "audioText": "Some argue that art should be politically neutral. What's your view?",
-      "sequence_id": "C2-SEQ-001",
-      "sequence_title": "The Role of Art in Society",
-      "step": 2,
-      "context": "Discussion about art's political dimensions",
-      "options": [
-        "Art can never be entirely neutral, as all creation is shaped by context.",
-        "Art is often used in campaigns and sometimes mentions politics.",
-        "It's better when art avoids politics because people like peace.",
-        "Artists may add opinions, but mostly try to make things nice."
-      ],
-      "correctAnswer": "Art can never be entirely neutral, as all creation is shaped by context."
-    }
-  },
-  {
-    "id": "C2-SEQ-001-003",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_001_003.wav",
-      "audioText": "Can art still have value if it isn't widely understood by the public?",
-      "sequence_id": "C2-SEQ-001",
-      "sequence_title": "The Role of Art in Society",
-      "step": 3,
-      "context": "Discussion about artistic value and accessibility",
-      "options": [
-        "Yes, complexity can invite deeper interpretation over time.",
-        "If most people don't get it, maybe it didn't work well.",
-        "Artists should explain their work so others understand it.",
-        "It's better when the audience clearly knows the meaning."
-      ],
-      "correctAnswer": "Yes, complexity can invite deeper interpretation over time."
-    }
-  },
-  {
-    "id": "C2-SEQ-002-001",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_002_001.wav",
-      "audioText": "In your opinion, should ethical considerations limit scientific progress?",
-      "sequence_id": "C2-SEQ-002",
-      "sequence_title": "Ethics in Scientific Innovation",
-      "step": 1,
-      "context": "Discussion about ethics and scientific advancement",
-      "options": [
-        "Yes, progress without ethical boundaries risks long-term societal harm.",
-        "Ethics are good, but science must go forward to help things.",
-        "Scientific ideas are complex and can make new things happen.",
-        "We need innovation first, then people can discuss what it means."
-      ],
-      "correctAnswer": "Yes, progress without ethical boundaries risks long-term societal harm."
-    }
-  },
-  {
-    "id": "C2-SEQ-002-002",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_002_002.wav",
-      "audioText": "How should we decide what's ethically acceptable in science?",
-      "sequence_id": "C2-SEQ-002",
-      "sequence_title": "Ethics in Scientific Innovation",
-      "step": 2,
-      "context": "Discussion about ethical decision-making in science",
-      "options": [
-        "Through inclusive debate involving scientists, policymakers, and the public.",
-        "Scientists should choose what is right since they know best.",
-        "The public knows what is good and will react if needed.",
-        "If a discovery is useful, it should be tested right away."
-      ],
-      "correctAnswer": "Through inclusive debate involving scientists, policymakers, and the public."
-    }
-  },
-  {
-    "id": "C2-SEQ-003-001",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_003_001.wav",
-      "audioText": "Should freedom of speech include the right to express unpopular or offensive views?",
-      "sequence_id": "C2-SEQ-003",
-      "sequence_title": "Freedom of Speech in Democratic Societies",
-      "step": 1,
-      "context": "Discussion about free speech boundaries",
-      "options": [
-        "Yes, protecting even uncomfortable speech is essential in a democratic society.",
-        "Free speech is good unless people say things others don't like.",
-        "Opinions are allowed, but not if they're difficult or rude.",
-        "It depends on how people react and what the words mean."
-      ],
-      "correctAnswer": "Yes, protecting even uncomfortable speech is essential in a democratic society."
-    }
-  },
-  {
-    "id": "C2-SEQ-003-002",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_003_002.wav",
-      "audioText": "Where do we draw the line between free speech and harmful speech?",
-      "sequence_id": "C2-SEQ-003",
-      "sequence_title": "Freedom of Speech in Democratic Societies",
-      "step": 2,
-      "context": "Discussion about speech limitations",
-      "options": [
-        "When speech incites violence or systematically dehumanizes others, it must be restricted.",
-        "If speech causes harm, it is not okay and should be stopped.",
-        "People know what's bad, and they should just say better things.",
-        "It's difficult to say, so we just need to be careful often."
-      ],
-      "correctAnswer": "When speech incites violence or systematically dehumanizes others, it must be restricted."
-    }
-  },
-  {
-    "id": "C2-SEQ-004-001",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_004_001.wav",
-      "audioText": "How do you think automation will reshape the job market in the next decade?",
-      "sequence_id": "C2-SEQ-004",
-      "sequence_title": "The Future of Work",
-      "step": 1,
-      "context": "Discussion about automation's impact on employment",
-      "options": [
-        "It will eliminate repetitive roles while increasing demand for creative and strategic thinking.",
-        "People will just have to work faster because of all the new machines.",
-        "Jobs might go away, but people will find ways to stay useful.",
-        "Robots may do some work, but humans will probably adapt slowly."
-      ],
-      "correctAnswer": "It will eliminate repetitive roles while increasing demand for creative and strategic thinking."
-    }
-  },
-  {
-    "id": "C2-SEQ-005-001",
-    "type": "sequence",
-    "prompt": "Listen and engage in the discussion!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c2_seq_005_001.wav",
-      "audioText": "In your view, what does 'collective responsibility' mean in the context of global challenges?",
-      "sequence_id": "C2-SEQ-005",
-      "sequence_title": "Collective Responsibility and Global Challenges",
-      "step": 1,
-      "context": "Discussion about global collective action",
-      "options": [
-        "It means recognizing that long-term solutions require shared action and accountability.",
-        "It's about thinking big and helping when other people can't.",
-        "People must agree to support each other more than before.",
-        "It shows we care when the world does something all at once."
-      ],
-      "correctAnswer": "It means recognizing that long-term solutions require shared action and accountability."
-    }
-  },
-  {
-    "id": "C2-BMQ-001",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "The speaker made a compelling case, but some of her assumptions remained unexamined. What's your take?",
-      "context": "Academic or intellectual critique discussion",
-      "situation": "Evaluating an argument with unstated premises",
-      "options": [
-        "The logic holds, but the foundation should be tested.",
-        "It seems reasonable if her tone was consistent.",
-        "Her examples were probably clear to the audience.",
-        "I think her conclusions followed usual patterns.",
-        "The main ideas were repeated several times."
-      ],
-      "correctAnswer": "The logic holds, but the foundation should be tested."
-    }
-  },
-  {
-    "id": "C2-BMQ-002",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "How do you interpret a response that's vague but delivered with confidence?",
-      "context": "Analysis of communication and rhetorical strategies",
-      "situation": "Discussing the psychology of confident ambiguity",
-      "options": [
-        "It masks uncertainty while seeking authority.",
-        "It likely reflects a different communication style.",
-        "It may show that the speaker was distracted.",
-        "It proves the topic wasn't fully researched.",
-        "It suggests the speaker expected agreement."
-      ],
-      "correctAnswer": "It masks uncertainty while seeking authority."
-    }
-  },
-  {
-    "id": "C2-BMQ-003",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "The debate touched on several ethical dilemmas, but the panel didn't reach a consensus. Why?",
-      "context": "Meta-ethical discussion about moral disagreement",
-      "situation": "Analyzing why ethical consensus is difficult",
-      "options": [
-        "The values in conflict weren't reconciled.",
-        "The timing probably limited deeper discussion.",
-        "The host should have asked better questions.",
-        "The panelists were unsure how to proceed.",
-        "The issues didn't apply to all situations."
-      ],
-      "correctAnswer": "The values in conflict weren't reconciled."
-    }
-  },
-  {
-    "id": "C2-BMQ-004",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "When reviewing a complex argument with unclear structure, what should you prioritize?",
-      "context": "Advanced argumentation and critical analysis",
-      "situation": "Discussing systematic approaches to argument evaluation",
-      "options": [
-        "Identify core claims and evaluate the logic.",
-        "Focus on the vocabulary and tone changes.",
-        "Compare it to simpler versions of the topic.",
-        "Note any bias or unusual expressions used.",
-        "Wait until the conclusion to form an opinion."
-      ],
-      "correctAnswer": "Identify core claims and evaluate the logic."
-    }
-  },
-  {
-    "id": "C2-BMQ-005",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Why is summarizing a layered discussion more difficult than summarizing a single viewpoint?",
-      "context": "Discussion about information synthesis and complexity",
-      "situation": "Analyzing cognitive challenges in complex synthesis",
-      "options": [
-        "It involves contrasting perspectives and links.",
-        "It's harder to follow when people talk fast.",
-        "It requires more attention to minor errors.",
-        "It depends on who leads the conversation.",
-        "It often includes repetition and hesitation."
-      ],
-      "correctAnswer": "It involves contrasting perspectives and links."
-    }
-  },
-  {
-    "id": "C2-BMQ-006",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Can art still have value if it isn't widely understood by the public?",
-      "context": "Aesthetic philosophy and cultural criticism",
-      "situation": "Discussing artistic value and accessibility",
-      "options": [
-        "Yes, complexity can invite deeper interpretation over time.",
-        "If most people don't get it, maybe it didn't work well.",
-        "Artists should explain their work so others understand it.",
-        "It's better when the audience clearly knows the meaning."
-      ],
-      "correctAnswer": "Yes, complexity can invite deeper interpretation over time."
-    }
-  },
-  {
-    "id": "C2-BMQ-007",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "How should we decide what's ethically acceptable in science?",
-      "context": "Science ethics and policy discussion",
-      "situation": "Discussing ethical decision-making frameworks",
-      "options": [
-        "Through inclusive debate involving scientists, policymakers, and the public.",
-        "Scientists should choose what is right since they know best.",
-        "The public knows what is good and will react if needed.",
-        "If a discovery is useful, it should be tested right away."
-      ],
-      "correctAnswer": "Through inclusive debate involving scientists, policymakers, and the public."
-    }
-  },
-  {
-    "id": "C2-BMQ-008",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Is freedom of speech ever truly equal in practice?",
-      "context": "Political philosophy and democratic theory",
-      "situation": "Analyzing power dynamics in free expression",
-      "options": [
-        "No, access to platforms and power dynamics can distort who is heard.",
-        "Everyone can speak, but some don't try hard enough to be loud.",
-        "Freedom works if people know how to talk better and share more.",
-        "If you post things, people will find you if they really care."
-      ],
-      "correctAnswer": "No, access to platforms and power dynamics can distort who is heard."
-    }
-  },
-  {
-    "id": "C2-BMQ-009",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What kind of skills will be most valuable in a post-automation workforce?",
-      "context": "Future of work and technological change",
-      "situation": "Discussing skills for automated economy",
-      "options": [
-        "Skills involving adaptability, collaboration, and complex problem-solving will be essential.",
-        "People will need to stay calm and use digital tools with care.",
-        "Workers should be nice to others and try hard to stay relevant.",
-        "More people will study new things and get better at using apps."
-      ],
-      "correctAnswer": "Skills involving adaptability, collaboration, and complex problem-solving will be essential."
-    }
-  },
-  {
-    "id": "C2-BMQ-010",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Is it realistic to expect nations with different values to cooperate meaningfully?",
-      "context": "International relations and global governance",
-      "situation": "Discussing cross-cultural cooperation challenges",
-      "options": [
-        "Yes, when mutual interest outweighs ideological differences and trust is built.",
-        "If they want to help, they can meet and talk about change.",
-        "Many don't agree, but that's why we should try to be nice.",
-        "Different ideas exist, but working together is usually good."
-      ],
-      "correctAnswer": "Yes, when mutual interest outweighs ideological differences and trust is built."
     }
   }
 ]

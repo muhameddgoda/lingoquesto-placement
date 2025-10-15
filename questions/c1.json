@@ -1,530 +1,471 @@
 [
   {
-    "id": "C1-OR-001",
+    "id": "C1-MP-501",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_501.wav",
+      "options": ["allude", "elude"],
+      "correctAnswer": "allude"
+    }
+  },
+  {
+    "id": "C1-MP-502",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_502.wav",
+      "options": ["allude", "elude"],
+      "correctAnswer": "elude"
+    }
+  },
+  {
+    "id": "C1-MP-503",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_503.wav",
+      "options": ["complement", "compliment"],
+      "correctAnswer": "complement"
+    }
+  },
+  {
+    "id": "C1-MP-504",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_504.wav",
+      "options": ["complement", "compliment"],
+      "correctAnswer": "compliment"
+    }
+  },
+  {
+    "id": "C1-MP-505",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_505.wav",
+      "options": ["expand", "expend"],
+      "correctAnswer": "expand"
+    }
+  },
+  {
+    "id": "C1-MP-506",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_506.wav",
+      "options": ["expand", "expend"],
+      "correctAnswer": "expend"
+    }
+  },
+  {
+    "id": "C1-MP-507",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_507.wav",
+      "options": ["precede", "proceed"],
+      "correctAnswer": "precede"
+    }
+  },
+  {
+    "id": "C1-MP-508",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_508.wav",
+      "options": ["precede", "proceed"],
+      "correctAnswer": "proceed"
+    }
+  },
+  {
+    "id": "C1-MP-509",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_509.wav",
+      "options": ["moral", "morale"],
+      "correctAnswer": "moral"
+    }
+  },
+  {
+    "id": "C1-MP-510",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_mp_510.wav",
+      "options": ["moral", "morale"],
+      "correctAnswer": "morale"
+    }
+  },
+  {
+    "id": "C1-RS-501",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "Although the evidence appeared convincing, the conclusion was still questioned.",
+      "expectedText": "Although the evidence appeared convincing, the conclusion was still questioned."
+    }
+  },
+  {
+    "id": "C1-RS-502",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "Innovation often requires taking calculated risks and learning from failure.",
+      "expectedText": "Innovation often requires taking calculated risks and learning from failure."
+    }
+  },
+  {
+    "id": "C1-RS-503",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "Had I known about the delay, I would have adjusted my schedule accordingly.",
+      "expectedText": "Had I known about the delay, I would have adjusted my schedule accordingly."
+    }
+  },
+  {
+    "id": "C1-RS-504",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "The committee’s decision was influenced by both ethical and practical concerns.",
+      "expectedText": "The committee’s decision was influenced by both ethical and practical concerns."
+    }
+  },
+  {
+    "id": "C1-RS-505",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "It was only after extensive research that the theory gained acceptance.",
+      "expectedText": "It was only after extensive research that the theory gained acceptance."
+    }
+  },
+  {
+    "id": "C1-DICT-501",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Globalization has profoundly reshaped both economic and cultural interactions.",
+      "audioRef": "audio/c1_dict_501.wav"
+    }
+  },
+  {
+    "id": "C1-DICT-502",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Effective leadership depends on the ability to communicate vision clearly.",
+      "audioRef": "audio/c1_dict_502.wav"
+    }
+  },
+  {
+    "id": "C1-DICT-503",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "The research findings emphasize the importance of interdisciplinary collaboration.",
+      "audioRef": "audio/c1_dict_503.wav"
+    }
+  },
+  {
+    "id": "C1-DICT-504",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "While the proposal was ambitious, it lacked sufficient empirical support.",
+      "audioRef": "audio/c1_dict_504.wav"
+    }
+  },
+  {
+    "id": "C1-DICT-505",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Public policy should be informed by both data and ethical reasoning.",
+      "audioRef": "audio/c1_dict_505.wav"
+    }
+  },
+  {
+    "id": "C1-LMQ-501",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_lmq_501.wav",
+      "audioText": "If we had anticipated the market shift, we could have mitigated the losses.",
+      "question": "What would have helped reduce the losses?",
+      "options": [
+        "Anticipating the market shift.",
+        "Expanding into new markets.",
+        "Reducing production costs."
+      ],
+      "correctAnswer": "Anticipating the market shift."
+    }
+  },
+  {
+    "id": "C1-LMQ-502",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_lmq_502.wav",
+      "audioText": "The report highlights the correlation between education and income growth.",
+      "question": "What relationship does the report describe?",
+      "options": [
+        "Between education and income growth.",
+        "Between age and job satisfaction.",
+        "Between technology and employment."
+      ],
+      "correctAnswer": "Between education and income growth."
+    }
+  },
+  {
+    "id": "C1-LMQ-503",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/c1_lmq_503.wav",
+      "audioText": "Despite their differences, both authors argue for greater social equality.",
+      "question": "What do the authors agree on?",
+      "options": [
+        "The need for greater social equality.",
+        "The causes of inequality.",
+        "The importance of economic reform."
+      ],
+      "correctAnswer": "The need for greater social equality."
+    }
+  },
+  {
+    "id": "C1-BMQ-501",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "Do you think technology can replace human creativity?",
+      "context": "Discussion on AI and creativity",
+      "situation": "Opinion question",
+      "options": [
+        "Not entirely; creativity involves emotional and cultural depth.",
+        "Yes, machines can do everything humans can.",
+        "Technology already makes all creative decisions."
+      ],
+      "correctAnswer": "Not entirely; creativity involves emotional and cultural depth."
+    }
+  },
+  {
+    "id": "C1-BMQ-502",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "How should societies address misinformation online?",
+      "context": "Media ethics discussion",
+      "situation": "Proposing solutions",
+      "options": [
+        "Through education and transparent regulation.",
+        "By banning all online opinions.",
+        "By ignoring unreliable sources."
+      ],
+      "correctAnswer": "Through education and transparent regulation."
+    }
+  },
+  {
+    "id": "C1-BMQ-503",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "The results were inconclusive, so what’s the next step?",
+      "context": "Research planning",
+      "situation": "Discussing follow-up actions",
+      "options": [
+        "We should refine the methodology and repeat the study.",
+        "We can stop researching now.",
+        "Let’s just publish the results anyway."
+      ],
+      "correctAnswer": "We should refine the methodology and repeat the study."
+    }
+  },
+  {
+    "id": "C1-OR-501",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Analyze the ethical implications of using AI in healthcare.",
+      "question": "Analyze how social media has changed the concept of privacy.",
       "helpers": [
-        "What are the potential benefits and ethical concerns of AI in medical decisions?",
-        "How might AI affect patient privacy and doctor-patient relationships?",
-        "Should there be limits on AI's role in healthcare? How can we ensure responsible use?"
+        "How has online sharing influenced privacy?",
+        "What ethical concerns arise?",
+        "How can individuals protect themselves?"
       ]
     }
   },
   {
-    "id": "C1-OR-002",
+    "id": "C1-OR-502",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Evaluate government policies for combating climate change.",
+      "question": "Discuss the impact of globalization on cultural diversity.",
       "helpers": [
-        "Which climate policies have been most effective? What are the main implementation challenges?",
-        "How can governments balance economic growth with environmental protection?",
-        "What role should international cooperation play? How do different countries' approaches compare?"
+        "What positive and negative effects exist?",
+        "How do global trends affect local cultures?",
+        "Can globalization and diversity coexist?"
       ]
     }
   },
   {
-    "id": "C1-OR-003",
+    "id": "C1-OR-503",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Critique the gig economy's effects on workers' rights.",
+      "question": "Explain how education can promote equality of opportunity.",
       "helpers": [
-        "How has the gig economy changed traditional employment? What benefits does it offer workers?",
-        "What labor protections are missing in gig work?",
-        "How do workers' rights differ between traditional and gig employment? What reforms might be needed?"
+        "What barriers exist?",
+        "What role do governments play?",
+        "How can education systems adapt?"
       ]
     }
   },
   {
-    "id": "C1-OR-004",
+    "id": "C1-OR-504",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Analyze the social consequences of economic inequality.",
+      "question": "Evaluate the balance between innovation and ethics in modern science.",
       "helpers": [
-        "How does economic inequality affect social mobility, education, and healthcare access?",
-        "What are the root causes of growing inequality?",
-        "What solutions might help reduce inequality? How does it affect democracy and social stability?"
+        "Where do ethical challenges appear?",
+        "Should innovation always come first?",
+        "How can regulation help?"
       ]
     }
   },
   {
-    "id": "C1-OR-005",
+    "id": "C1-OR-505",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Critically assess the statement: 'Technology democratizes knowledge.'",
+      "question": "Describe a social issue you feel strongly about and why.",
       "helpers": [
-        "In what ways has technology made knowledge more accessible? What barriers still exist?",
-        "How do digital divides affect knowledge access? What role does misinformation play?",
-        "Does technology create new forms of knowledge gatekeeping?"
+        "What is the issue?",
+        "Why does it matter to you?",
+        "What could improve the situation?"
       ]
     }
   },
   {
-    "id": "C1-OR-006",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Can you explain a situation where you had to navigate conflicting viewpoints?",
-      "helpers": [
-        "What was the nature of the conflict between different viewpoints?",
-        "How did you analyze and understand each perspective? What strategies did you use to find common ground?",
-        "How did you manage relationships while addressing disagreements? What was the outcome?"
-      ]
-    }
-  },
-  {
-    "id": "C1-OR-007",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "What are the ethical implications of using AI in decision-making processes?",
-      "helpers": [
-        "What types of decisions is AI currently making? What ethical concerns arise?",
-        "How can we ensure AI systems are fair and unbiased?",
-        "What role should human oversight play? How do we balance efficiency with ethics?"
-      ]
-    }
-  },
-  {
-    "id": "C1-OR-008",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "How would you evaluate the success of a long-term personal or professional goal?",
-      "helpers": [
-        "What metrics should be used to measure goal achievement?",
-        "How do you account for changing circumstances and evolving objectives?",
-        "What role do unintended consequences play? How do you balance quantitative and qualitative outcomes?"
-      ]
-    }
-  },
-  {
-    "id": "C1-OR-009",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "In your opinion, how can organizations balance innovation with risk management?",
-      "helpers": [
-        "What tensions exist between innovation and risk management?",
-        "How can organizations foster creativity while maintaining oversight?",
-        "What role does regulatory compliance play? What are the costs of being too conservative versus too aggressive?"
-      ]
-    }
-  },
-  {
-    "id": "C1-OR-010",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Describe a time when your opinion changed after gaining new information.",
-      "helpers": [
-        "What was your original opinion and what new information challenged it?",
-        "What made you open to changing your perspective? How did you evaluate the credibility of the new information?",
-        "What was the process of changing your mind like? Why is intellectual flexibility important?"
-      ]
-    }
-  },
-  {
-    "id": "C1-IMG-001",
+    "id": "C1-IMG-501",
     "type": "image_description",
-    "prompt": "Analyze this image!",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "c1_img_001.png",
-      "imageDescription": "A politician giving a speech to a sparse audience in an empty hall",
-      "question": "Examine this image and provide a sophisticated analysis of what you observe. Discuss the potential implications for democratic engagement, political communication, and the relationship between leaders and citizens.",
+      "imageTopic": "Technology – Smart city",
+      "imageGuidance": "Modern city skyline with sensors, public transport, and digital screens.",
+      "context": "Describe how technology shapes urban life and sustainability.",
+      "question": "Look at the image and describe how the city uses technology.",
+      "imageRef": "images/c1_img_501.png",
       "helpers": [
-        "What do you observe in this political scene?",
-        "What might this represent about contemporary politics and democratic engagement?",
-        "What are the implications for political communication and citizen-leader relationships?"
+        "What technology do you see?",
+        "How does it help people?",
+        "What challenges might exist?"
       ]
     }
   },
   {
-    "id": "C1-IMG-002",
+    "id": "C1-IMG-502",
     "type": "image_description",
-    "prompt": "Analyze this image!",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "c1_img_002.png",
-      "imageDescription": "An abandoned factory overtaken by nature's vines and flowers",
-      "question": "Analyze this image thoughtfully, considering themes of industrial decline, environmental reclamation, economic transformation, and the relationship between human activity and nature.",
+      "imageTopic": "Education – Online learning",
+      "imageGuidance": "Student studying online with laptop and notes, virtual classroom on screen.",
+      "context": "Describe modern education methods and their advantages and limits.",
+      "question": "Look at the image and describe how people study today.",
+      "imageRef": "images/c1_img_502.png",
       "helpers": [
-        "What do you see in this scene? Describe the visual elements.",
-        "What themes of industrial decline and environmental reclamation are present?",
-        "What might this symbolize about societal change and economic transformation?"
+        "What tools are they using?",
+        "What are the benefits?",
+        "What problems might occur?"
       ]
     }
   },
   {
-    "id": "C1-IMG-003",
+    "id": "C1-IMG-503",
     "type": "image_description",
-    "prompt": "Analyze this image!",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "c1_img_003.png",
-      "imageDescription": "Two business people shaking hands while their expressions seem tense",
-      "question": "Examine this business interaction critically, analyzing the disconnect between formal gestures and underlying tension. Discuss what this might reveal about professional relationships and negotiation dynamics.",
+      "imageTopic": "Work – Remote collaboration",
+      "imageGuidance": "Team members video-conferencing; screens with charts; home office setting.",
+      "context": "Describe teamwork in a digital environment.",
+      "question": "Look at the image and describe how the team collaborates.",
+      "imageRef": "images/c1_img_503.png",
       "helpers": [
-        "What do you observe about this business interaction?",
-        "What disconnect exists between formal gestures and underlying tension?",
-        "What does this reveal about professional relationships and corporate communication?"
+        "What are they discussing?",
+        "How do they stay connected?",
+        "What challenges might they face?"
       ]
     }
   },
   {
-    "id": "C1-IMG-004",
+    "id": "C1-IMG-504",
     "type": "image_description",
-    "prompt": "Analyze this image!",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "c1_img_004.png",
-      "imageDescription": "A doctor watching monitors with concern in an ICU corridor",
-      "question": "Provide a nuanced analysis of this medical scene, discussing the emotional and ethical dimensions of healthcare, the burden of medical responsibility, and the human elements of clinical practice.",
+      "imageTopic": "Society – Climate protest",
+      "imageGuidance": "Crowd holding banners about climate action; urban background.",
+      "context": "Describe civic activism and environmental awareness.",
+      "question": "Look at the image and describe what people are doing and why.",
+      "imageRef": "images/c1_img_504.png",
       "helpers": [
-        "What is happening in this medical scene? What do you observe?",
-        "What emotional and ethical dimensions of healthcare are present?",
-        "What does this reveal about medical responsibility and the human elements of clinical practice?"
+        "What do the banners say?",
+        "Who is involved?",
+        "Why is this important?"
       ]
     }
   },
   {
-    "id": "C1-IMG-005",
+    "id": "C1-IMG-505",
     "type": "image_description",
-    "prompt": "Analyze this image!",
+    "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "c1_img_005.png",
-      "imageDescription": "A refugee family walking through a train station with few belongings",
-      "question": "Analyze this powerful image thoughtfully, discussing themes of displacement, resilience, global migration, and human dignity. Consider the broader social, political, and humanitarian implications.",
+      "imageTopic": "Innovation – Research lab",
+      "imageGuidance": "Scientists in lab coats using advanced instruments.",
+      "context": "Describe innovation, teamwork, and research goals.",
+      "question": "Look at the image and describe what’s happening in the lab.",
+      "imageRef": "images/c1_img_505.png",
       "helpers": [
-        "What do you observe in this image? Describe the scene.",
-        "What themes of displacement, resilience, and human dignity are present?",
-        "What are the broader social, political, and humanitarian implications of forced migration?"
+        "What are they researching?",
+        "What tools are used?",
+        "How does this relate to society?"
       ]
-    }
-  },
-  {
-    "id": "C1-BMQ-001",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Given the complexity of the topic, I'd recommend we approach it in phases. Thoughts?",
-      "context": "Professional project planning discussion",
-      "situation": "Colleague suggesting a phased approach to complex project",
-      "options": [
-        "That's a good idea. It'll help keep things manageable.",
-        "I'm not sure. Maybe we can try it tomorrow.",
-        "I'll have to ask someone before deciding.",
-        "It might be fine to just do it all at once.",
-        "I think the timeline is already clear."
-      ],
-      "correctAnswer": "That's a good idea. It'll help keep things manageable."
-    }
-  },
-  {
-    "id": "C1-BMQ-002",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Some critics argue the initiative lacks transparency. What's your perspective?",
-      "context": "Policy discussion addressing criticism",
-      "situation": "Someone asking for your view on criticism about transparency",
-      "options": [
-        "That's a fair concern. We could publish more details.",
-        "I'm not familiar with the full proposal.",
-        "We've already answered that question before.",
-        "There hasn't been much public feedback yet.",
-        "The data doesn't seem too relevant right now."
-      ],
-      "correctAnswer": "That's a fair concern. We could publish more details."
-    }
-  },
-  {
-    "id": "C1-BMQ-003",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "We need someone who can synthesize these perspectives and present a balanced view.",
-      "context": "Team discussion about presenting complex information",
-      "situation": "Looking for someone to integrate multiple viewpoints",
-      "options": [
-        "I'm happy to do that and outline the main arguments.",
-        "I don't know which points are more important.",
-        "That sounds like something for leadership to decide.",
-        "I've shared my opinion already, so I'm done.",
-        "Maybe we can just show all the information as is."
-      ],
-      "correctAnswer": "I'm happy to do that and outline the main arguments."
-    }
-  },
-  {
-    "id": "C1-BMQ-004",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What do you think drives someone to maintain a controversial position despite strong opposition?",
-      "context": "Philosophical discussion about human behavior",
-      "situation": "Someone asking about psychological motivations",
-      "options": [
-        "It could be conviction or a desire to challenge norms.",
-        "I think people like to be the center of attention.",
-        "It's probably because they haven't read the data.",
-        "It usually depends on how loud the discussion is.",
-        "Some topics are more emotional than logical."
-      ],
-      "correctAnswer": "It could be conviction or a desire to challenge norms."
-    }
-  },
-  {
-    "id": "C1-BMQ-005",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "How would you explain the role of nuance in effective communication?",
-      "context": "Discussion about communication theory",
-      "situation": "Someone asking about sophisticated communication concepts",
-      "options": [
-        "It helps clarify subtle points and reduce confusion.",
-        "It's easier to speak clearly if you're confident.",
-        "Most of the time people don't listen closely.",
-        "I just try to keep things short and simple.",
-        "Email is usually the safest form of expression."
-      ],
-      "correctAnswer": "It helps clarify subtle points and reduce confusion."
-    }
-  },
-  {
-    "id": "C1-BMQ-006",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "In your view, how has technology changed the way we interact with one another?",
-      "context": "Discussion about technology's social impact",
-      "situation": "Someone asking for analysis of technological change",
-      "options": [
-        "It's made communication faster but often less thoughtful.",
-        "It helps people talk, and it is always very useful.",
-        "Phones are easy now, so we talk more than before.",
-        "We can send texts, which makes connection simpler now."
-      ],
-      "correctAnswer": "It's made communication faster but often less thoughtful."
-    }
-  },
-  {
-    "id": "C1-BMQ-007",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Do you think AI should be used to make decisions in areas like hiring or law?",
-      "context": "Ethics discussion about AI in decision-making",
-      "situation": "Someone asking about AI ethics in critical areas",
-      "options": [
-        "It can support decisions, but human oversight is essential.",
-        "AI does many things, and it is used for lots of work.",
-        "It works fast, so maybe it's better than people now.",
-        "Computers are smart and make rules much easier today."
-      ],
-      "correctAnswer": "It can support decisions, but human oversight is essential."
-    }
-  },
-  {
-    "id": "C1-BMQ-008",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "How do you think globalization has influenced cultural identity?",
-      "context": "Discussion about globalization and culture",
-      "situation": "Someone asking about cultural impact of globalization",
-      "options": [
-        "It has created more exchange, but also blurred local traditions.",
-        "Culture is changing because people like sharing more now.",
-        "Global things make the world smaller and very different.",
-        "Traditions are now shared, so people know each other."
-      ],
-      "correctAnswer": "It has created more exchange, but also blurred local traditions."
-    }
-  },
-  {
-    "id": "C1-BMQ-009",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What do you think is one of the biggest problems with traditional education systems?",
-      "context": "Education reform discussion",
-      "situation": "Someone asking for critical analysis of education",
-      "options": [
-        "They often focus too much on memorization over critical thinking.",
-        "Many people in school don't like tests or long homework.",
-        "The teachers are good, but sometimes students get bored.",
-        "Schools are strict and make students follow the same way."
-      ],
-      "correctAnswer": "They often focus too much on memorization over critical thinking."
-    }
-  },
-  {
-    "id": "C1-BMQ-010",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Why is media literacy becoming more important today?",
-      "context": "Discussion about information literacy",
-      "situation": "Someone asking about media literacy importance",
-      "options": [
-        "Because people need tools to critically assess what they consume online.",
-        "People read things fast and the internet is full of different stuff.",
-        "The media is everywhere and people like to watch videos.",
-        "News is big now and people want to know more things."
-      ],
-      "correctAnswer": "Because people need tools to critically assess what they consume online."
-    }
-  },
-  {
-    "id": "C1-MP-001",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_001.wav",
-      "options": ["no", "now"],
-      "correctAnswer": "no",
-      "phonemes": ["/noʊ/", "/aʊ/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-002",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_002.wav",
-      "options": ["no", "now"],
-      "correctAnswer": "now",
-      "phonemes": ["/noʊ/", "/aʊ/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-003",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_003.wav",
-      "options": ["live", "leave"],
-      "correctAnswer": "live",
-      "phonemes": ["/ɪ/", "/iː/"],
-      "difficulty": "advanced",
-      "note": "verb form with short i sound"
-    }
-  },
-  {
-    "id": "C1-MP-004",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_004.wav",
-      "options": ["live", "leave"],
-      "correctAnswer": "leave",
-      "phonemes": ["/ɪ/", "/iː/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-005",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_005.wav",
-      "options": ["part", "pert"],
-      "correctAnswer": "part",
-      "phonemes": ["/ɑː/", "/ɜː/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-006",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_006.wav",
-      "options": ["part", "pert"],
-      "correctAnswer": "pert",
-      "phonemes": ["/ɑː/", "/ɜː/"],
-      "difficulty": "advanced"
-    }
-  },
-  {
-    "id": "C1-MP-007",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_007.wav",
-      "options": ["CONduct", "conDUCT"],
-      "correctAnswer": "conduct",
-      "stress_pattern": "first_syllable",
-      "difficulty": "advanced",
-      "note": "noun form with first syllable stress"
-    }
-  },
-  {
-    "id": "C1-MP-008",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_008.wav",
-      "options": ["CONduct", "conDUCT"],
-      "correctAnswer": "conduct",
-      "stress_pattern": "second_syllable",
-      "difficulty": "advanced",
-      "note": "verb form with second syllable stress"
-    }
-  },
-  {
-    "id": "C1-MP-009",
-    "type": "minimal_pair",
-    "prompt": "Which phrase did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_009.wav",
-      "options": ["I scream", "ice cream"],
-      "correctAnswer": "I scream",
-      "difficulty": "advanced",
-      "note": "connected speech distinction"
-    }
-  },
-  {
-    "id": "C1-MP-010",
-    "type": "minimal_pair",
-    "prompt": "Which phrase did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/c1_mp_010.wav",
-      "options": ["I scream", "ice cream"],
-      "correctAnswer": "ice cream",
-      "difficulty": "advanced",
-      "note": "connected speech distinction"
     }
   }
 ]

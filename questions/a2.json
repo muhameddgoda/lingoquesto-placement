@@ -1,76 +1,137 @@
 [
   {
-    "id": "A2-RS-001",
+    "id": "A2-MP-201",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_201.wav",
+      "options": ["full", "fool"],
+      "correctAnswer": "full"
+    }
+  },
+  {
+    "id": "A2-MP-202",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_202.wav",
+      "options": ["full", "fool"],
+      "correctAnswer": "fool"
+    }
+  },
+  {
+    "id": "A2-MP-203",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_203.wav",
+      "options": ["pen", "pan"],
+      "correctAnswer": "pen"
+    }
+  },
+  {
+    "id": "A2-MP-204",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_204.wav",
+      "options": ["pen", "pan"],
+      "correctAnswer": "pan"
+    }
+  },
+  {
+    "id": "A2-MP-205",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_205.wav",
+      "options": ["cheap", "sheep"],
+      "correctAnswer": "cheap"
+    }
+  },
+  {
+    "id": "A2-MP-206",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_206.wav",
+      "options": ["cheap", "sheep"],
+      "correctAnswer": "sheep"
+    }
+  },
+  {
+    "id": "A2-MP-207",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_207.wav",
+      "options": ["fit", "feet"],
+      "correctAnswer": "fit"
+    }
+  },
+  {
+    "id": "A2-MP-208",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_208.wav",
+      "options": ["fit", "feet"],
+      "correctAnswer": "feet"
+    }
+  },
+  {
+    "id": "A2-MP-209",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_209.wav",
+      "options": ["fan", "van"],
+      "correctAnswer": "fan"
+    }
+  },
+  {
+    "id": "A2-MP-210",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a2_mp_210.wav",
+      "options": ["fan", "van"],
+      "correctAnswer": "van"
+    }
+  },
+
+  {
+    "id": "A2-RS-201",
     "type": "repeat_sentence",
     "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
-      "sentence": "Could you tell me where the nearest supermarket is?",
-      "expectedText": "Could you tell me where the nearest supermarket is?"
+      "sentence": "We usually go shopping on Saturday mornings.",
+      "expectedText": "We usually go shopping on Saturday mornings."
     }
   },
   {
-    "id": "A2-RS-002",
+    "id": "A2-RS-202",
     "type": "repeat_sentence",
     "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
-      "sentence": "We usually go shopping every Saturday morning.",
-      "expectedText": "We usually go shopping every Saturday morning."
+      "sentence": "I have lived here for two years.",
+      "expectedText": "I have lived here for two years."
     }
   },
   {
-    "id": "A2-RS-003",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "I have lived in this neighborhood for two years.",
-      "expectedText": "I have lived in this neighborhood for two years."
-    }
-  },
-  {
-    "id": "A2-RS-004",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "Can I try on this blue shirt in a size medium?",
-      "expectedText": "Can I try on this blue shirt in a size medium?"
-    }
-  },
-  {
-    "id": "A2-RS-005",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "The market opens at eight o'clock and closes at five.",
-      "expectedText": "The market opens at eight o'clock and closes at five."
-    }
-  },
-  {
-    "id": "A2-RS-006",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "I work in a small office near the train station.",
-      "expectedText": "I work in a small office near the train station."
-    }
-  },
-  {
-    "id": "A2-RS-007",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "My sister is studying medicine at university.",
-      "expectedText": "My sister is studying medicine at university."
-    }
-  },
-  {
-    "id": "A2-RS-008",
+    "id": "A2-RS-203",
     "type": "repeat_sentence",
     "prompt": "Repeat the sentence!",
     "metadata": {
@@ -80,17 +141,17 @@
     }
   },
   {
-    "id": "A2-RS-009",
+    "id": "A2-RS-204",
     "type": "repeat_sentence",
     "prompt": "Repeat the sentence!",
     "metadata": {
       "accent": "us",
-      "sentence": "He goes to the gym every Tuesday and Thursday.",
-      "expectedText": "He goes to the gym every Tuesday and Thursday."
+      "sentence": "My sister studies medicine at university.",
+      "expectedText": "My sister studies medicine at university."
     }
   },
   {
-    "id": "A2-RS-010",
+    "id": "A2-RS-205",
     "type": "repeat_sentence",
     "prompt": "Repeat the sentence!",
     "metadata": {
@@ -99,822 +160,295 @@
       "expectedText": "We are planning a trip to the mountains this weekend."
     }
   },
+
   {
-    "id": "A2-DICT-001",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "I work in a small office near the train station.",
-      "audioRef": "audio/a2_dict_001.wav"
-    }
-  },
-  {
-    "id": "A2-DICT-002",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "My sister is studying medicine at university.",
-      "audioRef": "audio/a2_dict_002.wav"
-    }
-  },
-  {
-    "id": "A2-DICT-003",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "Can I pay with a credit card, please?",
-      "audioRef": "audio/a2_dict_003.wav"
-    }
-  },
-  {
-    "id": "A2-DICT-004",
+    "id": "A2-DICT-201",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "He goes to the gym every Tuesday and Thursday.",
-      "audioRef": "audio/a2_dict_004.wav"
+      "audioRef": "audio/a2_dict_201.wav"
     }
   },
   {
-    "id": "A2-DICT-005",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "We are planning a trip to the mountains this weekend.",
-      "audioRef": "audio/a2_dict_005.wav"
-    }
-  },
-  {
-    "id": "A2-DICT-006",
+    "id": "A2-DICT-202",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
       "expectedText": "Could you tell me where the nearest supermarket is?",
-      "audioRef": "audio/a2_dict_006.wav"
+      "audioRef": "audio/a2_dict_202.wav"
     }
   },
   {
-    "id": "A2-DICT-007",
+    "id": "A2-DICT-203",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "We usually go shopping every Saturday morning.",
-      "audioRef": "audio/a2_dict_007.wav"
+      "expectedText": "We are going to visit our grandparents tomorrow.",
+      "audioRef": "audio/a2_dict_203.wav"
     }
   },
   {
-    "id": "A2-DICT-008",
+    "id": "A2-DICT-204",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "The market opens at eight o'clock and closes at five.",
-      "audioRef": "audio/a2_dict_008.wav"
+      "expectedText": "The restaurant closes at ten o'clock at night.",
+      "audioRef": "audio/a2_dict_204.wav"
     }
   },
   {
-    "id": "A2-LMQ-001",
+    "id": "A2-DICT-205",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "I forgot my umbrella because it was sunny in the morning.",
+      "audioRef": "audio/a2_dict_205.wav"
+    }
+  },
+
+  {
+    "id": "A2-LMQ-201",
     "type": "listen_mcq",
     "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a2_lmq_001.wav",
-      "audioText": "What time do you usually wake up?",
-      "question": "What is the appropriate response?",
+      "audioRef": "audio/a2_lmq_201.wav",
+      "audioText": "I usually take the bus to work.",
+      "question": "Choose the correct sentence.",
       "options": [
-        "I wake up at 7 a.m.",
-        "I eat pizza.",
-        "My sister is tall.",
-        "I have two dogs.",
-        "I go shopping."
+        "I usually take the bus to work.",
+        "I take usually the bus to work.",
+        "I am usually taking the bus to work."
       ],
-      "correctAnswer": "I wake up at 7 a.m."
+      "correctAnswer": "I usually take the bus to work."
     }
   },
   {
-    "id": "A2-LMQ-002",
+    "id": "A2-LMQ-202",
     "type": "listen_mcq",
     "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a2_lmq_002.wav",
-      "audioText": "Can I help you find something?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "Yes, I'm looking for the bread.",
-        "My favorite color is blue.",
-        "I go to the park.",
-        "I have two brothers.",
-        "I live in Mexico."
-      ],
-      "correctAnswer": "Yes, I'm looking for the bread."
+      "audioRef": "audio/a2_lmq_202.wav",
+      "audioText": "The train leaves at nine o'clock.",
+      "question": "What time does the train leave?",
+      "options": ["At nine o'clock.", "At eight o'clock.", "At ten o'clock."],
+      "correctAnswer": "At nine o'clock."
     }
   },
   {
-    "id": "A2-LMQ-003",
+    "id": "A2-LMQ-203",
     "type": "listen_mcq",
     "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a2_lmq_003.wav",
-      "audioText": "What do you do?",
-      "question": "What is the appropriate response?",
+      "audioRef": "audio/a2_lmq_203.wav",
+      "audioText": "I didn't go out because it was raining.",
+      "question": "Why didn’t the speaker go out?",
       "options": [
-        "I am a nurse.",
-        "I live in a big house.",
-        "I am going to the cinema.",
-        "I am hungry.",
-        "I am from Spain."
+        "Because it was raining.",
+        "Because he was tired.",
+        "Because it was sunny."
       ],
-      "correctAnswer": "I am a nurse."
+      "correctAnswer": "Because it was raining."
     }
   },
+
   {
-    "id": "A2-LMQ-004",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_lmq_004.wav",
-      "audioText": "Where is the nearest supermarket?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "It's next to the bank.",
-        "I don't like fish.",
-        "I am 20 years old.",
-        "I am a teacher.",
-        "The weather is nice."
-      ],
-      "correctAnswer": "It's next to the bank."
-    }
-  },
-  {
-    "id": "A2-LMQ-005",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_lmq_005.wav",
-      "audioText": "How do you get to work?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "I take the bus.",
-        "I like cats.",
-        "I go shopping.",
-        "I eat breakfast.",
-        "I watch TV."
-      ],
-      "correctAnswer": "I take the bus."
-    }
-  },
-  {
-    "id": "A2-MP-001",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_001.wav",
-      "options": ["full", "fool"],
-      "correctAnswer": "full"
-    }
-  },
-  {
-    "id": "A2-MP-002",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_002.wav",
-      "options": ["full", "fool"],
-      "correctAnswer": "fool"
-    }
-  },
-  {
-    "id": "A2-MP-003",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_003.wav",
-      "options": ["cheap", "sheep"],
-      "correctAnswer": "cheap"
-    }
-  },
-  {
-    "id": "A2-MP-004",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_004.wav",
-      "options": ["cheap", "sheep"],
-      "correctAnswer": "sheep"
-    }
-  },
-  {
-    "id": "A2-MP-005",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_005.wav",
-      "options": ["pen", "pan"],
-      "correctAnswer": "pen"
-    }
-  },
-  {
-    "id": "A2-MP-006",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_006.wav",
-      "options": ["pen", "pan"],
-      "correctAnswer": "pan"
-    }
-  },
-  {
-    "id": "A2-MP-007",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_007.wav",
-      "options": ["day", "they"],
-      "correctAnswer": "day"
-    }
-  },
-  {
-    "id": "A2-MP-008",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_008.wav",
-      "options": ["day", "they"],
-      "correctAnswer": "they"
-    }
-  },
-  {
-    "id": "A2-MP-009",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_009.wav",
-      "options": ["see", "seer"],
-      "correctAnswer": "see"
-    }
-  },
-  {
-    "id": "A2-MP-010",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_mp_010.wav",
-      "options": ["see", "seer"],
-      "correctAnswer": "seer"
-    }
-  },
-  {
-    "id": "A2-SEQ-001-001",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_001_001.wav",
-      "audioText": "Hi, I saw your job post online. Is the position still available?",
-      "sequence_id": "A2-SEQ-001",
-      "sequence_title": "Looking for a Job",
-      "step": 1,
-      "context": "Job interview phone call",
-      "options": [
-        "Yes, we're still accepting applications.",
-        "No, the post is online.",
-        "Yes, we have many jobs every day.",
-        "I saw the position too."
-      ],
-      "correctAnswer": "Yes, we're still accepting applications."
-    }
-  },
-  {
-    "id": "A2-SEQ-001-002",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_001_002.wav",
-      "audioText": "Great. What kind of experience are you looking for?",
-      "sequence_id": "A2-SEQ-001",
-      "sequence_title": "Looking for a Job",
-      "step": 2,
-      "context": "Job interview phone call - discussing requirements",
-      "options": [
-        "We need someone with customer service experience.",
-        "I want a good job now.",
-        "It is easy and fast.",
-        "Yes, we have positions in the city."
-      ],
-      "correctAnswer": "We need someone with customer service experience."
-    }
-  },
-  {
-    "id": "A2-SEQ-001-003",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_001_003.wav",
-      "audioText": "I've worked in a store before, helping customers.",
-      "sequence_id": "A2-SEQ-001",
-      "sequence_title": "Looking for a Job",
-      "step": 3,
-      "context": "Job interview phone call - candidate sharing experience",
-      "options": [
-        "That's perfect. We're looking for someone like that.",
-        "Yes, I want store.",
-        "Customers go to shop often.",
-        "No, store is not job."
-      ],
-      "correctAnswer": "That's perfect. We're looking for someone like that."
-    }
-  },
-  {
-    "id": "A2-SEQ-001-004",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_001_004.wav",
-      "audioText": "What are the working hours?",
-      "sequence_id": "A2-SEQ-001",
-      "sequence_title": "Looking for a Job",
-      "step": 4,
-      "context": "Job interview phone call - asking about schedule",
-      "options": [
-        "It's full-time, from 9 a.m. to 5 p.m.",
-        "I work full time at home.",
-        "The job is with hours, yes.",
-        "Yes, the store is big."
-      ],
-      "correctAnswer": "It's full-time, from 9 a.m. to 5 p.m."
-    }
-  },
-  {
-    "id": "A2-SEQ-001-005",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_001_005.wav",
-      "audioText": "Can I send you my CV by email?",
-      "sequence_id": "A2-SEQ-001",
-      "sequence_title": "Looking for a Job",
-      "step": 5,
-      "context": "Job interview phone call - next steps",
-      "options": [
-        "Yes, please send it to info@storejob.com",
-        "No, we talk on job.",
-        "Yes, email is my computer.",
-        "CV go by you later."
-      ],
-      "correctAnswer": "Yes, please send it to info@storejob.com"
-    }
-  },
-  {
-    "id": "A2-SEQ-002-001",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_002_001.wav",
-      "audioText": "Good afternoon. I'd like to book a room for two nights, please.",
-      "sequence_id": "A2-SEQ-002",
-      "sequence_title": "Booking a Hotel Room",
-      "step": 1,
-      "context": "Hotel reception - booking inquiry",
-      "options": [
-        "Of course. What dates are you looking for?",
-        "The hotel is open now.",
-        "Yes, we are booking today.",
-        "I like this hotel a lot."
-      ],
-      "correctAnswer": "Of course. What dates are you looking for?"
-    }
-  },
-  {
-    "id": "A2-SEQ-002-002",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_002_002.wav",
-      "audioText": "From the 12th to the 14th of July.",
-      "sequence_id": "A2-SEQ-002",
-      "sequence_title": "Booking a Hotel Room",
-      "step": 2,
-      "context": "Hotel reception - checking availability",
-      "options": [
-        "We have availability for those dates.",
-        "I stay in July too.",
-        "Yes, the calendar is open.",
-        "That's two days before Friday."
-      ],
-      "correctAnswer": "We have availability for those dates."
-    }
-  },
-  {
-    "id": "A2-SEQ-002-003",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_002_003.wav",
-      "audioText": "Do you want a single or a double room?",
-      "sequence_id": "A2-SEQ-002",
-      "sequence_title": "Booking a Hotel Room",
-      "step": 3,
-      "context": "Hotel reception - room type selection",
-      "options": [
-        "A double, please. It's for my friend and me.",
-        "Yes, double the night.",
-        "I want two people and one bed.",
-        "No, I don't want double."
-      ],
-      "correctAnswer": "A double, please. It's for my friend and me."
-    }
-  },
-  {
-    "id": "A2-SEQ-003-001",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_003_001.wav",
-      "audioText": "Good morning. What seems to be the problem today?",
-      "sequence_id": "A2-SEQ-003",
-      "sequence_title": "At the Doctor's Office",
-      "step": 1,
-      "context": "Doctor's appointment - describing symptoms",
-      "options": [
-        "I've had a headache since yesterday.",
-        "I feel the weather is nice.",
-        "I go to school with a friend.",
-        "Yes, I have the time today."
-      ],
-      "correctAnswer": "I've had a headache since yesterday."
-    }
-  },
-  {
-    "id": "A2-SEQ-003-002",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_003_002.wav",
-      "audioText": "Have you taken anything for the pain?",
-      "sequence_id": "A2-SEQ-003",
-      "sequence_title": "At the Doctor's Office",
-      "step": 2,
-      "context": "Doctor's appointment - discussing treatment",
-      "options": [
-        "Just some aspirin last night.",
-        "I sleep and go fast.",
-        "Yes, I take my lunch now.",
-        "My friend also has pain."
-      ],
-      "correctAnswer": "Just some aspirin last night."
-    }
-  },
-  {
-    "id": "A2-SEQ-004-001",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_004_001.wav",
-      "audioText": "Excuse me, does this bus go to the city center?",
-      "sequence_id": "A2-SEQ-004",
-      "sequence_title": "Taking the Bus",
-      "step": 1,
-      "context": "Public transport - asking for information",
-      "options": [
-        "Yes, it stops near the main square.",
-        "No, I like the city center.",
-        "I go on this bus every day.",
-        "Yes, I see it on the map."
-      ],
-      "correctAnswer": "Yes, it stops near the main square."
-    }
-  },
-  {
-    "id": "A2-SEQ-004-002",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_004_002.wav",
-      "audioText": "How long does it take to get there?",
-      "sequence_id": "A2-SEQ-004",
-      "sequence_title": "Taking the Bus",
-      "step": 2,
-      "context": "Public transport - asking about duration",
-      "options": [
-        "About twenty minutes, if there's no traffic.",
-        "The bus is blue and big.",
-        "Yes, I like the station.",
-        "You can walk if you want."
-      ],
-      "correctAnswer": "About twenty minutes, if there's no traffic."
-    }
-  },
-  {
-    "id": "A2-SEQ-005-001",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_005_001.wav",
-      "audioText": "Hi there, can I help you find something?",
-      "sequence_id": "A2-SEQ-005",
-      "sequence_title": "Shopping for Clothes",
-      "step": 1,
-      "context": "Clothing store - customer service",
-      "options": [
-        "Yes, I'm looking for a pair of jeans.",
-        "Yes, I like pants in the morning.",
-        "No, I go buy shoes later.",
-        "I want jeans for Monday dinner."
-      ],
-      "correctAnswer": "Yes, I'm looking for a pair of jeans."
-    }
-  },
-  {
-    "id": "A2-SEQ-005-002",
-    "type": "sequence",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a2_seq_005_002.wav",
-      "audioText": "What size do you wear?",
-      "sequence_id": "A2-SEQ-005",
-      "sequence_title": "Shopping for Clothes",
-      "step": 2,
-      "context": "Clothing store - size inquiry",
-      "options": [
-        "I usually wear a medium.",
-        "I like blue shirts.",
-        "It's for my brother.",
-        "I wear clothes every day."
-      ],
-      "correctAnswer": "I usually wear a medium."
-    }
-  },
-  {
-    "id": "A2-BMQ-001",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Can you describe your daily routine?",
-      "context": "Personal conversation about lifestyle",
-      "situation": "Someone asking about your schedule",
-      "options": [
-        "I wake up at 7, have breakfast, and go to work at 8:30.",
-        "I like coffee and orange juice.",
-        "My routine is very nice and good.",
-        "Yes, I have a routine every day."
-      ],
-      "correctAnswer": "I wake up at 7, have breakfast, and go to work at 8:30."
-    }
-  },
-  {
-    "id": "A2-BMQ-002",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Where do you usually go shopping?",
-      "context": "Personal conversation about shopping habits",
-      "situation": "Someone asking about your preferences",
-      "options": [
-        "I usually go to the supermarket near my house.",
-        "Shopping is very expensive these days.",
-        "I like to buy many things.",
-        "Yes, I go shopping sometimes."
-      ],
-      "correctAnswer": "I usually go to the supermarket near my house."
-    }
-  },
-  {
-    "id": "A2-BMQ-003",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What do you do on the weekend?",
-      "context": "Personal conversation about leisure activities",
-      "situation": "Someone asking about weekend plans",
-      "options": [
-        "I like to relax at home and visit friends.",
-        "The weekend has two days.",
-        "I work Monday to Friday only.",
-        "Weekends are good for people."
-      ],
-      "correctAnswer": "I like to relax at home and visit friends."
-    }
-  },
-  {
-    "id": "A2-BMQ-004",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Tell me about your job or school.",
-      "context": "Personal conversation about work/education",
-      "situation": "Someone asking about your occupation",
-      "options": [
-        "I work as a teacher at a local elementary school.",
-        "Jobs are important for everyone.",
-        "I like my job very much always.",
-        "School and work are different things."
-      ],
-      "correctAnswer": "I work as a teacher at a local elementary school."
-    }
-  },
-  {
-    "id": "A2-BMQ-005",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Can you describe your neighborhood?",
-      "context": "Personal conversation about living situation",
-      "situation": "Someone asking about where you live",
-      "options": [
-        "It's a quiet area with shops and a park nearby.",
-        "Neighborhoods are places where people live.",
-        "I like my neighborhood very much.",
-        "Yes, I can describe many things."
-      ],
-      "correctAnswer": "It's a quiet area with shops and a park nearby."
-    }
-  },
-  {
-    "id": "A2-BMQ-006",
+    "id": "A2-BMQ-201",
     "type": "best_response_mcq",
     "prompt": "Choose the best response!",
     "metadata": {
       "question": "Would you like breakfast included?",
-      "context": "Hotel booking conversation",
-      "situation": "Hotel staff asking about breakfast option",
+      "context": "Hotel booking",
+      "situation": "Staff asking about breakfast option",
       "options": [
         "Yes, please. What time is breakfast?",
-        "Breakfast is the first meal of the day.",
-        "I eat breakfast at home usually.",
-        "Hotels have good food sometimes."
+        "Breakfast is nice.",
+        "I eat breakfast at home."
       ],
       "correctAnswer": "Yes, please. What time is breakfast?"
     }
   },
   {
-    "id": "A2-BMQ-007",
+    "id": "A2-BMQ-202",
     "type": "best_response_mcq",
     "prompt": "Choose the best response!",
     "metadata": {
-      "question": "Are you allergic to any medication?",
-      "context": "Doctor's office consultation",
-      "situation": "Doctor asking about medical history",
-      "options": [
-        "No, I can take anything.",
-        "Allergies are very common today.",
-        "I don't like taking medicine.",
-        "Yes, medication helps people."
-      ],
-      "correctAnswer": "No, I can take anything."
+      "question": "How often do you go to the gym?",
+      "context": "Health & habits",
+      "situation": "Talking about frequency",
+      "options": ["Twice a week.", "I like gym.", "At evening."],
+      "correctAnswer": "Twice a week."
     }
   },
   {
-    "id": "A2-BMQ-008",
+    "id": "A2-BMQ-203",
     "type": "best_response_mcq",
     "prompt": "Choose the best response!",
     "metadata": {
-      "question": "Do you need to buy the ticket before you get on?",
-      "context": "Public transport information",
-      "situation": "Someone asking about bus ticketing",
-      "options": [
-        "Yes, at the machine by the door.",
-        "Tickets are important for travel.",
-        "I buy tickets when I need them.",
-        "Public transport has many rules."
-      ],
-      "correctAnswer": "Yes, at the machine by the door."
+      "question": "Did you enjoy the film last night?",
+      "context": "Leisure",
+      "situation": "Conversation about past events",
+      "options": ["Yes, it was great!", "Yes, I enjoy.", "Yes, it is great."],
+      "correctAnswer": "Yes, it was great!"
     }
   },
   {
-    "id": "A2-BMQ-009",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "We have this style in medium. Do you want to try them on?",
-      "context": "Clothing store shopping",
-      "situation": "Sales assistant offering to try clothes",
-      "options": [
-        "Yes, where's the fitting room?",
-        "Medium is a good size for most people.",
-        "I like this style very much.",
-        "Trying on clothes takes time."
-      ],
-      "correctAnswer": "Yes, where's the fitting room?"
-    }
-  },
-  {
-    "id": "A2-BMQ-010",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Would you like to pay with cash or card?",
-      "context": "Making a purchase",
-      "situation": "Cashier asking about payment method",
-      "options": [
-        "Card, please.",
-        "Both cash and cards are useful.",
-        "I have money in my wallet.",
-        "Payment methods are different today."
-      ],
-      "correctAnswer": "Card, please."
-    }
-  },
-  {
-    "id": "A2-OR-011",
+    "id": "A2-OR-201",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
       "question": "Talk about what you did last weekend.",
-      "helpers": [
-        "Where did you go? What activities did you do?",
-        "Who did you spend time with?",
-        "Did you enjoy it? What was the best part?"
-      ]
+      "helpers": ["Where did you go?", "Who did you meet?", "What did you do?"]
     }
   },
   {
-    "id": "A2-OR-012",
+    "id": "A2-OR-202",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
       "question": "Describe your favorite place in your town.",
       "helpers": [
-        "What is this place? Why do you like it?",
-        "How often do you go there?",
-        "What do you usually do when you visit this place?"
+        "What is this place?",
+        "Why do you like it?",
+        "How often do you go there?"
       ]
     }
   },
   {
-    "id": "A2-OR-013",
+    "id": "A2-OR-203",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
       "question": "Describe a meal you cooked recently.",
       "helpers": [
-        "What did you make? How did you prepare it?",
-        "Was it difficult to make?",
-        "Did it taste good? Would you cook it again?"
+        "What did you make?",
+        "Was it easy or difficult?",
+        "Who did you cook for?"
       ]
     }
   },
   {
-    "id": "A2-OR-014",
+    "id": "A2-OR-204",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
       "question": "Talk about how you get to school or work each day.",
       "helpers": [
-        "How do you travel to school or work? How long does it take?",
-        "Do you like your journey?",
-        "What do you see or do on the way?"
+        "How do you travel?",
+        "How long does it take?",
+        "Do you like your journey?"
       ]
     }
   },
   {
-    "id": "A2-OR-015",
+    "id": "A2-OR-205",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
       "question": "Talk about your plans for the next holiday.",
       "helpers": [
-        "Where do you want to go? What do you plan to do?",
+        "Where will you go?",
         "Who will you travel with?",
-        "Why did you choose this destination?"
+        "What do you want to do there?"
+      ]
+    }
+  },
+
+  {
+    "id": "A2-IMG-201",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Eating out – Café",
+      "imageGuidance": "Outdoor café, two friends, waiter serving drinks, menus, sunshine.",
+      "context": "Describe a simple social situation in a café/restaurant.",
+      "question": "Look at the image and describe what you see.",
+      "helpers": [
+        "Who is in the picture?",
+        "What are they doing?",
+        "What food or drinks can you see?"
+      ]
+    }
+  },
+  {
+    "id": "A2-IMG-202",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Travel – Train station",
+      "imageGuidance": "People with luggage; timetable board; a train arriving.",
+      "context": "Describe a travel scene and people’s actions.",
+      "question": "Look at the image and describe what’s happening.",
+      "helpers": [
+        "Where are the people?",
+        "What are they doing?",
+        "Where are they going?"
+      ]
+    }
+  },
+  {
+    "id": "A2-IMG-203",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Work – Office",
+      "imageGuidance": "Small office, two people working, papers and computers.",
+      "context": "Describe an office and what people are doing.",
+      "question": "Look at the image and describe the office scene.",
+      "helpers": [
+        "What kind of work are they doing?",
+        "What can you see on the desk?",
+        "Do you like office work?"
+      ]
+    }
+  },
+  {
+    "id": "A2-IMG-204",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Weather & leisure – Beach day",
+      "imageGuidance": "Family on a sandy beach; kids playing; umbrellas; sea and clear sky.",
+      "context": "Describe weather, activities, and people’s feelings.",
+      "question": "Look at the image and describe what you see.",
+      "helpers": [
+        "What’s the weather like?",
+        "What are people doing?",
+        "Do you like this place?"
+      ]
+    }
+  },
+  {
+    "id": "A2-IMG-205",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Health – Doctor’s office",
+      "imageGuidance": "Doctor talking to a patient; stethoscope on desk; bright room with posters.",
+      "context": "Describe a visit to the doctor and the situation.",
+      "question": "Look at the image and describe the visit.",
+      "helpers": [
+        "Who is in the picture?",
+        "What is happening?",
+        "Why is the person visiting the doctor?"
       ]
     }
   }

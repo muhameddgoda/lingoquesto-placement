@@ -1,641 +1,459 @@
 [
   {
-    "id": "A1-RS-001",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "I am from Germany.",
-      "expectedText": "I am from Germany."
-    }
-  },
-  {
-    "id": "A1-RS-002",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "I have a red book and a blue pen.",
-      "expectedText": "I have a red book and a blue pen."
-    }
-  },
-  {
-    "id": "A1-RS-003",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "Can I have a glass of water, please?",
-      "expectedText": "Can I have a glass of water, please?"
-    }
-  },
-  {
-    "id": "A1-RS-004",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "I like ice cream and hamburgers.",
-      "expectedText": "I like ice cream and hamburgers."
-    }
-  },
-  {
-    "id": "A1-RS-005",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "She usually wakes up at seven o'clock in the morning.",
-      "expectedText": "She usually wakes up at seven o'clock in the morning."
-    }
-  },
-  {
-    "id": "A1-RS-006",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "My name is John and I live in New York.",
-      "expectedText": "My name is John and I live in New York."
-    }
-  },
-  {
-    "id": "A1-RS-007",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "This is my friend Anna.",
-      "expectedText": "This is my friend Anna."
-    }
-  },
-  {
-    "id": "A1-RS-008",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "I have a small dog.",
-      "expectedText": "I have a small dog."
-    }
-  },
-  {
-    "id": "A1-RS-009",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "He is a teacher.",
-      "expectedText": "He is a teacher."
-    }
-  },
-  {
-    "id": "A1-RS-010",
-    "type": "repeat_sentence",
-    "prompt": "Repeat the sentence!",
-    "metadata": {
-      "accent": "us",
-      "sentence": "Good morning, how are you?",
-      "expectedText": "Good morning, how are you?"
-    }
-  },
-  {
-    "id": "A1-MP-001",
+    "id": "A1-MP-101",
     "type": "minimal_pair",
     "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_mp_001.wav",
-      "options": ["ship", "sheep"],
-      "correctAnswer": "sheep"
-    }
-  },
-  {
-    "id": "A1-MP-002",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_mp_002.wav",
-      "options": ["ship", "sheep"],
-      "correctAnswer": "ship"
-    }
-  },
-  {
-    "id": "A1-MP-003",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_mp_003.wav",
-      "options": ["cap", "cup"],
-      "correctAnswer": "cap"
-    }
-  },
-  {
-    "id": "A1-MP-004",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_mp_004.wav",
-      "options": ["cap", "cup"],
-      "correctAnswer": "cup"
-    }
-  },
-  {
-    "id": "A1-MP-005",
-    "type": "minimal_pair",
-    "prompt": "Which word did you hear?",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_mp_005.wav",
-      "options": ["bat", "vat"],
+      "audioRef": "audio/a1_mp_101.wav",
+      "options": ["bat", "bad"],
       "correctAnswer": "bat"
     }
   },
   {
-    "id": "A1-MP-006",
+    "id": "A1-MP-102",
     "type": "minimal_pair",
     "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_mp_006.wav",
-      "options": ["bat", "vat"],
-      "correctAnswer": "vat"
+      "audioRef": "audio/a1_mp_102.wav",
+      "options": ["bat", "bad"],
+      "correctAnswer": "bad"
     }
   },
   {
-    "id": "A1-MP-007",
+    "id": "A1-MP-103",
     "type": "minimal_pair",
     "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_mp_007.wav",
-      "options": ["sip", "zip"],
-      "correctAnswer": "sip"
+      "audioRef": "audio/a1_mp_103.wav",
+      "options": ["sit", "seat"],
+      "correctAnswer": "sit"
     }
   },
   {
-    "id": "A1-MP-008",
+    "id": "A1-MP-104",
     "type": "minimal_pair",
     "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_mp_008.wav",
-      "options": ["sip", "zip"],
-      "correctAnswer": "zip"
+      "audioRef": "audio/a1_mp_104.wav",
+      "options": ["sit", "seat"],
+      "correctAnswer": "seat"
     }
   },
   {
-    "id": "A1-MP-009",
+    "id": "A1-MP-105",
     "type": "minimal_pair",
     "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_mp_009.wav",
-      "options": ["think", "sink"],
-      "correctAnswer": "think"
+      "audioRef": "audio/a1_mp_105.wav",
+      "options": ["pen", "pan"],
+      "correctAnswer": "pen"
     }
   },
   {
-    "id": "A1-MP-010",
+    "id": "A1-MP-106",
     "type": "minimal_pair",
     "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_mp_010.wav",
-      "options": ["think", "sink"],
-      "correctAnswer": "sink"
+      "audioRef": "audio/a1_mp_106.wav",
+      "options": ["pen", "pan"],
+      "correctAnswer": "pan"
     }
   },
   {
-    "id": "A1-DICT-001",
+    "id": "A1-MP-107",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_mp_107.wav",
+      "options": ["bed", "bet"],
+      "correctAnswer": "bed"
+    }
+  },
+  {
+    "id": "A1-MP-108",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_mp_108.wav",
+      "options": ["bed", "bet"],
+      "correctAnswer": "bet"
+    }
+  },
+  {
+    "id": "A1-MP-109",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_mp_109.wav",
+      "options": ["map", "nap"],
+      "correctAnswer": "map"
+    }
+  },
+  {
+    "id": "A1-MP-110",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/a1_mp_110.wav",
+      "options": ["map", "nap"],
+      "correctAnswer": "nap"
+    }
+  },
+
+  {
+    "id": "A1-RS-101",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "I like apples.",
+      "expectedText": "I like apples."
+    }
+  },
+  {
+    "id": "A1-RS-102",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "My name is Anna.",
+      "expectedText": "My name is Anna."
+    }
+  },
+  {
+    "id": "A1-RS-103",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "She has a cat.",
+      "expectedText": "She has a cat."
+    }
+  },
+  {
+    "id": "A1-RS-104",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "We go to school.",
+      "expectedText": "We go to school."
+    }
+  },
+  {
+    "id": "A1-RS-105",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "He is my friend.",
+      "expectedText": "He is my friend."
+    }
+  },
+
+  {
+    "id": "A1-DICT-101",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "The museum opens at ten o'clock.",
-      "audioRef": "audio/a1_dict_001.wav"
+      "expectedText": "I live in a house.",
+      "audioRef": "audio/a1_dict_101.wav"
     }
   },
   {
-    "id": "A1-DICT-002",
+    "id": "A1-DICT-102",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "My name is Anna.",
-      "audioRef": "audio/a1_dict_002.wav"
+      "expectedText": "She has two brothers.",
+      "audioRef": "audio/a1_dict_102.wav"
     }
   },
   {
-    "id": "A1-DICT-003",
+    "id": "A1-DICT-103",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "I live in New York.",
-      "audioRef": "audio/a1_dict_003.wav"
+      "expectedText": "They go to school.",
+      "audioRef": "audio/a1_dict_103.wav"
     }
   },
   {
-    "id": "A1-DICT-004",
+    "id": "A1-DICT-104",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "This is my friend.",
-      "audioRef": "audio/a1_dict_004.wav"
+      "expectedText": "We eat lunch at noon.",
+      "audioRef": "audio/a1_dict_104.wav"
     }
   },
   {
-    "id": "A1-DICT-005",
+    "id": "A1-DICT-105",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "I have a small dog.",
-      "audioRef": "audio/a1_dict_005.wav"
+      "expectedText": "He plays with a ball.",
+      "audioRef": "audio/a1_dict_105.wav"
     }
   },
+
   {
-    "id": "A1-DICT-006",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "He is a teacher.",
-      "audioRef": "audio/a1_dict_006.wav"
-    }
-  },
-  {
-    "id": "A1-DICT-007",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "Where do you live?",
-      "audioRef": "audio/a1_dict_007.wav"
-    }
-  },
-  {
-    "id": "A1-DICT-008",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
-    "metadata": {
-      "accent": "us",
-      "expectedText": "How old are you?",
-      "audioRef": "audio/a1_dict_008.wav"
-    }
-  },
-  {
-    "id": "A1-LMQ-001",
+    "id": "A1-LMQ-101",
     "type": "listen_mcq",
     "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_lmq_001.wav",
-      "audioText": "Good morning! How are you?",
-      "question": "What is the appropriate response?",
+      "audioRef": "audio/a1_lmq_101.wav",
+      "audioText": "I go to work at eight.",
+      "question": "Choose the correct sentence.",
       "options": [
-        "Yes, I am.",
-        "I am fine, thank you.",
-        "No, I don't.",
-        "Green."
+        "I go to work at eight.",
+        "I goes to work at eight.",
+        "I am go to work at eight."
       ],
-      "correctAnswer": "I am fine, thank you."
+      "correctAnswer": "I go to work at eight."
     }
   },
   {
-    "id": "A1-LMQ-002",
+    "id": "A1-LMQ-102",
     "type": "listen_mcq",
     "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_lmq_002.wav",
-      "audioText": "Where do you live?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "I live in Mexico City.",
-        "I like pizza.",
-        "She is my friend.",
-        "My name is Carlos."
-      ],
-      "correctAnswer": "I live in Mexico City."
+      "audioRef": "audio/a1_lmq_102.wav",
+      "audioText": "The book is on the table.",
+      "question": "Which preposition did you hear?",
+      "options": ["in", "on", "at"],
+      "correctAnswer": "on"
     }
   },
   {
-    "id": "A1-LMQ-003",
+    "id": "A1-LMQ-103",
     "type": "listen_mcq",
     "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "audioRef": "audio/a1_lmq_003.wav",
-      "audioText": "This is my brother.",
-      "question": "What is the appropriate response?",
+      "audioRef": "audio/a1_lmq_103.wav",
+      "audioText": "She has a big dog.",
+      "question": "Choose the correct sentence.",
       "options": [
-        "Yes, I do.",
-        "Nice to meet you.",
-        "I'm from Brazil.",
-        "I like dogs."
+        "She has a big dog.",
+        "She have a big dog.",
+        "She is a big dog."
       ],
-      "correctAnswer": "Nice to meet you."
+      "correctAnswer": "She has a big dog."
     }
   },
+
   {
-    "id": "A1-LMQ-004",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_lmq_004.wav",
-      "audioText": "Do you have a pencil?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "I like music.",
-        "Yes, I do.",
-        "It is blue.",
-        "No, he doesn't."
-      ],
-      "correctAnswer": "Yes, I do."
-    }
-  },
-  {
-    "id": "A1-LMQ-005",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_lmq_005.wav",
-      "audioText": "How old are you?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "I'm 12 years old.",
-        "I live in a house.",
-        "I have a dog.",
-        "I am at school."
-      ],
-      "correctAnswer": "I'm 12 years old."
-    }
-  },
-  {
-    "id": "A1-LMQ-006",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_lmq_006.wav",
-      "audioText": "Hi, how are you?",
-      "question": "What is the best response to continue the conversation?",
-      "options": [
-        "Good, thank you. And you?",
-        "Good! My name is Tomas.",
-        "Tomas, what is your name?",
-        "I'm from Colombia, and you?"
-      ],
-      "correctAnswer": "Good, thank you. And you?"
-    }
-  },
-  {
-    "id": "A1-LMQ-007",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_lmq_007.wav",
-      "audioText": "I'm good, thank you. What is your name?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "I like to hike, and you?",
-        "I am good, thank you.",
-        "Tomas, and you?",
-        "I'm from Colombia, and you?"
-      ],
-      "correctAnswer": "Tomas, and you?"
-    }
-  },
-  {
-    "id": "A1-LMQ-008",
-    "type": "listen_mcq",
-    "prompt": "Listen and choose the correct answer!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/a1_lmq_008.wav",
-      "audioText": "Nice to meet you, Tomas. Where are you from?",
-      "question": "What is the appropriate response?",
-      "options": [
-        "I'm from Colombia.",
-        "I'm a student.",
-        "I have one brother.",
-        "I'm fine, thank you."
-      ],
-      "correctAnswer": "I'm from Colombia."
-    }
-  },
-  {
-    "id": "A1-BMQ-001",
+    "id": "A1-BMQ-101",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
+    "prompt": "Choose the best answer!",
     "metadata": {
-      "question": "Hello! Can I help you?",
-      "context": "At a café",
-      "situation": "Customer ordering",
+      "question": "What time do you have breakfast?",
+      "context": "Daily routine",
+      "situation": "Talking about habits",
       "options": [
-        "Yes, I'd like a coffee, please.",
-        "Yes, I drink coffee now.",
-        "I want to go coffee.",
-        "Yes, I make coffee at home."
+        "At seven o'clock.",
+        "I breakfast at seven.",
+        "Breakfast is good."
       ],
-      "correctAnswer": "Yes, I'd like a coffee, please."
+      "correctAnswer": "At seven o'clock."
     }
   },
   {
-    "id": "A1-BMQ-002",
+    "id": "A1-BMQ-102",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
+    "prompt": "Choose the best answer!",
     "metadata": {
-      "question": "Sure. Do you want milk with your coffee?",
-      "context": "At a café - ordering coffee",
-      "situation": "Server asking about preferences",
-      "options": [
-        "Yes, with milk, please.",
-        "Yes, I take milk in my bag.",
-        "No, I want sugar with that.",
-        "Yes, I like coffee every day."
-      ],
-      "correctAnswer": "Yes, with milk, please."
+      "question": "Where is your bag?",
+      "context": "Everyday objects",
+      "situation": "Asking location",
+      "options": ["It is on the chair.", "Bag is my.", "On chair it."],
+      "correctAnswer": "It is on the chair."
     }
   },
   {
-    "id": "A1-BMQ-003",
+    "id": "A1-BMQ-103",
     "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
+    "prompt": "Choose the best answer!",
     "metadata": {
-      "question": "Do you have any brothers or sisters?",
-      "context": "Talking about family",
-      "situation": "Personal conversation",
-      "options": [
-        "Yes, I have one brother.",
-        "Yes, he is my friend.",
-        "Yes, I go to school.",
-        "No, I am an only child."
-      ],
-      "correctAnswer": "Yes, I have one brother."
+      "question": "Do you have a pet?",
+      "context": "Personal info",
+      "situation": "Small talk",
+      "options": ["Yes, I have a cat.", "Yes, I am a cat.", "Yes, I has cat."],
+      "correctAnswer": "Yes, I have a cat."
     }
   },
+
   {
-    "id": "A1-BMQ-004",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Excuse me, where is the train station?",
-      "context": "Giving directions",
-      "situation": "Someone asking for help",
-      "options": [
-        "It's next to the bank.",
-        "Yes, I like trains.",
-        "I go there tomorrow.",
-        "It goes very fast."
-      ],
-      "correctAnswer": "It's next to the bank."
-    }
-  },
-  {
-    "id": "A1-BMQ-005",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Is it far from here?",
-      "context": "Giving directions",
-      "situation": "Someone asking about distance",
-      "options": [
-        "No, it's about five minutes.",
-        "Yes, I walk every day.",
-        "No, I go to the school.",
-        "It is fast and loud."
-      ],
-      "correctAnswer": "No, it's about five minutes."
-    }
-  },
-  {
-    "id": "A1-BMQ-006",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What time do you usually wake up?",
-      "context": "Talking about daily routine",
-      "situation": "Personal conversation about schedule",
-      "options": [
-        "I wake up at 7 o'clock.",
-        "I wake 7 good.",
-        "I sleep at school.",
-        "I go now to bed."
-      ],
-      "correctAnswer": "I wake up at 7 o'clock."
-    }
-  },
-  {
-    "id": "A1-BMQ-007",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Do you go to work or school?",
-      "context": "Talking about daily activities",
-      "situation": "Personal conversation about occupation",
-      "options": [
-        "I go to school every day.",
-        "I go car and walk.",
-        "Yes, I have my teacher.",
-        "I study with my breakfast."
-      ],
-      "correctAnswer": "I go to school every day."
-    }
-  },
-  {
-    "id": "A1-BMQ-008",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Thanks for your help!",
-      "context": "End of conversation",
-      "situation": "Someone thanking you",
-      "options": [
-        "You're welcome!",
-        "I help train too.",
-        "I live far away.",
-        "Go now with bus."
-      ],
-      "correctAnswer": "You're welcome!"
-    }
-  },
-  {
-    "id": "A1-OR-001",
+    "id": "A1-OR-101",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Talk about your name, age and where you live.",
+      "question": "Talk about your family.",
       "helpers": [
-        "What is your name and how old are you?",
-        "Where do you live? Do you have any family members?",
-        "What do you like to do in your free time?"
+        "Who is in your family?",
+        "What do they do?",
+        "Do you like doing things together? Why?"
       ]
     }
   },
   {
-    "id": "A1-OR-002",
+    "id": "A1-OR-102",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Describe your family members.",
+      "question": "Talk about your daily routine.",
       "helpers": [
-        "Who do you live with? How many people are in your family?",
-        "Do you have brothers or sisters? What do your parents do?",
-        "Are your family members young or old?"
+        "What time do you get up?",
+        "What do you do in the morning?",
+        "What do you do after school/work?"
       ]
     }
   },
   {
-    "id": "A1-OR-003",
+    "id": "A1-OR-103",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Talk about your daily morning routine.",
+      "question": "Talk about your home.",
       "helpers": [
-        "What time do you wake up? What do you eat for breakfast?",
-        "How do you get ready for work or school?",
-        "Do you walk, take the bus, or drive? What do you do first in the morning?"
+        "Where do you live?",
+        "Describe your home.",
+        "What is your favorite room? Why?"
       ]
     }
   },
   {
-    "id": "A1-OR-004",
+    "id": "A1-OR-104",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Talk about your favorite food and why you like it.",
+      "question": "Talk about your hometown or city.",
       "helpers": [
-        "What is your favorite food? Why do you like it?",
-        "When do you usually eat it? Who do you eat it with?",
-        "Is it easy or difficult to make?"
+        "Where is it?",
+        "What is it like?",
+        "What can people do there?"
       ]
     }
   },
   {
-    "id": "A1-OR-005",
+    "id": "A1-OR-105",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Describe your weekend plans.",
+      "question": "Talk about your hobbies.",
       "helpers": [
-        "What will you do this weekend? Where will you go?",
-        "Who will you spend time with?",
-        "Will you stay home or go out? What activities do you want to do?"
+        "What do you do in your free time?",
+        "How often do you do it?",
+        "Who do you do it with?"
+      ]
+    }
+  },
+
+  {
+    "id": "A1-IMG-101",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Daily routine – Morning kitchen",
+      "imageGuidance": "Small kitchen, breakfast time, clock ~7:00, toast, cereal, school bag.",
+      "context": "Describe a simple morning routine at home (eat breakfast, check time, get ready).",
+      "question": "Look at the image and describe the morning routine.",
+      "helpers": [
+        "What time is it?",
+        "What is the person eating or drinking?",
+        "What happens next?"
+      ]
+    }
+  },
+  {
+    "id": "A1-IMG-102",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Places in town – Supermarket",
+      "imageGuidance": "Fruit aisle, shopper with basket picking apples, price labels, cashier in background.",
+      "context": "Describe shopping for food in a local store.",
+      "question": "Look at the image and describe the supermarket scene.",
+      "helpers": [
+        "What is the place?",
+        "What food can you see?",
+        "What is the shopper doing?"
+      ]
+    }
+  },
+  {
+    "id": "A1-IMG-103",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Family & home – Living room",
+      "imageGuidance": "Two adults and one child on a sofa; lamp, rug, window; child holding a toy.",
+      "context": "Describe people at home and what they are doing.",
+      "question": "Look at the image and describe the family and the room.",
+      "helpers": [
+        "Who is in the picture?",
+        "What room is this?",
+        "What things can you see?"
+      ]
+    }
+  },
+  {
+    "id": "A1-IMG-104",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Free time – Park",
+      "imageGuidance": "Sunny park, trees, one person walking a dog, two friends on a bench, a child with a ball.",
+      "context": "Describe a park scene (people, weather, simple actions).",
+      "question": "Look at the image and describe the park.",
+      "helpers": [
+        "What is the weather like?",
+        "What are people doing?",
+        "Do you like parks? Why?"
+      ]
+    }
+  },
+  {
+    "id": "A1-IMG-105",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "School – Classroom",
+      "imageGuidance": "Teacher by whiteboard, three students at desks, books/pencils, wall clock.",
+      "context": "Describe a classroom (people and objects; simple actions).",
+      "question": "Look at the image and describe the classroom.",
+      "helpers": [
+        "Who is in the classroom?",
+        "What is on the desks?",
+        "What are they doing?"
       ]
     }
   }

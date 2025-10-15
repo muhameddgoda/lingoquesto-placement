@@ -1,402 +1,464 @@
 [
   {
-    "id": "B1-OR-001",
+    "id": "B1-MP-301",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_301.wav",
+      "options": ["ship", "sheep"],
+      "correctAnswer": "ship"
+    }
+  },
+  {
+    "id": "B1-MP-302",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_302.wav",
+      "options": ["ship", "sheep"],
+      "correctAnswer": "sheep"
+    }
+  },
+  {
+    "id": "B1-MP-303",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_303.wav",
+      "options": ["walk", "work"],
+      "correctAnswer": "walk"
+    }
+  },
+  {
+    "id": "B1-MP-304",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_304.wav",
+      "options": ["walk", "work"],
+      "correctAnswer": "work"
+    }
+  },
+  {
+    "id": "B1-MP-305",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_305.wav",
+      "options": ["leave", "live"],
+      "correctAnswer": "leave"
+    }
+  },
+  {
+    "id": "B1-MP-306",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_306.wav",
+      "options": ["leave", "live"],
+      "correctAnswer": "live"
+    }
+  },
+  {
+    "id": "B1-MP-307",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_307.wav",
+      "options": ["cheap", "chip"],
+      "correctAnswer": "cheap"
+    }
+  },
+  {
+    "id": "B1-MP-308",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_308.wav",
+      "options": ["cheap", "chip"],
+      "correctAnswer": "chip"
+    }
+  },
+  {
+    "id": "B1-MP-309",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_309.wav",
+      "options": ["pool", "pull"],
+      "correctAnswer": "pool"
+    }
+  },
+  {
+    "id": "B1-MP-310",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_mp_310.wav",
+      "options": ["pool", "pull"],
+      "correctAnswer": "pull"
+    }
+  },
+
+  {
+    "id": "B1-RS-301",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "I’ve been learning English for almost three years.",
+      "expectedText": "I’ve been learning English for almost three years."
+    }
+  },
+  {
+    "id": "B1-RS-302",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "She didn’t come to the meeting because she was ill.",
+      "expectedText": "She didn’t come to the meeting because she was ill."
+    }
+  },
+  {
+    "id": "B1-RS-303",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "It’s much easier to work when the room is quiet.",
+      "expectedText": "It’s much easier to work when the room is quiet."
+    }
+  },
+  {
+    "id": "B1-RS-304",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "We’ll need to book our tickets before the end of the month.",
+      "expectedText": "We’ll need to book our tickets before the end of the month."
+    }
+  },
+  {
+    "id": "B1-RS-305",
+    "type": "repeat_sentence",
+    "prompt": "Repeat the sentence!",
+    "metadata": {
+      "accent": "us",
+      "sentence": "By the time I arrived, everyone had already eaten.",
+      "expectedText": "By the time I arrived, everyone had already eaten."
+    }
+  },
+
+  {
+    "id": "B1-DICT-301",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "When I was a child, I wanted to become a doctor.",
+      "audioRef": "audio/b1_dict_301.wav"
+    }
+  },
+  {
+    "id": "B1-DICT-302",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "They decided to move abroad because of a new job opportunity.",
+      "audioRef": "audio/b1_dict_302.wav"
+    }
+  },
+  {
+    "id": "B1-DICT-303",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "We had to cancel our trip due to bad weather.",
+      "audioRef": "audio/b1_dict_303.wav"
+    }
+  },
+  {
+    "id": "B1-DICT-304",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "He was reading a book while waiting for the train.",
+      "audioRef": "audio/b1_dict_304.wav"
+    }
+  },
+  {
+    "id": "B1-DICT-305",
+    "type": "dictation",
+    "prompt": "Type what you hear!",
+    "metadata": {
+      "accent": "us",
+      "expectedText": "Learning a new language takes time and patience.",
+      "audioRef": "audio/b1_dict_305.wav"
+    }
+  },
+  {
+    "id": "B1-LMQ-301",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_lmq_301.wav",
+      "audioText": "If it rains tomorrow, we’ll stay at home.",
+      "question": "What will they do if it rains tomorrow?",
+      "options": [
+        "They’ll stay at home.",
+        "They’ll go for a walk.",
+        "They’ll visit friends."
+      ],
+      "correctAnswer": "They’ll stay at home."
+    }
+  },
+  {
+    "id": "B1-LMQ-302",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_lmq_302.wav",
+      "audioText": "She’s been working here since January.",
+      "question": "How long has she been working here?",
+      "options": ["Since January.", "For two weeks.", "Since last year."],
+      "correctAnswer": "Since January."
+    }
+  },
+  {
+    "id": "B1-LMQ-303",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
+    "metadata": {
+      "accent": "us",
+      "audioRef": "audio/b1_lmq_303.wav",
+      "audioText": "He doesn’t have enough money to buy a new phone.",
+      "question": "Why can’t he buy a new phone?",
+      "options": [
+        "He doesn’t have enough money.",
+        "He doesn’t want one.",
+        "He already has one."
+      ],
+      "correctAnswer": "He doesn’t have enough money."
+    }
+  },
+
+  {
+    "id": "B1-BMQ-301",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "How long have you lived in this city?",
+      "context": "Conversation about life experience",
+      "situation": "Talking about time and duration",
+      "options": ["For five years.", "I am live here.", "Since two months."],
+      "correctAnswer": "For five years."
+    }
+  },
+  {
+    "id": "B1-BMQ-302",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "What would you do if you won the lottery?",
+      "context": "Hypothetical situations",
+      "situation": "Casual conversation",
+      "options": ["I’d buy a house.", "I am buy a house.", "I buying house."],
+      "correctAnswer": "I’d buy a house."
+    }
+  },
+  {
+    "id": "B1-BMQ-303",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "I couldn’t find my keys this morning.",
+      "context": "Daily routines",
+      "situation": "Reacting to a statement",
+      "options": [
+        "Oh no! Did you find them later?",
+        "I am not find.",
+        "You will find now."
+      ],
+      "correctAnswer": "Oh no! Did you find them later?"
+    }
+  },
+
+  {
+    "id": "B1-OR-301",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Talk about a challenge you overcame and how you did it.",
+      "question": "Describe a time when you learned something new.",
       "helpers": [
-        "What was the challenge you faced? Was it personal or professional?",
-        "What steps did you take to overcome it?",
-        "What did you learn from this experience?"
+        "What did you learn?",
+        "Why was it interesting?",
+        "How has it helped you?"
       ]
     }
   },
   {
-    "id": "B1-OR-002",
+    "id": "B1-OR-302",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Describe a memorable trip or vacation.",
+      "question": "Talk about a person who has influenced you.",
       "helpers": [
-        "Where did you go? What did you do there?",
-        "Who were you with during this trip?",
-        "Why was it so memorable and special for you?"
+        "Who is this person?",
+        "How do you know them?",
+        "Why do they inspire you?"
       ]
     }
   },
   {
-    "id": "B1-OR-003",
+    "id": "B1-OR-303",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Talk about the advantages and disadvantages of technology in education.",
+      "question": "Describe your ideal job.",
       "helpers": [
-        "What are the main benefits of using technology in education?",
-        "What are the drawbacks or challenges?",
-        "What is your personal opinion on this topic?"
+        "What kind of work would you like to do?",
+        "Why do you like this job?",
+        "What skills do you need?"
       ]
     }
   },
   {
-    "id": "B1-OR-004",
+    "id": "B1-OR-304",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "Talk about your future goals and how you plan to reach them.",
+      "question": "Talk about a trip that you really enjoyed.",
       "helpers": [
-        "What are your main goals for the next 5-10 years?",
-        "What steps are you taking to achieve them?",
-        "What obstacles might you face along the way?"
-      ]
-    }
-  },
-  {
-    "id": "B1-OR-005",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Describe an important decision you made and its outcome.",
-      "helpers": [
-        "What was the decision and why was it important?",
-        "How did you make this decision?",
-        "What were the results? Are you happy with the outcome?"
-      ]
-    }
-  },
-  {
-    "id": "B1-OR-006",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Can you tell me about a trip you really enjoyed?",
-      "helpers": [
-        "Where did you go? What activities did you do?",
+        "Where did you go?",
         "Who did you travel with?",
-        "What made this trip special for you?"
+        "What made it special?"
       ]
     }
   },
   {
-    "id": "B1-OR-007",
+    "id": "B1-OR-305",
     "type": "open_response",
     "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "question": "What are your goals for the next five years?",
+      "question": "Describe your favorite way to relax after a busy day.",
       "helpers": [
-        "What personal and professional goals do you have?",
-        "How do you plan to achieve them?",
-        "What challenges might you face in reaching these goals?"
+        "What do you do to relax?",
+        "Where do you do it?",
+        "Why does it help you?"
       ]
     }
   },
+
   {
-    "id": "B1-OR-008",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Describe your favorite kind of weekend.",
-      "helpers": [
-        "What activities do you enjoy doing on weekends?",
-        "Who do you spend time with?",
-        "Why are these weekends special to you?"
-      ]
-    }
-  },
-  {
-    "id": "B1-OR-009",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Do you prefer working in a team or alone? Why?",
-      "helpers": [
-        "Which do you prefer: working individually or as part of a team?",
-        "What are the reasons for your preference?",
-        "Can you give examples from your experience?"
-      ]
-    }
-  },
-  {
-    "id": "B1-OR-010",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
-    "metadata": {
-      "accent": "us",
-      "question": "Tell me about a problem you had and how you solved it.",
-      "helpers": [
-        "What was the problem? When did it happen?",
-        "What steps did you take to solve it?",
-        "What did you learn from this experience?"
-      ]
-    }
-  },
-  {
-    "id": "B1-IMG-001",
+    "id": "B1-IMG-301",
     "type": "image_description",
     "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "b1_img_001.png",
-      "imageDescription": "A traveler lifting a suitcase onto a hotel check-in desk",
-      "question": "Look at this image and describe what you see. Talk about what the person is doing, the setting, and what you think might happen next.",
+      "imageTopic": "Shopping – Mall or market",
+      "imageGuidance": "People shopping; clothing store or market stalls; cashier counter.",
+      "context": "Describe a shopping experience and what people are buying.",
+      "question": "Look at the image and describe the shopping scene.",
+      "imageRef": "images/b1_img_301.png",
       "helpers": [
-        "What is the person doing in this image?",
-        "Describe the setting and atmosphere.",
-        "What do you think might happen next?"
+        "Where are they?",
+        "What are they buying?",
+        "What can you see in the background?"
       ]
     }
   },
   {
-    "id": "B1-IMG-002",
+    "id": "B1-IMG-302",
     "type": "image_description",
     "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_002.png",
-      "imageDescription": "A group of people having a picnic by a lake",
-      "question": "Look at this image and describe the scene. Talk about the people, the activities, the location, and the atmosphere.",
+      "imageTopic": "Travel – Airport check-in",
+      "imageGuidance": "Passengers with luggage; check-in desks; flight screens.",
+      "context": "Describe a travel setting and what people are doing.",
+      "question": "Look at the image and describe what’s happening.",
+      "imageRef": "images/b1_img_302.png",
       "helpers": [
-        "Who are the people in the image? What are they doing?",
-        "Describe the location and setting.",
-        "What is the atmosphere or mood of the scene?"
+        "Who is in the picture?",
+        "What are they doing?",
+        "Where are they going?"
       ]
     }
   },
   {
-    "id": "B1-IMG-003",
+    "id": "B1-IMG-303",
     "type": "image_description",
     "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_003.png",
-      "imageDescription": "A doctor speaking to a patient in an examination room",
-      "question": "Look at this image and describe the medical consultation scene. Talk about what you observe about the interaction, the setting, and what might be discussed.",
+      "imageTopic": "Work – Meeting or teamwork",
+      "imageGuidance": "Group of colleagues around a table; laptop; papers and notes.",
+      "context": "Describe a work meeting or discussion.",
+      "question": "Look at the image and describe the situation.",
+      "imageRef": "images/b1_img_303.png",
       "helpers": [
-        "What is happening in this medical consultation?",
-        "Describe the interaction between the doctor and patient.",
-        "What do you think they might be discussing?"
+        "Who is in the meeting?",
+        "What are they discussing?",
+        "What items can you see on the table?"
       ]
     }
   },
   {
-    "id": "B1-IMG-004",
+    "id": "B1-IMG-304",
     "type": "image_description",
     "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_004.png",
-      "imageDescription": "A student presenting a project to classmates",
-      "question": "Look at this image of a classroom presentation. Describe what you see happening, the people involved, and what you think the presentation might be about.",
+      "imageTopic": "Free time – Sports or hobbies",
+      "imageGuidance": "Two people jogging in a park; green trees; sunny weather.",
+      "context": "Describe outdoor activity and people’s actions.",
+      "question": "Look at the image and describe what they are doing.",
+      "imageRef": "images/b1_img_304.png",
       "helpers": [
-        "What is happening in this classroom scene?",
-        "Describe the people involved and their roles.",
-        "What do you think the presentation might be about?"
+        "Where are they?",
+        "What sport or activity is it?",
+        "How do they look or feel?"
       ]
     }
   },
   {
-    "id": "B1-IMG-005",
+    "id": "B1-IMG-305",
     "type": "image_description",
     "prompt": "Describe what you see!",
     "metadata": {
       "accent": "us",
-      "imageRef": "images/b1_img_005.png",
-      "imageDescription": "A worker assembling furniture in an apartment",
-      "question": "Look at this image and describe the scene. Talk about what the person is doing, the environment, and what you think about this activity.",
+      "imageTopic": "Education – Library or study room",
+      "imageGuidance": "Students reading or writing at desks; shelves with books.",
+      "context": "Describe a study environment and activities.",
+      "question": "Look at the image and describe the place and people.",
+      "imageRef": "images/b1_img_305.png",
       "helpers": [
-        "What is the person doing in this image?",
-        "Describe the environment and setting.",
-        "What do you think about this activity?"
+        "Who is studying?",
+        "What are they doing?",
+        "What can you see around them?"
       ]
-    }
-  },
-  {
-    "id": "B1-BMQ-001",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What do you usually do after work?",
-      "context": "Personal conversation about daily routine",
-      "situation": "Someone asking about your after-work activities",
-      "options": [
-        "I often relax with a book or cook dinner.",
-        "I finished a big project last month.",
-        "I'm working overtime this week.",
-        "I live about 30 minutes away.",
-        "I don't like loud offices."
-      ],
-      "correctAnswer": "I often relax with a book or cook dinner."
-    }
-  },
-  {
-    "id": "B1-BMQ-002",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Why do you want to study abroad?",
-      "context": "Academic or personal conversation about education plans",
-      "situation": "Someone asking about your study abroad motivations",
-      "options": [
-        "I want to experience another culture and improve my skills.",
-        "I don't like the food in my hometown.",
-        "I'm not sure what I want to do yet.",
-        "My school has many international students.",
-        "I've never been to the countryside."
-      ],
-      "correctAnswer": "I want to experience another culture and improve my skills."
-    }
-  },
-  {
-    "id": "B1-BMQ-003",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "How was your weekend?",
-      "context": "Casual conversation about recent activities",
-      "situation": "Someone asking about your weekend",
-      "options": [
-        "It was nice. I met some friends and saw a movie.",
-        "I had a dentist appointment on Tuesday.",
-        "I usually do my laundry on Thursday.",
-        "I think next weekend will be busy.",
-        "It rained a lot last summer."
-      ],
-      "correctAnswer": "It was nice. I met some friends and saw a movie."
-    }
-  },
-  {
-    "id": "B1-BMQ-004",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Can you describe your current job or studies?",
-      "context": "Professional or academic conversation",
-      "situation": "Someone asking about your current occupation or education",
-      "options": [
-        "I'm working part-time and also taking evening classes.",
-        "I'm thinking about applying for a new job.",
-        "I want to travel after graduation.",
-        "I used to work in marketing.",
-        "My brother is a business student."
-      ],
-      "correctAnswer": "I'm working part-time and also taking evening classes."
-    }
-  },
-  {
-    "id": "B1-BMQ-005",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What would you do if you had more free time?",
-      "context": "Hypothetical conversation about time management",
-      "situation": "Someone asking about your ideal use of extra time",
-      "options": [
-        "I'd probably take a short course or learn a new hobby.",
-        "I don't have much free time these days.",
-        "I prefer to stay busy during the week.",
-        "I used to play the guitar a lot.",
-        "I'm thinking of changing my schedule."
-      ],
-      "correctAnswer": "I'd probably take a short course or learn a new hobby."
-    }
-  },
-  {
-    "id": "B1-BMQ-006",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What made you want to work in marketing?",
-      "context": "Professional conversation about career choice",
-      "situation": "Someone asking about your career motivation",
-      "options": [
-        "I enjoy creative work and working with people.",
-        "Marketing is a popular field these days.",
-        "I needed to find a job quickly after graduation.",
-        "My university had a good marketing program.",
-        "I like using computers and technology."
-      ],
-      "correctAnswer": "I enjoy creative work and working with people."
-    }
-  },
-  {
-    "id": "B1-BMQ-007",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "How are you learning guitar?",
-      "context": "Conversation about hobbies and learning methods",
-      "situation": "Someone asking about your learning approach",
-      "options": [
-        "I'm using online videos and practicing by myself.",
-        "Guitar is a popular instrument to learn.",
-        "I bought my guitar from a music store.",
-        "I like listening to different types of music.",
-        "Learning instruments takes a lot of time."
-      ],
-      "correctAnswer": "I'm using online videos and practicing by myself."
-    }
-  },
-  {
-    "id": "B1-BMQ-008",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What did you like most about your trip to Mexico?",
-      "context": "Conversation about travel experiences",
-      "situation": "Someone asking about highlights of your trip",
-      "options": [
-        "I loved the culture, especially the museums and markets.",
-        "The flight was comfortable and not too long.",
-        "I took many photos with my new camera.",
-        "The hotel had a nice swimming pool.",
-        "I practiced my Spanish while I was there."
-      ],
-      "correctAnswer": "I loved the culture, especially the museums and markets."
-    }
-  },
-  {
-    "id": "B1-BMQ-009",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "Do you think it matches your skills and interests?",
-      "context": "Professional conversation about job fit",
-      "situation": "Someone asking if a job suits you well",
-      "options": [
-        "Yes, I think it matches my skills and interests.",
-        "I'm still learning about the company culture.",
-        "The salary and benefits are quite competitive.",
-        "I hope to develop new skills in this position.",
-        "My previous experience was in a different field."
-      ],
-      "correctAnswer": "Yes, I think it matches my skills and interests."
-    }
-  },
-  {
-    "id": "B1-BMQ-010",
-    "type": "best_response_mcq",
-    "prompt": "Choose the best response!",
-    "metadata": {
-      "question": "What's your goal with learning guitar?",
-      "context": "Conversation about hobby goals and aspirations",
-      "situation": "Someone asking about your learning objectives",
-      "options": [
-        "Mostly for fun, but maybe I'll play at a small event someday.",
-        "I want to become a professional musician eventually.",
-        "I'm hoping to join a famous band in the future.",
-        "I plan to teach guitar lessons to make extra money.",
-        "I think learning music is good for brain development."
-      ],
-      "correctAnswer": "Mostly for fun, but maybe I'll play at a small event someday."
     }
   }
 ]

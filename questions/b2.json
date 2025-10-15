@@ -1,370 +1,416 @@
 [
   {
-    "id": "B2-OR-001",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-401",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Discuss the pros and cons of working from home.",
-      "helpers": [
-        "What are the main advantages of working from home?",
-        "What are the disadvantages or challenges?",
-        "What is your personal perspective on remote work?"
-      ]
+      "audioRef": "audio/b2_mp_401.wav",
+      "options": ["desert", "dessert"],
+      "correctAnswer": "desert"
     }
   },
   {
-    "id": "B2-OR-002",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-402",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Talk about how social media affects personal relationships.",
-      "helpers": [
-        "What are the positive effects of social media on relationships?",
-        "What are the negative impacts?",
-        "Can you give concrete examples from your observations or experience?"
-      ]
+      "audioRef": "audio/b2_mp_402.wav",
+      "options": ["desert", "dessert"],
+      "correctAnswer": "dessert"
     }
   },
   {
-    "id": "B2-OR-003",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-403",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Describe environmental problems in your country and suggest solutions.",
-      "helpers": [
-        "What are the major environmental issues in your country?",
-        "What realistic solutions can help address these problems?",
-        "Who should be responsible for implementing these solutions?"
-      ]
+      "audioRef": "audio/b2_mp_403.wav",
+      "options": ["advise", "advice"],
+      "correctAnswer": "advise"
     }
   },
   {
-    "id": "B2-OR-004",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-404",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Describe how globalization has changed your community.",
-      "helpers": [
-        "What cultural, economic, or social changes have you noticed?",
-        "How has globalization influenced your community?",
-        "Do you view these changes positively or negatively? Why?"
-      ]
+      "audioRef": "audio/b2_mp_404.wav",
+      "options": ["advise", "advice"],
+      "correctAnswer": "advice"
     }
   },
   {
-    "id": "B2-OR-005",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-405",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Discuss the challenges of balancing work life and personal life.",
-      "helpers": [
-        "What are the main difficulties in maintaining a healthy work-life balance?",
-        "What strategies can help overcome these challenges?",
-        "What role should employers play in supporting work-life balance?"
-      ]
+      "audioRef": "audio/b2_mp_405.wav",
+      "options": ["accept", "except"],
+      "correctAnswer": "accept"
     }
   },
   {
-    "id": "B2-OR-006",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-406",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Can you describe a time when you had to learn something quickly under pressure?",
-      "helpers": [
-        "What was the situation? What did you need to learn?",
-        "What approach did you take to learn quickly?",
-        "What did you learn from this experience?"
-      ]
+      "audioRef": "audio/b2_mp_406.wav",
+      "options": ["accept", "except"],
+      "correctAnswer": "except"
     }
   },
   {
-    "id": "B2-OR-007",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-407",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "What factors should someone consider before making a major life decision?",
-      "helpers": [
-        "What types of major decisions are you thinking about (career, relationships, purchases)?",
-        "What are the most important factors to consider?",
-        "How should someone weigh different options?"
-      ]
+      "audioRef": "audio/b2_mp_407.wav",
+      "options": ["quiet", "quite"],
+      "correctAnswer": "quiet"
     }
   },
   {
-    "id": "B2-OR-008",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-408",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "Tell me about a situation where you had to give someone constructive feedback.",
-      "helpers": [
-        "What was the situation? Who needed feedback?",
-        "What approach did you take in giving the feedback?",
-        "What was the outcome?"
-      ]
+      "audioRef": "audio/b2_mp_408.wav",
+      "options": ["quiet", "quite"],
+      "correctAnswer": "quite"
     }
   },
   {
-    "id": "B2-OR-009",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-409",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "In your opinion, how important is it to stay informed about global events?",
-      "helpers": [
-        "What are the benefits of staying informed about global events?",
-        "Are there any potential drawbacks?",
-        "How do you personally approach following the news?"
-      ]
+      "audioRef": "audio/b2_mp_409.wav",
+      "options": ["though", "thought"],
+      "correctAnswer": "though"
     }
   },
   {
-    "id": "B2-OR-010",
-    "type": "open_response",
-    "prompt": "Your turn to talk!",
+    "id": "B2-MP-410",
+    "type": "minimal_pair",
+    "prompt": "Which word did you hear?",
     "metadata": {
       "accent": "us",
-      "question": "How do you usually prepare for important presentations or meetings?",
-      "helpers": [
-        "What specific strategies and tools do you use to prepare?",
-        "How do you organize your preparation process?",
-        "How do you handle pre-presentation anxiety?"
-      ]
+      "audioRef": "audio/b2_mp_410.wav",
+      "options": ["though", "thought"],
+      "correctAnswer": "thought"
     }
   },
   {
-    "id": "B2-LA-001",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_001.wav",
-      "audioText": "The data seems inconsistent with our earlier findings. What do you think?",
-      "question": "Respond as you would in a professional meeting, addressing the concern about data inconsistency.",
-      "expectedResponseElements": [
-        "Acknowledge the inconsistency",
-        "Suggest investigating the cause",
-        "Propose next steps for resolution"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-002",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_002.wav",
-      "audioText": "Could you explain the main idea behind your proposal?",
-      "question": "Respond as if you're presenting a business proposal, explaining your main concept clearly and persuasively.",
-      "expectedResponseElements": [
-        "Clear explanation of main concept",
-        "Benefits or advantages",
-        "Implementation approach"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-003",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_003.wav",
-      "audioText": "Why do you think some teams collaborate more successfully than others?",
-      "question": "Provide a thoughtful analysis based on your understanding of teamwork and collaboration.",
-      "expectedResponseElements": [
-        "Key factors for successful collaboration",
-        "Examples or experiences",
-        "Analysis of what prevents good teamwork"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-004",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_004.wav",
-      "audioText": "What are the main risks of adopting new technologies too quickly?",
-      "question": "Provide a balanced analysis of potential risks and challenges.",
-      "expectedResponseElements": [
-        "Identify specific risks",
-        "Explain consequences",
-        "Suggest mitigation strategies"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-005",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_005.wav",
-      "audioText": "How do you stay productive during busy weeks?",
-      "question": "Share your strategies for maintaining effectiveness during high-pressure periods.",
-      "expectedResponseElements": [
-        "Specific productivity strategies",
-        "Time management techniques",
-        "Stress management approaches"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-006",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_006.wav",
-      "audioText": "How do you feel about the rise of remote work in recent years?",
-      "question": "Provide your perspective on this workplace evolution, including benefits and challenges.",
-      "expectedResponseElements": [
-        "Personal opinion on remote work",
-        "Benefits and challenges",
-        "Impact on work culture"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-007",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_007.wav",
-      "audioText": "Do you think social media has a mostly positive or negative effect on society?",
-      "question": "Provide a balanced analysis with specific examples and reasoning.",
-      "expectedResponseElements": [
-        "Clear position statement",
-        "Supporting arguments",
-        "Acknowledgment of counterarguments"
-      ]
-    }
-  },
-  {
-    "id": "B2-LA-008",
-    "type": "listen_answer",
-    "prompt": "Listen and respond!",
-    "metadata": {
-      "accent": "us",
-      "audioRef": "audio/b2_la_008.wav",
-      "audioText": "What do you think is one of the biggest environmental problems today?",
-      "question": "Provide your analysis of a major environmental issue, including causes and potential solutions.",
-      "expectedResponseElements": [
-        "Identify specific environmental problem",
-        "Explain its significance",
-        "Suggest potential solutions"
-      ]
-    }
-  },
-  {
-    "id": "B2-DICT-001",
+    "id": "B2-DICT-401",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "The report highlights a significant shift in consumer behavior over the past year.",
-      "audioRef": "audio/b2_dict_001.wav"
+      "expectedText": "Many companies allow flexible hours to improve work–life balance.",
+      "audioRef": "audio/b2_dict_401.wav"
     }
   },
   {
-    "id": "B2-DICT-002",
+    "id": "B2-DICT-402",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "Although the deadline is approaching, we still need to revise the main proposal.",
-      "audioRef": "audio/b2_dict_002.wav"
+      "expectedText": "Although the plan seemed risky, the results were surprisingly positive.",
+      "audioRef": "audio/b2_dict_402.wav"
     }
   },
   {
-    "id": "B2-DICT-003",
+    "id": "B2-DICT-403",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "He argued that remote work can increase productivity, especially in creative fields.",
-      "audioRef": "audio/b2_dict_003.wav"
+      "expectedText": "Public transport is often cheaper and more sustainable than driving.",
+      "audioRef": "audio/b2_dict_403.wav"
     }
   },
   {
-    "id": "B2-DICT-004",
+    "id": "B2-DICT-404",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "Before launching the campaign, we need to clarify the target audience and goals.",
-      "audioRef": "audio/b2_dict_004.wav"
+      "expectedText": "She applied for several internships to gain experience in her field.",
+      "audioRef": "audio/b2_dict_404.wav"
     }
   },
   {
-    "id": "B2-DICT-005",
+    "id": "B2-DICT-405",
     "type": "dictation",
     "prompt": "Type what you hear!",
     "metadata": {
       "accent": "us",
-      "expectedText": "Even though the experiment failed, the team learned valuable lessons from it.",
-      "audioRef": "audio/b2_dict_005.wav"
+      "expectedText": "Despite a few setbacks, the team managed to meet the deadline.",
+      "audioRef": "audio/b2_dict_405.wav"
     }
   },
   {
-    "id": "B2-DICT-006",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
+    "id": "B2-LMQ-401",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "expectedText": "Although renewable energy sources offer significant environmental benefits, they often require substantial initial investments and complex infrastructure planning.",
-      "audioRef": "audio/b2_dict_006.wav"
+      "audioRef": "audio/b2_lmq_401.wav",
+      "audioText": "If we don’t reduce costs this quarter, the project might be cancelled.",
+      "question": "What could happen if costs aren’t reduced?",
+      "options": [
+        "The project might be cancelled.",
+        "The project will definitely continue.",
+        "They will increase the budget immediately."
+      ],
+      "correctAnswer": "The project might be cancelled."
     }
   },
   {
-    "id": "B2-DICT-007",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
+    "id": "B2-LMQ-402",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "expectedText": "The study's findings suggest that implementing artificial intelligence in healthcare can improve diagnostic accuracy while raising ethical concerns about patient data privacy.",
-      "audioRef": "audio/b2_dict_007.wav"
+      "audioRef": "audio/b2_lmq_402.wav",
+      "audioText": "He said he’d email the report by Friday, but he hasn’t sent it yet.",
+      "question": "What has not happened yet?",
+      "options": [
+        "He hasn’t sent the report.",
+        "He hasn’t written the report.",
+        "He hasn’t checked his email."
+      ],
+      "correctAnswer": "He hasn’t sent the report."
     }
   },
   {
-    "id": "B2-DICT-008",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
+    "id": "B2-LMQ-403",
+    "type": "listen_mcq",
+    "prompt": "Listen and choose the correct answer!",
     "metadata": {
       "accent": "us",
-      "expectedText": "Despite the potential advantages of remote work, employees may experience feelings of isolation and struggle to maintain a healthy work-life balance.",
-      "audioRef": "audio/b2_dict_008.wav"
+      "audioRef": "audio/b2_lmq_403.wav",
+      "audioText": "Compared to last year, fewer visitors came during the winter season.",
+      "question": "What happened during the winter season?",
+      "options": [
+        "Fewer visitors came than last year.",
+        "More visitors came than last year.",
+        "The number of visitors stayed the same."
+      ],
+      "correctAnswer": "Fewer visitors came than last year."
     }
   },
   {
-    "id": "B2-DICT-009",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
+    "id": "B2-BMQ-401",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
     "metadata": {
-      "accent": "us",
-      "expectedText": "The government should invest more in public transportation, since it reduces traffic congestion, lowers carbon emissions, and promotes social equity.",
-      "audioRef": "audio/b2_dict_009.wav"
+      "question": "I’m not sure this solution will work for everyone.",
+      "context": "Team discussion about options",
+      "situation": "Expressing reservations",
+      "options": [
+        "That’s fair. Let’s consider an alternative.",
+        "It’s fine. Just do it anyway.",
+        "Everyone must agree with this plan."
+      ],
+      "correctAnswer": "That’s fair. Let’s consider an alternative."
     }
   },
   {
-    "id": "B2-DICT-010",
-    "type": "dictation",
-    "prompt": "Type what you hear!",
+    "id": "B2-BMQ-402",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "Could you clarify what you mean by ‘pilot phase’?",
+      "context": "Workplace meeting",
+      "situation": "Asking for clarification",
+      "options": [
+        "Sure. It’s a small test before a full launch.",
+        "It means we finished the project.",
+        "It’s when we cancel the plan."
+      ],
+      "correctAnswer": "Sure. It’s a small test before a full launch."
+    }
+  },
+  {
+    "id": "B2-BMQ-403",
+    "type": "best_response_mcq",
+    "prompt": "Choose the best response!",
+    "metadata": {
+      "question": "Do you think social media helps people stay informed?",
+      "context": "Conversation about media",
+      "situation": "Weighing pros and cons",
+      "options": [
+        "It can, but misinformation is a real concern.",
+        "Yes, because everyone reads the truth there.",
+        "No, because people don’t use the internet."
+      ],
+      "correctAnswer": "It can, but misinformation is a real concern."
+    }
+  },
+  {
+    "id": "B2-OR-401",
+    "type": "open_response",
+    "prompt": "Your turn to talk!",
     "metadata": {
       "accent": "us",
-      "expectedText": "Effective communication in multicultural teams requires cultural sensitivity, precise language use, and active listening skills.",
-      "audioRef": "audio/b2_dict_010.wav"
+      "question": "Discuss the advantages and disadvantages of working remotely.",
+      "helpers": [
+        "How does remote work affect productivity and well-being?",
+        "What challenges do people face?",
+        "What is your personal view?"
+      ]
+    }
+  },
+  {
+    "id": "B2-OR-402",
+    "type": "open_response",
+    "prompt": "Your turn to talk!",
+    "metadata": {
+      "accent": "us",
+      "question": "Talk about a decision you made recently and the factors you considered.",
+      "helpers": [
+        "What options did you have?",
+        "Which factors were most important?",
+        "Are you satisfied with the outcome?"
+      ]
+    }
+  },
+  {
+    "id": "B2-OR-403",
+    "type": "open_response",
+    "prompt": "Your turn to talk!",
+    "metadata": {
+      "accent": "us",
+      "question": "Explain how technology has changed communication in your life.",
+      "helpers": [
+        "What are the benefits?",
+        "What problems can it cause?",
+        "How do you manage your screen time?"
+      ]
+    }
+  },
+  {
+    "id": "B2-OR-404",
+    "type": "open_response",
+    "prompt": "Your turn to talk!",
+    "metadata": {
+      "accent": "us",
+      "question": "Describe an environmental problem in your area and suggest solutions.",
+      "helpers": [
+        "What causes the problem?",
+        "Who should take action?",
+        "What can individuals do?"
+      ]
+    }
+  },
+  {
+    "id": "B2-OR-405",
+    "type": "open_response",
+    "prompt": "Your turn to talk!",
+    "metadata": {
+      "accent": "us",
+      "question": "Talk about a book, film, or podcast that changed your perspective.",
+      "helpers": [
+        "What is it about?",
+        "What did you learn?",
+        "Why would you recommend it?"
+      ]
+    }
+  },
+  {
+    "id": "B2-IMG-401",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Work – Presentation",
+      "imageGuidance": "Small team meeting; presenter pointing at slides; colleagues taking notes.",
+      "context": "Describe a workplace presentation and participants’ roles and actions.",
+      "question": "Look at the image and describe the meeting.",
+      "helpers": [
+        "Who is presenting?",
+        "What is the topic?",
+        "How are the others participating?"
+      ]
+    }
+  },
+  {
+    "id": "B2-IMG-402",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "City life – Rush hour commute",
+      "imageGuidance": "Crowded platform; train arriving; commuters with backpacks and coffee cups.",
+      "context": "Describe commuting, public transport, and people’s routines.",
+      "question": "Look at the image and describe the scene.",
+      "helpers": [
+        "Where are they?",
+        "What are people doing?",
+        "What time of day is it?"
+      ]
+    }
+  },
+  {
+    "id": "B2-IMG-403",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Community – Recycling center",
+      "imageGuidance": "People sorting paper, plastic, glass; labeled bins; staff member helping.",
+      "context": "Describe community actions to reduce waste and protect the environment.",
+      "question": "Look at the image and describe what is happening.",
+      "helpers": [
+        "What materials do you see?",
+        "Who is involved?",
+        "Why is this important?"
+      ]
+    }
+  },
+  {
+    "id": "B2-IMG-404",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Leisure – Community sports",
+      "imageGuidance": "Amateur football match in a park; spectators on benches; scoreboard.",
+      "context": "Describe local sports, teamwork, and atmosphere.",
+      "question": "Look at the image and describe the event.",
+      "helpers": [
+        "Who is playing?",
+        "What is the score or situation?",
+        "How do people feel?"
+      ]
+    }
+  },
+  {
+    "id": "B2-IMG-405",
+    "type": "image_description",
+    "prompt": "Describe what you see!",
+    "metadata": {
+      "accent": "us",
+      "imageTopic": "Travel – City sightseeing",
+      "imageGuidance": "Tourists with maps near a landmark; street café; guide taking photos for a group.",
+      "context": "Describe tourism, city highlights, and visitor activities.",
+      "question": "Look at the image and describe what the tourists are doing.",
+      "helpers": [
+        "Where are they?",
+        "What are they visiting?",
+        "How do they seem to feel?"
+      ]
     }
   }
 ]
